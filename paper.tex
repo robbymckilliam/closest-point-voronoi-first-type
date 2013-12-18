@@ -264,7 +264,7 @@ g_i = \begin{cases}
 If $p \in \reals^{n+1}$ then $p - I_S$ denotes the vector $p$ with those elements with index from $S$ decremented by one.  Similarly, $p + I_S$ denotes the vector $p$ with those elements with index from $S$ incremented by one.
 
 \begin{lemma}\label{lem:decSellings}
-Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with column given by the vectors $b_1,\dots,b_{n+1}$ from the obtuse superbasis.  The following equalities hold:
+Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with column given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
 \begin{enumerate}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
@@ -272,13 +272,21 @@ Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$
 where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters.
 \end{lemma}
 \begin{proof}
-We give a proof for part~\ref{eq:lem:decSellingsdec}.  The proof for part~\ref{eq:lem:decSellingsinc} is similar.  From Selling's formula~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874},
+We give a proof for part~\ref{eq:lem:decSellingsdec}.  The proof for part~\ref{eq:lem:decSellingsinc} is similar.  Observe that
+\[
+\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_i^2 =  \sum_{i=1}^{n+1}p_i^2\sum_{j=1}^{n+1} q_{ij} = 0
+\]
+and
+\[
+\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_j^2 =  \sum_{j=1}^{n+1}p_j^2\sum_{i=1}^{n+1} q_{ij} = 0
+\]
+since $\sum_{i=1}^{n+1} q_{ij} = 0$ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Now
 \begin{align*}
-\|Bp\|^2 &= \| \sum_{i=1}^{n+1} b_i p_i \|^2 \\
-&= - \sum_{i=1}^{n+1}\sum_{j=i+1}^{n+1}q_{ij}(p_i - p_j)^2 \\
-&= - \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}(p_i - p_j)^2, 
+\|Bp\|^2 &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} p_i p_j \\
+&= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (\tfrac{1}{2}p_j^2 + p_i p_j -  \tfrac{1}{2}p_i^2) \\
+&= -\frac{1}{2} \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (p_i - p_j)^2.
 \end{align*}
-where $q_{ij} = q_{ji} = b_i \cdot b_j$ are the Selling parameters.  Put $g = p - I_S$.  It follows that
+This is closely related to what is known as Sellings formula~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  Put $g = p - I_S$.  It follows that
 \[
 \|Bp\|^2 - \|Bg\|^2 = \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij},
 \]
