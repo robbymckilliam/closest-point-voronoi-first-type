@@ -1,0 +1,720 @@
+\documentclass[final,leqno]{siamltex}
+%\documentclass[draftcls, onecolumn, 11pt]{../bib/IEEEtran}
+%\documentclass[journal]{../bib/IEEEtran}
+%\documentclass[conference]{../bib/IEEEtran}
+   
+\usepackage{../bib/mathbf-abbrevs}
+
+\input{defs}
+
+\title{Finding a closest point in a lattice of Voronoi's first kind}
+
+\author{Robby~G.~McKilliam, Alex Grant and I. Vaughan L. Clarkson}
+
+\begin{document}
+
+% make the title area 
+\maketitle
+
+ \begin{abstract} 
+We show that for those lattices of Voronoi's first kind with known obtuse superbasis, a closest lattice point can be computed in $O(n^4)$ operations where $n$ is the dimension of the lattice.  To achieve this a series of relevant lattice vectors that converges to a closest lattice point is found.  We show that the series converges after at most $n$ terms.  Each vector in the series can be efficiently computed in $O(n^3)$ operations using an algorithm to compute a minimum cut in an undirected flow network.  %We discuss potential applications of this algorithm as suggest some future research questions.
+\end{abstract}
+
+%\begin{IEEEkeywords}
+\begin{keywords}
+Lattices, closest point algorithm, closest vector problem.
+\end{keywords}
+%\end{IEEEkeywords}
+
+% The paper headers
+\pagestyle{myheadings}
+\thispagestyle{plain} 
+\markboth{Finding a closest point in a lattice of Voronoi's first kind}{DRAFT \today}
+ 
+
+\section{Introduction}\label{sec:introduction}
+
+An $n$-dimensional \term{lattice} $\Lambda$ is a discrete set of vectors from $\reals^m$, $m \geq n$, formed by the integer linear combinations of a set of linearly independent basis vectors $b_1, \dots, b_n$ from $\reals^m$~\cite{SPLAG}.  That is, $\Lambda$ consists of all those vectors, or \emph{lattice points}, $x \in \reals^m$ satisfying
+\[
+  x = b_1 u_1 + b_2u_2 + \dots + b_n u_n \qquad u_1, \dots , u_n \in \ints. 
+\] 
+%In this paper vectors are assumed to be column vectors unless otherwise stated.
+Given a lattice $\Lambda$ in $\reals^m$ and a vector $y \in \reals^m$, a problem of interest is to find a lattice point $x \in \Lambda$ such that the squared Euclidean norm
+\[
+\| y - x \|^2 = \sum_{i=1}^m (y_i - x_i)^2
+\] 
+is minimised.  This is called the \emph{closest lattice point problem} (or \emph{closest vector problem}) and a solution is called a \emph{closest lattice point} (or simply \emph{closest point}) to $y$. %Equivalently we wish to minimise
+%\[
+%\| y - \sum_{i=1}^n b_i w_i \|^2
+%\]
+%over integers $w_1,\dots,w_n$.  
+A related problem is to find a lattice point of minimum nonzero Euclidean length, that is, a lattice point of length
+\[
+\min_{x\in \Lambda \backslash \{ \zerobf \} } \| x \|^2,
+\]
+where $\Lambda \backslash  \{\zerobf\}$ denotes the set of lattice point not equal to the origin $\zerobf$.  This is called the \emph{shortest vector problem}.
+
+The closest lattice point problem and the shortest vector problem have interested mathematicians and computer scientists due to their relationship with integer programming~\cite{Lenstra_integerprogramming1983,Kannan1987_fast_general_np,Babai1986}, the factoring of polynomials~\cite{Lenstra1982}, and cryptanalysis~\cite{Joux_toolbox_cryptanal1998,NyguyenStern_two_faces_crypto,Micciancio_lattice_based_post_quantum_crypto}.  
+Solutions of the closest lattice point problem also have engineering applications.  For example, if a lattice is used as a vector quantiser then the closest lattice point corresponds to the minimum distortion point~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec}.  If the lattice is used as a code, then the closest lattice point corresponds to what is called \emph{lattice decoding}\index{lattice decoding} and has been shown to yield arbitrarily good codes~\cite{Erex2004_lattice_decoding,Erez2005}.  The closest lattice point problem also occurs in communications systems involving multiple antennas~\cite{Ryan2008,Wubben_2011}.  The unwrapping of phase data for location estimation can also be posed as a closest lattice point problem and this has been applied to the global positioning system~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}.  The problem has also found applications to circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012}.
+
+The closest lattice point problem is known to be NP-hard under certain conditions when the lattice itself, or rather a basis thereof, is considered as an additional input parameter~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard, Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms all require a number of operations that grows as $O(n^{O(n)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio~\cite{Micciancio09adeterministic} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known. 
+
+Although the problem is NP-hard in general, fast algorithms are known for specific highly regular lattices, such as the root lattices $A_n$ and $D_n$, their dual lattices $A_n^*$ and $D_n^*$, the integer lattice $\ints^{n}$, and the Leech lattice~\cite[Chap. 4]{SPLAG}\cite{Conway1982FastQuantDec,Conway1986SoftDecLeechGolay, Clarkson1999:Anstar, McKilliam2008, McKilliam2008b, McKilliam2009CoxeterLattices,Vardy1993_leech_lattice_MLD}.  In this paper we consider a particular class of lattices, those of \emph{Voronoi's first kind}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases,Valentin2003_coverings_tilings_low_dimension,Voronoi1908_main_paper}.  Each lattice of Voronoi's first kind has what is called an \emph{obtuse superbasis}.  We show that if the obtuse superbasis is known, then a closest lattice point can be computed in $O(n^4)$ operations.  This is achieved by enumerating a series of \emph{relevant vectors} of the lattice.  Each relevant vector in the series can be computed in $O(n^3)$ operations using an algorithm for computing a minimum cut in an undirected flow network.  We show that the series converges to a closest lattice point after at most $n$ terms, resulting in $O(n^4)$ operations in total.  This result extends upon a recent result by some of the authors showing that a short vector in a lattice of Voronoi's first kind can be found by computing a minimum cut in a weighted graph~\cite{McKilliam_short_vectors_first_type_isit_2012}.
+
+The paper is structured as follows.  Section~\ref{sec:voron-cells-relev} describes the relevant vectors and the \emph{Voronoi cell} of a lattice. Section~\ref{sec:iterative-slicer} describes a procedure to find a closest lattice point by enumerating a series of relevant vectors.  The series is guaranteed to converge to a closest lattice point after a finite number of terms.  In general the procedure might be computationally expensive because the number of terms required might be large and because computation of each relevant vector in the series might be expensive.  Section~\ref{sec:latt-voron-first} describes lattices of Voronoi's first kind and their obtuse superbasis.  It is shown that for these lattices, the series of relevant vectors results in a closest lattice point after at most $n$ terms.  Section~\ref{sec:comp-clos-relev} shows that each relevant vector in the series can be computed in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  Section~\ref{sec:discussion} discusses some potential applications of this algorithm and poses some interesting questions for future research.
+
+\section{Voronoi cells and relevant vectors}\label{sec:voron-cells-relev}
+\newcommand{\calR}{\mathcal{R}}
+The (closed) \term{Voronoi cell}, denoted $\vor(\Lambda)$, of a lattice $\Lambda$ in $\reals^m$ is the subset of $\reals^m$ containing all points nearer or of equal distance (here with respect to the Euclidean norm) to the lattice point at the origin than to any other lattice point. The Voronoi cell is an $m$-dimensional convex polytope that is symmetric about the origin. %Here we will always assume the Euclidean norm (or 2-norm), so $\vor(\Lambda)$ contains those points nearer in Euclidean distance to the origin. %If $x \in \Lambda$ it follows that $\vor(\Lambda) + x$ is the subset of $\reals^n$ that is nearer to $x$ than any other lattice point in $\Lambda$. Figure \ref{lattices:fig:vorregion} is an example of the Voronoi cell.
+ 
+Equivalently the Voronoi cell can be defined as the intersection of the half spaces 
+\begin{align*}
+H_{v} &= \{x \in \reals^n \mid \|x\| \leq \|x - v\| \} \\
+&= \{x \in \reals^n \mid \dotprod{x}{v} \leq \tfrac{1}{2}\dotprod{v}{v} \}
+\end{align*}
+for all $v \in \Lambda \backslash  \{\zerobf\}$.  %We denote by $x^\prime$ the transpose of the vector $x$ and so $\dotprod{x}{v}$ is the inner product between column vectors $x$ and $v$.  
+We denote by $\dotprod{x}{v}$ the inner product between vectors $x$ and $v$.
+It is not necessary to consider all $v \in \Lambda \backslash  \{\zerobf\}$ to define the Voronoi cell.   %Figure \ref{lattices:fig:vorregion} depicts the relevant vectors of the lattice with generator given by~\eqref{lattices:eq:genB}.  A lattice point in $\calR$ is called \term{relevant}. The following remark follow trivially from the preceding discussion.
+The \emph{relevant vectors} $v \in \Lambda$ are those for which  
+\[
+\dotprod{v}{x} \leq \dotprod{x}{x}
+\]
+for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.  We denote by $\relevant(\Lambda)$ the set of relevant vectors of the lattice $\Lambda$.  The Voronoi cell is the intersection of the halfspaces corresponding with the relevant vectors, that is, 
+\[
+%\begin{equation}\label{eq:defvortermsrelvecs}
+\vor(\Lambda) = \cap_{v\in\relevant(\Lambda)}{H_{v}}.
+%\end{equation}
+\]
+The closest lattice point problem and the Voronoi cell are related in that $x\in\Lambda$ is a closest lattice point to $y$ if and only $y - x \in \vor(\Lambda)$, that is, if and only if
+\begin{equation}\label{eq:relvectnearpointieq}
+\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v}
+\end{equation} 
+for all $v \in \relevant(\Lambda)$.  
+
+% Every short vector in a lattice is also a relevant vector, because, if a lattice point $s$ is not relevant there exists a lattice point $x$ not equal to $s$ or $\zerobf$ such that $\dotprod{x}{s} \geq \dotprod{x}{x}$ or equivalently $\dotprod{\tfrac{x}{\|x\|}}{s} \geq \|x\|$ after dividing by $\|x\|$.  Since both $\tfrac{x}{\|x\|}$ and $\tfrac{s}{\|s\|}$ are unit vectors and $s \neq x$ then,
+% \[
+% \|s\| = \dotprod{\tfrac{s}{\|s\|}}{s} >  \dotprod{\tfrac{x}{\|x\|}}{s} \geq \|x\|,
+% \]
+% i.e, $\|s\| > \|x\|$, so $s$ is not a short vector.  
+
+If $s$ is a short vector in a lattice $\Lambda$ then 
+\[
+\rho = \frac{\|s\|}{2} = \frac{1}{2} \min_{x \in \Lambda / \{\zerobf\} } \|x\|
+\]
+is called the \emph{packing radius} (or \emph{inradius}) of $\Lambda$~\cite{SPLAG}.  The packing radius is the minimum distance between the boundary of the Voronoi cell and the origin.  It is also the radius of the largest sphere that can be placed at every lattice point such that no two spheres intersect (see Figure~\ref{lattices:fig:vorregion}).  The following well known result will be useful.
+
+%  \begin{proposition}\label{prop:latticepointinscaledtranslatedvorcell}
+%  Let $\Lambda \subset \reals^{m}$ be an $n$-dimensional lattice with Voronoi cell $\vor(\Lambda)$.  Let $D$ be a positive real number and let $\ceil{D}$ denote the smallest integer larger than $D$.  Denote by 
+%  \[
+%   D\vor(\Lambda) + t = \left\{ x \in \reals^{m} \ \mid \frac{x-t}{D} \in \vor(\Lambda) \right\}
+%  \]
+% the Voronoi cell scaled by $D$ and translated by $t \in \reals^{m}$.  The number of lattice points from $\Lambda$ in $ D\vor(\Lambda) + t$ is less than or equal to $\ceil{D}^{n}$. 
+%  \end{proposition}
+%  \begin{proof}
+% See, for example,~\cite[Lemma~3.7]{Micciancio09adeterministic}.  The result also follows from~\cite[vol.~134, p.~277]{Voronoi1908_main_paper} or \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.
+%  \end{proof}
+
+\begin{proposition}\label{eq:latticepointsinsphere}
+Let $\Lambda \subset \reals^{m}$ be an $n$-dimensional lattice with packing radius $\rho$.  Let $S$ be an $m$-dimensional hypersphere of radius $r$ centered at $t \in \reals^{m}$.  The number of lattice points from $\Lambda$ in the sphere $S$ is less than $\ceil{r/\rho}^{n}$ where $\ceil{\cdot}$ denotes the smallest integer strictly larger than its argument. 
+ \end{proposition}
+ \begin{proof}
+Since the packing radius $\rho$ is the point on the boundary of the Voronoi that is closest to the origin, the hypersphere $S$ is a subset of the Voronoi cell scaled by $r/\rho$ and translated by $t$.  That is, $S \subset r/\rho \vor(\Lambda) + t$.  The proof follows because the number of lattice points in $r/\rho \vor(\Lambda) + t$ is less than $\ceil{r/\rho}^n$ (this follows from, for example, \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}, see also~\cite[Lemma~3.7]{Micciancio09adeterministic}).
+\end{proof}
+ 
+
+% \footnote{These are the `strict' relevant vectors according to Conway and Sloane~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the inequality $\dotprod{v}{x} < \dotprod{x}{x}$ is replaced by $\dotprod{v}{x} \leq \dotprod{x}{x}$ then this would also include the `lax' relevant vectors.  The short vectors are always strict so we only have use of the strict relevant vectors here.}
+ 
+\begin{figure}[tp] 
+	\centering      
+		\includegraphics{figs/latticefigures-1.mps} 
+		\caption{The $2$-dimensional lattice with basis vectors $(3,0.6)$ and $(0.6,3)$.  The lattice points are represented by dots and the relevant vectors are circled.  The Voronoi cell $\vor(\Lambda)$ is the shaded region and the packing radius $\rho$ and corresponding sphere packing (circles) are depicted.
+}     
+		\label{lattices:fig:vorregion}   
+\end{figure} 
+
+
+
+\section{Finding a closest lattice point by a series of relevant vectors} \label{sec:iterative-slicer}
+
+Let $\Lambda$ be a lattice in $\reals^m$ and let $y \in \reals^m$. A simple method to compute the lattice point $x \in \Lambda$ closest to $y$ is as follows.  Let $x_0$ be some lattice point from $\Lambda$, for example the origin.  Consider the following iteration,
+\begin{align}\
+x_{k+1} &= x_k + v_k \nonumber \\
+v_k &= \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\} } \|y - x_k - v \|, \label{eq:relvectsminimslicer}
+\end{align} 
+where $\relevant(\Lambda) \cup \{\zerobf\}$ is the set of relevant vectors of $\Lambda$ including the origin.  Observe that the minimum over $\relevant(\Lambda) \cup \{\zerobf\}$ may not be unique.  That is, there may be multiple vectors from $\relevant(\Lambda) \cup \{\zerobf\}$ that are closest to $y - x_k$.  In this case, any one of the minimisers may be chosen.  The results that we will describe do not depend on this choice. We make the following straightforward propositions.
+
+\begin{proposition}\label{obs:1}
+%After a finite number, say $K$ iterations, the above proceedure The above proceedure reaches a stationary point after a finite number $K$ of iterations
+At the $k$th iteration either $x_k$ is a closest lattice point to $y$ or $\|y - x_k\| > \| y - x_{k+1} \|$.
+\end{proposition}
+\begin{proof}
+If $x_k$ is a closest lattice point to $y$ then $\|y - x_k\| \leq \| y - x_{k+1} \|$ by definition.  On the other hand if $x_k$ is not a closest lattice point to $y$ we have $y - x_k \notin \vor(\Lambda)$ and from~\eqref{eq:relvectnearpointieq} there exists a relevant vector $v$ such that
+\[
+0 > \dotprod{v}{v} - 2\dotprod{(y - x_k)}{v}.
+\]
+Adding $\|y - x_k\|^2$ to both sides of this inequality gives
+\begin{align*}
+\|y - x_k\|^2 &> \dotprod{v}{v} - 2\dotprod{(y - x_k)}{v} + \|y - x_k\|^2 \\
+&= \|y - x_k - v\|^2 \\
+&\geq \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\}}\|y - x_k - v \|^2 \\
+&= \|y - x_k - v_k \|^2 \\
+&= \|y - x_{k+1}\|^2. 
+\end{align*}
+\end{proof} 
+
+% \begin{observation}\label{obs:1}
+% At the $k$th iteration either $x_k$ is a closest lattice point to $y$ or 
+% \[
+%  \max_{ v \in \relevant(\Lambda)}\frac{\dotprod{(y - x_k)}{v}}{\dotprod{v}{v}} > \frac{1}{2}.
+% \]
+% \end{observation}
+% \begin{proof}
+% If $x_k$ is a closest lattice point to $y$ then $\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v}$ for all $v \in \relevant(\Lambda)$ by definition of the Voronoi cell~\eqref{eq:relvecsvorcellnearpoint} and so
+% \[
+%  \max_{ v \in \relevant(\Lambda)}\frac{\dotprod{(y - x_k)}{v}}{\dotprod{v}{v}} \leq \frac{1}{2}.
+% \]
+% Conversely if $x_k$ is not the closest point to $y$ there exists a relevant vector $r$ such that $\dotprod{(y - x)}{r} > \tfrac{1}{2} \dotprod{r}{r}$ and so
+% \[
+%  \max_{ v \in \relevant(\Lambda)}\frac{\dotprod{(y - x_k)}{v}}{\dotprod{v}{v}} \geq \frac{\dotprod{(y - x_k)}{r}}{\dotprod{r}{r}} > \frac{1}{2}.
+% \]
+% \end{proof}
+
+ \begin{proposition}\label{obs:2}
+ There is a finite number $K$ such that $x_K, x_{K+1}, x_{K+2}, \dots$ are all closest points to $y$.
+ \end{proposition}
+ \begin{proof}
+Suppose no such finite $K$ exists, then
+\[
+\|y - x_0\| >  \|y - x_1\| > \|y - x_2\| > \dots
+\]
+and so $x_0,x_1,\dots$ is an infinite sequence of distinct (due to the strict inequality) lattice points  all contained inside an $n$-dimensional hypersphere of radius $r = \|y - x_0\|$ centered at $y$.  This is a contradiction since, if $\rho$ is the packing radius of the lattice, then less than $\ceil{r/\rho}^n$ lattice points lie inside this sphere by Proposition~\ref{eq:latticepointsinsphere}. 
+\end{proof}
+
+Proposition~\ref{obs:2} above asserts that after some finite number $K$ of iterations the procedure arrives at $x_K$, a closest lattice point to $y$.  Using Proposition~\ref{obs:1} we can detect that $x_K$ is a closest lattice point by asserting that $\|y - x_K\| \leq \| y - x_{K+1} \|$.
+This simple iterative approach to compute a closest lattice point is related to what is called the \emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009}.  Micciancio~\cite{Micciancio09adeterministic} describes a related, but more sophisticated, iterative algorithm that can compute a closest lattice point in a number of operations that grows exponentially as $O(2^{2 n})$.  This single exponential growth in complexity is the best known.  %Most popular algorithms for computed closest lattice points require a number of operations of order $O(n^n)$\cite{Agrell2002,Viterbo_sphere_decoder_1999,Pohst_sphere_decoder_1981}. 
+
+Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors and so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory, and so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that, for a lattice of Voronoi's first kind, the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
+
+The other factor affecting the complexity is the number of iterations required before the algorithm arrives at a closest lattice point, that is, the size of $K$.  Propositon~\ref{eq:latticepointsinsphere} suggests that this number can be as large as $\ceil{r/\rho}^n$ where $r = \|y - x_0\|^2$ and $\rho$ is the packing radius of the lattice.  Thus, the number of iterations required can potentially grow exponentially with $n$.  The number of iterations required depends on the lattice point that starts the iteration $x_0$.  It is helpful for $x_0$ to be, in some sense, a close approximation of the closest lattice point $x_K$.  Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004}.  We will show that for a lattice of Voronoi's first kind a simple and easy to compute choice for $x_0$ ensures that a closest lattice point is reached in at most $n$ iterations, and so $K \leq n$.  Combining this with the fact that each iteration of the algorithm requires $O(n^3)$ operations results in an algorithm that requires $O(n^4)$ operations to compute a closest point in a lattice of Voronoi's first kind. 
+
+
+\begin{figure}[tp] 
+	\centering      
+		\includegraphics{figs/iterativeseriesexample-1.mps} 
+		\caption{Example of the iterative procedure described in~\eqref{eq:relvectsminimslicer} to compute a closest lattice point to $y = (4,3.5)$ (marked with a cross) in the $2$-dimensional lattice generated by basis vectors $(2,0.4)$ and $(0.4,2)$.  The initial lattice point for the iteration is $x_0 = (-4.4,-2.8)$.  The shaded region is the Voronoi cell translated about the closest lattice point $x_6 = (4.4,2.8)$.}       
+		\label{lattices:fig:iterativeexample} 
+\end{figure} 
+
+
+\section{Lattices of Voronoi's first kind} \label{sec:latt-voron-first}
+
+An $n$-dimensional lattice $\Lambda$ is said to be of \emph{Voronoi's first kind} if it has what is called an \emph{obtuse superbasis}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  That is, there exists a set of $n+1$ vectors $b_1,\dots,b_{n+1}$ such that $b_1,\dots,b_n$ are a basis for $\Lambda$,
+\begin{equation}\label{eq:superbasecond}
+b_1 + b_2 \dots + b_{n+1} = 0
+\end{equation}
+(the \emph{superbasis} condition), and the inner products satisfy
+\begin{equation}\label{eq:obtusecond}
+q_{ij} = b_i \cdot b_j \leq 0, \qquad \text{for} \qquad i,j = 1,\dots,n+1, i \neq j
+\end{equation}
+(the \emph{obtuse} condition).  The $q_{ij}$ are called the \emph{Selling parameters}~\cite{Selling1874}.  It is known that all lattices in dimensions less than $4$ are of Voronoi's first kind~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  An interesting property of lattices of Voronoi's first kind is that their relevant vectors have a straightforward description.
+
+\begin{theorem} \label{thm:revvecssuperbase} (Conway and Sloane~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases})
+The relevant vectors of $\Lambda$ are of the form,
+\[
+\sum_{i \in I} b_i
+\]
+where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e. $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
+\end{theorem}  
+ 
+We are interested in solving the closest lattice point problem for lattices of Voronoi's first kind.  Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  We want to find $n$ integers $w_1,\dots,w_n$ that minimise
+\[
+\| y - \sum_{i=1}^n b_i w_i \|^2.
+\]
+We can equivalently find $n+1$ integers $w_1,\dots,w_{n+1}$ that minimise
+\[
+\| y - \sum_{i=1}^{n+1} b_i w_i \|^2.
+\]
+We will use the iterative procedure described in~\eqref{eq:relvectsminimslicer} to do this.  In what follows we will assume that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the projection of $y$ orthogonal into the space spanned by $b_1,\dots,b_{n+1}$.  Let
+\begin{equation}\label{eq:matrxBobtusebasis}
+B = (b_1\,\,b_2\,\,\dots\,\,b_{n+1})
+\end{equation}
+be the matrix with columns given by $b_1,\dots,b_{n+1}$ and let $z \in \reals^{n+1}$ be a column vector such that $y = Bz$.  We now want to find a column vector $w = (w_1,\dots,w_{n+1})^\prime$ of integers such that
+\begin{equation}\label{eq:tominimise}
+\| B(z  -  w) \|^2
+\end{equation}
+is minimised.  Define the column vector $u_0 = \floor{z}$ where $\floor{\cdot}$ denotes the largest integer less than or equal to its argument and operates on vectors elementwise. In view of Theorem~\ref{thm:revvecssuperbase} the iterative procedure~\eqref{eq:relvectsminimslicer} to compute a closest lattice point can be written in the form
+\begin{align}
+x_{k+1} &= B u_{k+1} \label{eq:xseqfirsttype}  \\
+u_{k+1} &= u_k + p_k \nonumber \\
+p_k &= \arg\min_{p \in \{0,1\}^{n+1}}\| B(z - u_k - p) \|^2, \label{eq:pvecmin}
+\end{align}
+where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  Observe that the procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how the minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
+
+\newcommand{\rng}{\operatorname{rng}}
+\newcommand{\subrng}{\operatorname{subr}}
+\newcommand{\decrng}{\operatorname{decrng}}
+
+It is necessary to introduce some notation.  Given a subset $S$ of indices from $\{1,\dots,n+1\}$ we denote by $I_S$ the vector of length $n+1$ with elements equal to zero except for those with indices from $S$ that are equal to one.  That is, if $g = I_S$ then $g$ is the vector with elements
+\[
+g_i = \begin{cases}
+1 & i \in S\\
+0 & i \notin S.
+\end{cases}
+\]
+If $p \in \reals^{n+1}$ then $p - I_S$ denotes the vector $p$ with those elements with index from $S$ decremented by one.  Similarly, $p + I_S$ denotes the vector $p$ with those elements with index from $S$ incremented by one.
+
+\begin{lemma}\label{lem:decSellings}
+Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with column given by the vectors $b_1,\dots,b_{n+1}$ from the obtuse superbasis.  The following equalities hold:
+\begin{enumerate}
+\item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
+\item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
+\end{enumerate}
+where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters.
+\end{lemma}
+\begin{proof}
+We give a proof for part~\ref{eq:lem:decSellingsdec}.  The proof for part~\ref{eq:lem:decSellingsinc} is similar.  From Selling's formula~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874},
+\begin{align*}
+\|Bp\|^2 &= \| \sum_{i=1}^{n+1} b_i p_i \|^2 \\
+&= - \sum_{i=1}^{n+1}\sum_{j=i+1}^{n+1}q_{ij}(p_i - p_j)^2 \\
+&= - \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}(p_i - p_j)^2, 
+\end{align*}
+where $q_{ij} = q_{ji} = b_i \cdot b_j$ are the Selling parameters.  Put $g = p - I_S$.  It follows that
+\[
+\|Bp\|^2 - \|Bg\|^2 = \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij},
+\]
+where $d_{ij} = (g_i - g_j)^2 - (p_i - p_j)^2$.  If both $i \notin S$ and $j \notin S$ then $p_i = g_i$, $p_j = g_j$ and so $d_{ij} = 0$.  Similarly if both $i \in S$ and $j \in S$ then 
+\[
+d_{ij} = (p_i-1 - p_j+1)^2 - (p_i - p_j)^2 = 0.
+\]
+If $i \in S$ and $j \notin S$ then
+\[
+d_{ij} = (p_i-1 - p_j)^2 - (p_i - p_j)^2= 1 + 2p_j - 2p_i,
+\]
+while if $i \notin S$ and $j \in S$ then
+\[
+d_{ij} = (p_i - p_j+1)^2 - (p_i - p_j)^2 = 1 + 2p_i - 2p_j.
+\]
+We thus have
+\begin{align*}
+\|Bp\|^2 - \|Bg\|^2 &= \frac{1}{2} \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i) + \frac{1}{2} \sum_{i \notin S}\sum_{j \in S}q_{ij}(1 + 2p_i - 2p_j) \\
+&= \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i),
+\end{align*}
+where the last line holds because $q_{ij} = q_{ji}$.
+\end{proof}
+
+We denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$.  We define the function
+\[
+\rng(p) = \max(p) - \min(p)
+\] 
+to return the difference between the maximum and minimum of $p$.  For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also write simply $\rng(4,-1,5)=5$.  Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  We define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
+\[
+\subrng(2,-1,4) = \{1,3\}, \qquad \subrng(2,1,3) = \emptyset, \quad  \subrng(1,3,1) = \{2\}.
+\]  
+To make the definition of $\subrng$ clear we give the following alternative and equivalent definition.  Let $p \in \ints^n$ and let $\sigma$ be the permutation of the indices $\{1,\dots,n\}$ that puts the elements of $p$ in ascending order, that is
+\[
+p_{\sigma(1)} \leq p_{\sigma(2)} \leq \dots \leq p_{\sigma(n)}.
+\]  
+Let $T$ be the smallest integer from $\{2,\dots,n\}$ such that $p_{\sigma(T)} - p_{\sigma(T-1)} \geq 2$.  If no such integer $T$ exists then $\subrng(p) = \emptyset$.  Otherwise 
+\[
+\subrng(p) =  \{ \sigma(T), \sigma(T+1), \dots, \sigma(n) \}.
+\]
+The following straightforward property of $\subrng$ will be useful.
+
+\begin{proposition}\label{prop:subrrngsmall}
+Let $p \in \ints^{n+1}$.  If $\subrng(p) = \emptyset$ then $\rng(p) \leq n$.
+\end{proposition}
+\begin{proof}
+Let $\sigma$ be the permutation of the indices $\{1,\dots,n+1\}$ that puts the elements of $p$ in ascending order.  Because $\subrng(p) = \emptyset$ and because the elements of $p$ are integers we have $p_{\sigma(i+1)} \leq p_{\sigma(i)} + 1$ for all $i=1,\dots,n$.  It follows that
+\[
+p_{\sigma(n+1)} \leq p_{\sigma(n)} + 1 \leq p_{\sigma(n-1)} + 2 \leq \dots \leq p_{\sigma(1)} + n.
+\]
+and so $\rng(p) = p_{\sigma(n+1)} - p_{\sigma(1)} \leq n$.
+\end{proof}
+
+Finally we define the function
+\[
+\decrng(p) = p -  I_{\subrng(p)}
+\]
+that decrements those elements from $p$ with indices from $\subrng(p)$.  If $\subrng(p) = \emptyset$, then $\decrng(p) = p$, that is, $\decrng$ does not modify $p$.  On the other hand, if $\subrng(p) \neq \emptyset$ then
+\[
+\rng\big(\decrng(p)\big) = \rng(p) - 1
+\]
+because $\subrng(p)$ contains all those indices $i$ such that $p_i = \max(p)$.  Observe that by repeatedly applying $\decrng$ to a vector one eventually obtains a vector for which further application of $\decrng$ has no effect.  For example,
+\begin{align*}
+\decrng(2,-1,4) &= (2,-1,4) - I_{\subrng(2,-1,4)} = (2,-1,4) - I_{\{1,3\}} = (1,-1,3) \\ 
+\decrng(1,-1,3) &= (1,-1,3) - I_{\{1,3\}} = (0,-1,2) \\ 
+\decrng(0,-1,2) &= (0,-1,2) - I_{\{3\}} = (0,-1,1) \\ 
+\decrng(0,-1,1) &= (0,-1,1) - I_{\emptyset} = (0,-1,1).
+\end{align*}
+This will be a useful property so we state it formally in the following proposition.
+
+\begin{proposition} \label{lem:repeatappdecrange} Let $p \in \reals^{n+1}$ and define the infinite sequence $d_0,d_1,d_2,\dots$ of vectors according to $d_0=p$ and $d_{k+1} = \decrng(d_k)$.  There is a finite integer $T$ such that $d_T=d_{T+1}=d_{T+2}=\dots$.
+\end{proposition}
+\begin{proof}
+Assume that no such $T$ exists.  Then $\decrng(d_k) \neq d_k$ for all positive integers $k$ and so 
+\[
+\rng(d_{k}) = \rng(d_{k-1}) - 1 = \rng(d_{k-2}) - 2 = \dots = \rng(p) - k.
+\]  
+Choosing $k > \rng(p)$ we have $\rng(d_{k}) < 0$ contradicting that $\rng(d_k)$ is nonegative.
+\end{proof}
+
+We are now ready to study properties of a closest lattice point in a lattice of Voronoi's first kind.
+
+\begin{lemma}\label{lem:decrngpreservesclosestpoints}
+If $v \in \ints^{n+1}$ such that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$, then $B\big(\floor{z} + \decrng(v)\big)$ is also a closest lattice point to $y$.
+\end{lemma}
+\begin{proof}
+The lemma is trivial if $\subrng(v) = \emptyset$ so that $\decrng(v) = v$.  It remains to prove the lemma when $\subrng(v) \neq \emptyset$.  In this case put $S = \subrng(v)$ and put $u = \decrng(v) = v - I_S$.  Let $\zeta = z - \floor{z}$ be the column vector containing the fractional parts of the elements of $z$.  We have $\zeta - u = \zeta - v + I_S$.  Applying part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = \zeta - v$ we obtain
+\begin{align}
+\|B(\zeta - v)\|^2 - \|B(\zeta - u)\|^2 &= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + 2(\zeta_i - v_i)  - 2(\zeta_j - v_j) \big) \nonumber \\
+&= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j)\big). \label{eq:sumsumBzBu}
+\end{align}
+Observe that $\zeta_i =  z_i - \floor{z_i} \in [0,1)$ for all $i=1,\dots,n+1$ and so $-1 < \zeta_i-\zeta_j < 1$ for all $i,j=1,\dots,n+1$.  Also, for $i \in S$ and $j\notin S$ we have 
+\[
+v_i - v_j \geq \min\{ v_i, i \in S\} - \max\{v_j, j \notin S\} \geq 2
+\]
+by definition of $\subrng(v) = S$.  Thus,
+\[
+1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0.
+\]
+Substituting this inequality into~\eqref{eq:sumsumBzBu} and using that $q_{ij} \leq 0$ (the obtuse condition~\eqref{eq:obtusecond}) we find that
+\[
+\|B(z - \floor{z} - v)\|^2 - \|B(z - \floor{z} - u)\|^2 \geq 0,
+\]
+and so $B(\floor{z} + u) = B\big(\floor{z} + \decrng(v)\big)$ is a closest lattice point to $y = Bz$ whenever $B(\floor{z} + v)$ is.
+\end{proof}
+
+\begin{lemma}\label{lem:roundzclose}
+There exists a closest lattice point to $y = Bz$ in the form $B(\floor{z} + v)$ where $v \in \ints^{n+1}$ with $\rng(v) \leq n$.
+\end{lemma}
+\begin{proof}
+Let $d_0 \in \ints^{n+1}$ be such that $B(\floor{z} + d_0)$ is a closest lattice point to $y$. Define the sequence of vectors $d_0,d_1,\dots$ from $\ints^{n+1}$ according to the recursion $d_{k+1} = \decrng(d_k)$.  It follows from Lemma~\ref{lem:decrngpreservesclosestpoints} that $B(\floor{z} + d_{k})$ is a closest lattice point for all positive integers $k$.  By Proposition~\ref{lem:repeatappdecrange} there is a finite $T$ such that 
+\[
+d_{T+1}=d_T=\decrng(d_T).
+\]  
+It follows that $\subrng(d_T) = \emptyset$ and so $\rng(d_T) \leq n$ by Proposition~\ref{prop:subrrngsmall}.  The proof follows with $v = d_T$.   
+\end{proof}
+
+Let $\ell$ be a nonegative integer.  We will say that a lattice point $x$ is $\ell$-\emph{close} to $y$ if there exists a $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $x + Bv$ is a closest lattice point to $y$.  Lemma~\ref{lem:roundzclose} asserts that the lattice point $x_0 = B\floor{z}$ that initialises the iterative procedure~\eqref{eq:xseqfirsttype} is $K$-close to $y$ where $K \leq n$.  From Lemma~\ref{lem:rngdecreases} stated below it will follow that if the lattice point $x_k$ obtained on the $k$th iteration of the procedure is $\ell$-close, then the lattice point $x_{k+1}$ obtained on the next iteration is $(\ell-1)$-close.  Since $x_0$ is $K$-close it will then follow that after $K \leq n$ iterations the lattice point $x_K$ is $0$-close.  At this stage it is guaranteed that $x_{K}$ itself is a closest lattice point to $y$.  This is shown in the following lemma.  
+
+\begin{lemma}\label{lem:rngzeroclosestpoint}
+If $x$ is a lattice point that is $0$-close to $y$, then $x$ is a closest lattice point to $y$.
+\end{lemma}
+\begin{proof}
+Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest lattice point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical.  That is $v_1=v_2=\dots=v_{n+1}$.  In this case $Bu = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
+as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
+\end{proof}
+
+\begin{lemma}\label{lem:rngdecreases}
+Let $Bu$ with $u \in \ints^{n+1}$ be a lattice point that is $\ell$-close to $y = Bz$ where $\ell > 0$.  Let $g \in \{0,1\}^{n+1}$ be such that
+\begin{equation}\label{eq:qismin}
+\|B(z - u - g)\|^2 = \min_{p \in \{0,1\}^{n+1}}\|B(z - u - p)\|^2.
+\end{equation}
+The lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
+\end{lemma}
+\begin{proof}
+Because $Bu$ is $\ell$-close to $y$ there exists $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $B(u+v)$ is a closest lattice point to $y$.  Let $A$ be the (possibly empty) subset of indices $\{1,\dots,n+1\}$ such that $g_i = 1$ and $v_i = \min(v)$ and let $D$ be the (possibly empty) subset of indices such that $g_i = 0$ and $v_i = \max(v)$. That is,
+\[
+A = \{i \mid g_i = 1, v_i = \min(v) \}, \qquad D = \{i \mid g_i = 0, v_i = \max(v) \}.
+\]
+Put $d = g - I_A + I_D$ and put $w = v - d$.  Observe that $d_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-d) = \min(v)$.  Also, $d_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-d) = \max(v) - 1$.  Thus,
+\[
+\rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1.
+\]
+The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $h = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, suppose that 
+\[
+\|B(z-u-g-h)\|^2 = \|B(z-u-v-I_A)\|^2 > \|B(z-u-v)\|^2.
+\]
+In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S = A$ shows that 
+\begin{equation}\label{eq:lem:rng:contag}
+\|B(z-u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
+\end{equation}
+contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
+\[
+\|B(z-u-g-h+I_D)\|^2 > \|B(z-u-h-g)\|^2.
+\]
+Lemma~\ref{lem:vqcontramax} (proved below) with $t = z-u$ and $S = D$ shows that~\eqref{eq:lem:rng:contag} occurs again, contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
+ \end{proof}
+
+The proof of the previous Lemma~\ref{lem:rngdecreases} relies upon Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax}.  Before we prove these lemmas we state the following theorem asserting that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
+
+\begin{theorem}
+Let $x_0,x_1,\dots$ be the sequence of lattice points given by the iterative procedure~\eqref{eq:xseqfirsttype}.  There exists $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
+\end{theorem}
+\begin{proof}
+Let $x_k = B u_k$ with $u_k \in \ints^{n+1}$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $p_{k} \in \{0,1\}^{n+1}$ satisfying
+\[
+\|B(z - u_k - p_{k})\|^2 = \min_{p \in \{0,1\}^{n+1}}\|B(z - u_k - p)\|^2
+\]
+and puts $x_{k+1} = B(u_k + p_k)$.  It follows from Lemma~\ref{lem:rngdecreases} that $x_{k+1}$ is $(\ell-1)$-close to $y$.  By Lemma~\ref{lem:roundzclose} the lattice point that initialises the procedure $x_0 = B \floor{z}$ is $K$-close to $y$ where $K \leq n$.  Thus, $x_1$ is $(K-1)$-close, $x_2$ is $(K-2)$-close, and so on until $x_K$ is $0$-close.  That $x_K$ is a closest lattice point to $y$ follows from Lemma~\ref{lem:rngzeroclosestpoint}.
+\end{proof}
+
+We now provide proof of Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax} that were used in the proof of Lemma~\ref{lem:rngdecreases}.
+
+\begin{lemma}\label{lem:vqcontramin}
+Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest lattice point to $Bt$.  Let $g \in \{0,1\}^{n+1}$ and let $S$ be the subset of indices $\{1,\dots,n+1\}$ such that $g_i=1$ and $v_i = \min(v)$ for $i \in S$.  If $\|B(t-v)\|^2 < \|B(t-v-I_S)\|^2$, then
+\[
+\|B(t - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(t - p)\|^2.
+\]
+\end{lemma}
+\begin{proof}
+From our hypothesis and part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
+\[
+\|B(t-v)\|^2 - \|B(t-v-I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0,
+\]
+where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g - I_S$ and observe that $h_i = 0$ when $v_i = \min(v)$ and so, since $S \subset \{i \mid v_i = \min(v) \}$, we have
+\[
+h_i - h_j \geq v_i - v_j \qquad \text{when $i \in S$ and $j=1,\dots,n+1$.}
+\]
+Thus, since $q_{ij} \leq 0$,
+\[
+q_{ij}\big(1 + \gamma_{ij} + 2(h_i - h_j)\big) \leq q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big)
+\]
+when $i \in S$ and $j =1,\dots,n+1$.  By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we have
+\begin{align*}
+\|B(t-h)\|^2 - \|B(t-g)\|^2 &= \|B(t-h)\|^2 - \|B(t-h-I_S)\|^2 \\
+&= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(h_i - h_j)\big) \\
+&\leq \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0
+\end{align*}
+from which it follows that
+\[
+\|B(t-g)\|^2 > \|B(t-h)\|^2 \geq \min_{p \in \{0,1\}^{n+1}}\|B(t  - p)\|^2
+\]
+as required.
+\end{proof}
+
+\begin{lemma}\label{lem:vqcontramax}
+Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest lattice point to $Bt$.  Let $g \in \{0,1\}^{n+1}$ and let $S$ be the subset of indices $\{1,\dots,n+1\}$ such that $g_i=0$ and $v_i = \max(v)$ for $i \in S$.  If $\|B(t-v)\|^2 < \|B(t-v+I_S)\|^2$, then
+\[
+\|B(t - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(t - p)\|^2.
+\]
+\end{lemma}
+\begin{proof}
+The proof mimics that of Lemma~\ref{lem:vqcontramin} with only minor modification.  We give the proof in full for completeness, and since the small modifications that do exist might not be obvious. From our hypothesis and part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
+\[
+\|B(t-v)\|^2 - \|B(t-v+I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big) < 0,
+\]
+where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g + I_S$ and observe that $h_i = 1$ when $v_i = \max(v)$ and so, since $S \subset \{i \mid v_i = \max(v) \}$, we have
+\[
+h_j - h_i \geq v_j - v_i \qquad \text{for $i \in S$ and $j=1,\dots,n+1$.}
+\]
+Thus, since $q_{ij} \leq 0$,
+\[
+q_{ij}\big(1 + \gamma_{ji} + 2(h_j - h_i)\big) \leq q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big)
+\]
+when $i \in S$ and $j =1,\dots,n+1$.  By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we have
+\begin{align*}
+\|B(t-h)\|^2 - \|B(t-g)\|^2 &= \|B(t-h)\|^2 - \|B(t-h+I_S)\|^2 \\
+&= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(h_j - h_i)\big) \\
+&\leq \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big) < 0
+\end{align*}
+from which it follows that
+\[
+\|B(t-g)\|^2 > \|B(t-h)\|^2 \geq \min_{p \in \{0,1\}^{n+1}}\|B(t  - p)\|^2
+\]
+as required.
+\end{proof}
+
+% \begin{lemma}
+% Let $x \in \ints^{n+1}$.  If there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $B(x + v)$ is a closest lattice point to $y = Bz$, then $Bx$ is also a closest lattice point to $y$.  
+% \end{lemma}
+% \begin{proof}
+% Because $\rng(v) = 0$ all of the elements $v_1=v_2=\dots=v_{n+1} = V$ for some integer $V$. Now
+% \begin{align*}
+% \|B(z - x - v)\|^2 &= \| \sum_{i=1}^{n+1} b_i (z_i-x_i-v_i) \|^2 \\
+% &= \| \sum_{i=1}^{n+1} b_i (z_i-x_i) -V\sum_{i=1}^{n+1}b_i \|^2 \\
+% &=  \| \sum_{i=1}^{n+1} b_i (z_i-x_i) \|^2 \\
+% &=  \|B(z-x)\|^2
+% \end{align*}
+% because $\sum_{i=1}^{n+1}b_i = 0$ due to the superbase condition~\eqref{eq:superbasecond}.  So $Bx$ is a closest point to $y$ whenever $B(x+v)$ is.
+% \end{proof}
+
+
+
+
+
+% \begin{lemma}\label{lem:minrelvecsisonesonh}
+% Let $x \in \ints^{n+1}$ be such that $w_i = x_i + h_i$ are minimisers of~\eqref{eq:tominimise} and such that $h_1,\dots,h_{n+1}$ starts at zero and increments in step of one.  Let $s$ be the largest integer such that $h_s = 0$ and let
+% \[
+% \alpha = \min_{p \in \{0,1\}^{n+1}} \| B(z - x - p) \|^2.
+% \]
+% The first $s$ elements of the vector $\alpha$ are equal to zero, that is, $\alpha_1,\alpha_2,\dots,\alpha_s = 0$.
+% \end{lemma}
+% \begin{proof}
+% Let $S$ be some nonempty subset of the indices $\{1, 2,\dots,s\}$ and let $\beta$ be the column vector with elements satisfying
+% \[
+% \beta_i = \begin{cases}
+% 1 & i \in S \\
+% \alpha_i & \text{otherwise}.
+% \end{cases}
+% \]
+% Since the subset $S$ is arbitrary, our proof holds if we show that
+% \[
+% A = \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 \leq 0.
+% \]
+
+% Let $g$ be the column of length $n+1$ with elements
+% \[
+% g_i = \begin{cases}
+% 1 & i \in S \\
+% h_i & \text{otherwise}.
+% \end{cases}
+% \]
+% Since $w_i = x_i + h_i$ are minimsers of~\eqref{eq:tominimise} we have
+% \[
+% \| B(z - x - h) \|^2  \leq \| B(z - x - g) \|^2
+% \]
+% and by Selling's formula
+% \begin{equation}\label{eq:sellingswithhg}
+%  - \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij}^2 \leq 0,
+% \end{equation}
+% where 
+% \[
+% d_{ij} = d_{ji} = (\gamma_{ij} - h_j + h_i)^2 - (\gamma_{ij} - g_j + g_i)^2,
+% \]
+% and where $\gamma_{ij} = z_i - x_i - z_j + x_i$.  When $i, j \in S$ or $i,j \notin S$ we have $d_{ij} = 0$.  When $i \in S, j \notin S$ we have
+% \[
+% d_{ij} = (\gamma_{ij} - h_j)^2 - (\gamma_{ij} - h_j + 1)^2 = -2(\gamma_{ij} - h_j) - 1.
+% \]
+% and when $i \notin S, j \in S$ we have
+% \[
+% d_{ij} = (\gamma_{ij} + h_i)^2 - (\gamma_{ij} - 1 + h_i)^2 = 2(\gamma_{ij} + h_i) - 1.
+% \]
+% Substituting these values for $d_{ij}$ into~\eqref{eq:sellingswithhg} gives
+% \begin{align*}
+% -\frac{1}{2} \sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) -  &\frac{1}{2} \sum_{i \notin S, j \in S} q_{ij}( 2h_i + 2\gamma_{ij} - 1 ) \\
+% &= -\sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) \leq 0.
+% \end{align*}
+% where equality on the second line hold because $q_{ij}=q_{ji}$ and $\gamma_{ij}=\gamma_{ji}$.  Use of Sellings formula and similar working to previously shows that
+% \[
+% \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 = - \sum_{i \in S, j \notin S} q_{ij}(2\alpha_j - 2\gamma_{ij} - 1) 
+% \]
+% and, since $h_j \geq \alpha_j$ for all $j = 1,\dots,n+1$ and $q_{ij} \leq 0$ for all $i \neq j$ we have 
+% \[
+% q_{ij}(2\alpha_j - 2\gamma_{ij} - 1) \geq q_{ij}(2h_j - 2\gamma_{ij} - 1)
+% \]
+% for all $i \neq j$ and so,
+% \begin{align*}
+% \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 &= - \sum_{i \in S, j \notin S} q_{ij}(2\alpha_j - 2\gamma_{ij} - 1)  \\
+% &\leq - \sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) \leq 0.
+% \end{align*}
+% \end{proof}
+
+
+% \begin{theorem}
+% Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  Define the vectors $x_1,x_2,\dots$ according to~\eqref{eq:xseqfirsttype}.  There is a positive integer $K \leq (n+1)^2$ such that $x_K$ is a closest lattice point to $y$. 
+% \end{theorem}
+
+
+\section{Computing a closest relevant vector}\label{sec:comp-clos-relev}
+
+In the previous section we showed that the iterative procedure~\eqref{eq:xseqfirsttype} results in a closest lattice point in at most $n$ iterations.  It remains to show that each iteration of the procedure can be computed efficiently.  Specifically, it remains to show that the minimisation over the set of binary vectors $\{0,1\}^{n+1}$ described in~\eqref{eq:pvecmin} can be computed efficiently.  Putting $t = z - u_k$ in~\eqref{eq:pvecmin} we require an efficient method to compute a $p \in \{0,1\}^{n+1}$ such that the binary quadratic form
+\[
+\| B(t - p) \|^2 = \| \sum_{i=1}^{n+1} b_i (t_i - p_i) \|^2
+\]
+is minimised.  Expanding this quadratic form gives
+\[
+\| \sum_{i=1}^{n+1} b_i (t_i - p_i) \|^2 =  \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij}t_i t_j -  2\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij}t_j p_i + \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_i p_j.
+\]
+The first sum above is independent of $p$ and can be ignored for the purpose of minimisation.  Letting $s_i = \sum_{j=1}^{n+1} q_{ij}t_j$, we can equivalently minimise the binary quadratic form
+\begin{equation}\label{eq:quadformnp}
+Q(p) = \sum_{i=1}^{n+1} s_i p_i + \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_i p_j.
+\end{equation}
+We will show that a minimiser of $Q(p)$ can be found efficiently be computing a minimum cut in an undirected flow network.
+%\section{Quadratic $\{0,1\}$ programs and minimium cuts in graphs}
+%This section describes how a binary quadratic program can be mapped into the problem of computing a minimum cut in a weighted graph.  
+This technique has appeared previously~\cite{Picard_min_cuts_1974,Sankaran_solving_CDMA_mincut_1998,Ulukus_cdma_mincut_1998,Cormen2001} but we include the derivation here so that this paper is self contained.
+
+Let $G$ be an undirected graph with $n+3$ vertices $v_0, \dots, v_{n+2}$ contained in the set $V$ and edges $e_{ij}$ connecting $v_i$ to $v_j$.  To each edge we assign a \emph{weight} $w_{ij} \in \reals$.  The graph is undirected so the weights are symmetric, that is, $w_{ij} = w_{ji}$.  By calling the vertex $v_0$ the \emph{source} and the vertex $v_{n+2}$ the \emph{sink} the graph $G$ is what is called a \emph{flow network}.  The flow network is \emph{undirected} since the weights assigned to each edge are undirected.  A \emph{cut} in the flow network $G$ is a subset $C \subset V$ of vertices with its complement $\bar{C} \subset V$ such that the source vertex $v_0 \in C$ and the sink vertex $v_{n+2} \in \bar{C}$.  %The vertex $v_0$ is typically called the \emph{source} and the vertex $v_{n+1}$ is typically called the \emph{sink}.
+
+The weight of a cut is
+\[
+W(C,\bar{C}) = \sum_{i \in I} \sum_{j \in J} w_{ij}, 
+\]
+where $I = \{ i \mid v_i \in C\}$ and $J = \{j \mid v_j \in \bar{C}\}$.  That is, $W(C,\bar{C})$ is the sum of the weights on the edges crossing from the vertices in $C$ to the vertices in $\bar{C}$.  In what follows we will often drop the argument and write $W$ rather than $W(C,\bar{C})$.  The \emph{minimum cut} is the $C$ and $\bar{C}$ that minimise the weight $W$.  If all of the edge weights $w_{ij}$ for $i \neq j$ are nonnegative, the minimum cut can be computed in 
+order $O(n^3)$ arithmetic operations~\cite{Cormen2001,Even_graph_algorithms_1979}.
+
+We require some properties of the weights $w_{ij}$ in relation to $W$.  If the graph is allowed to contain loops, that is, edges from a vertex to itself, then the weight of these edges $w_{ii}$ have no effect on the weight of any cut.  We may choose any values for the $w_{ii}$ without affecting $W$.  We will find it convenient to set $w_{0,0} = w_{n+2,n+2} = 0$.  The remaining $w_{ii}$ we shall specify shortly.  The edge $e_{0,n+2}$ is in every cut.  If a constant is added to the weight of this edge, that is, $w_{0,n+2}$ is replaced by $w_{0,n+2} + c$ then $W$ is replaced by $W + c$ for every $C$ and $\bar{C}$.  In particular, the subsets $C$ and $\bar{C}$ corresponding to the minimum cut are not changed.  We will find it convenient to choose $w_{0,n+2} = w_{n+2,0} = 0$.  
+
+If vertex $v_i$ is in $C$ then edge $e_{i,n+2}$ contributes to the weight of the cut.  If $v_i \notin C$, i.e., $v_i \in \bar{C}$, then edge $e_{0,i}$ contributes to the weight of the cut.  So, either $e_{0,i}$ or $e_{i,n+2}$ \emph{but not both} contribute to every cut.  If a constant, say $c$, is added to the weights of these edges, that is, $w_{0,i}$ and $w_{i,n+2}$ are replaced by $w_{0,i} + c$ and $w_{i,n+2} + c$, then $W$ is replaced by $W + c$ for every $C$ and $\bar{C}$.  The $C$ and $\bar{C}$ corresponding the minimum cut are unchanged.  In this way, the minimum cut is only affected by the differences 
+\[
+d_i = w_{i,n+2} - w_{0,i}
+\]
+for each $i$ and not the specific values of the weights $w_{i,n+2}$ and $w_{0,i}$.  %For the purpose of computing the minimum cut it is necessary to choose the difference so that the weights $w_{0,i}$ and $w_{i,n+1}$ are nonnegative.
+
+% It is convenient to transform $W(C)$ as follows.  Let $D = C \backslash 0$ and $\bar{D} = \bar{C} \backslash (n+1)$ where $C \backslash 0$ denotes the set $C$ with the element $0$ removed and $\bar{C} \backslash (n+1)$ denotes the set $\bar{C}$ with the element $n+1$ removed.  Now we can write the weight as,
+% \[
+% W(C) =  \sum_{i \in D}w_{i,n+1} + \sum_{j \in \bar{d}}w_{0,j} +  \sum_{i \in D} \sum_{j \in \bar{D}} w_{ij}
+% \]
+% becuase $w_{0,0},w_{0,n+2}$ and $w_{n+2,n+2}$ are zero. 
+
+We now show how $W(C,\bar{C})$ can be represented as a binary quadratic form.  Put $p_0 = 1$ and $p_{n+2} = 0$ and
+\[
+p_i = \begin{cases}
+1, & i \in C \\
+0, & i \in \bar{C}
+\end{cases}
+\]
+for $i = 1,2,\dots,n+1$.  Observe that
+\[
+p_i(1 - p_j) = \begin{cases}
+1, & i \in C, j \in \bar{C} \\
+0, & \text{otherwise}.
+\end{cases}
+\]
+The weight can now be written as
+\begin{align*}
+W(C,\bar{C}) = \sum_{i \in C} \sum_{j \in \bar{C}} w_{ij} = \sum_{i =0}^{n+2} \sum_{j =0}^{n+2} w_{ij} p_i (1 - p_j) = F(p)
+\end{align*}
+say, where $p_0 = 1$ and $p_{n+2} = 0$. Finding a minimum cut is equivalent to finding the binary vector $p = (p_1, \dots, p_{n+1})$ that minimises $F(p)$.  Write,
+\[
+F(p) =  \sum_{i=0}^{n+2} \sum_{j =0}^{n+2} w_{ij}p_i - \sum_{i=0}^{n+2} \sum_{j =0}^{n+2} w_{ij} p_ip_j.
+\]
+Letting $k_i = \sum_{j =0}^{n+2} w_{ij}$, and using that $p_0 = 1$ and $p_{n+2} = 0$,
+\[
+F(p) = \sum_{i=0}^{n+1}k_ip_i  - w_{00} - \sum_{i=1}^{n+1} w_{i0} p_i - \sum_{j=1}^{n+1} w_{0j} p_j - \sum_{i=1}^{n+1} \sum_{j =1}^{n+1} w_{ij} p_ip_j.
+\]
+Because $w_{00} = 0$ and $w_{ij} = w_{ji}$ we have
+\[
+F(p) = k_0 + \sum_{i=1}^{n+1}( k_i  - 2 w_{i0}) p_i  - \sum_{i=1}^{n+1} \sum_{j =1}^{n+1} w_{ij} p_ip_j.
+\]
+The constant term $k_0$ is unimportant for the purpose of minimisation, and so, finding the minimum cut is equivalent to minimising the binary quadratic form
+\[
+\sum_{i=1}^{n+1}g_i p_i  - \sum_{i=1}^{n+1} \sum_{j =1}^{n+1} w_{ij} p_ip_j,
+\]
+where $g_i = k_i  - 2 w_{i0} = d_i + \sum_{j=1}^{n+1} w_{ij}$.  It only remains to observe the equivalence of this quadratic form and $Q(p)$ from~(\ref{eq:quadformnp}) when the weights are assigned to satisfy,
+\begin{align*}
+&q_{ij} = - w_{ij} \qquad i,j = 1,\dots,n+1 \\
+&s_i = g_i = d_i + \sum_{j=1}^{n+1} w_{ij}.
+\end{align*}
+Because the $q_{ij}$ are nonpositive for $i \neq j$ the weights $w_{ij}$ are nonnegative for all $i \neq j$ with $i,j = 1,\dots,n+1$.  As discussed the value of the weights $w_{ii}$ have no effect on the weight of any cut $W$ so setting $q_{ii} = - w_{ii}$ for  $i = 1,\dots,n+1$ is of no consequence.  Finally the weights $w_{i,n+2}$ and $w_{0,i}$ can be chosen so that both are nonnegative and 
+\[
+w_{i,n+2} - w_{0,i} = d_i = s_i + \sum_{j=1}^{n+1} q_{ij} = s_i
+\]  
+because $\sum_{j=1}^{n+1} q_{ij} = 0$ due to the superbase condition~\eqref{eq:superbasecond}.  That is, we choose $w_{i,n+2} = s_i$ and $w_{0,i} = 0$ when $s_i \geq 0$ and $w_{i,n+2}=0$ and $w_{0,i} = -s_i$ when $s_i < 0$.  With these choices, all the weights $w_{ij}$ for $i \neq j$ are nonnegative.  A minimiser of $Q(p)$, and correspondingly a solution of~\eqref{eq:pvecmin} can be computed in $O(n^3)$ operations by computing a minimum cut in the undirected flow network $G$ assigned with these nonnegative weights~\cite{Picard_min_cuts_1974,Sankaran_solving_CDMA_mincut_1998,Ulukus_cdma_mincut_1998,Cormen2001}.  %The closest lattice point is then computed using~\eqref{eq:compnp}.
+
+
+\section{Discussion}\label{sec:discussion}
+
+The closest lattice point problem has a number of applications, for example, channel coding and data quantisation~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec,Erex2004_lattice_decoding,Erez2005}.  A significant hurdle in the practical application of lattices as codes or as quantisers is that computing a closest lattice point is computationally difficult in general~\cite{micciancio_hardness_2001}.  The best known general purpose algorithms require a number of operations of order $O(2^{2n})$~\cite{Micciancio09adeterministic}.
+
+In this paper we have focused on the class of lattices of Voronoi's first kind.  We have shown that computing a closest point in a lattice of Voronoi's first kind can be achieved in a comparatively modest number of operations of order $O(n^4)$.  Besides being of theoretical interest, the algorithm has potential for practical application.  A question of immediate interest is: do there exist lattices of Voronoi's first kind that produce good codes or good quantisers?  Since lattices that produce good codes and quantisers often also describe dense~\emph{sphere packings}~\cite{SPLAG}, a related question is: do there exist lattices of Voronoi's first kind that produce dense sphere packings?  These question do not appear to have trivial answers.  The questions have heightened importance due to the algorithm described in this paper.
+
+A final remark is that our algorithm assumes that the~\emph{obtuse superbasis} is known in advance.  It is known that all lattices of dimension less than 4 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 4 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find an obtuse superbasis if it exists?
+
+%In some applications, for example, the detection of communications signals involving multiple anntanea~\cite{Ryan2008,Wubben_2011} the lattice basis is not known in advance.  It is then of interest whether the 
+
+\section{Conclusion}
+
+The paper describes an algorithm to compute a closest lattice point in a lattice of Voronoi's first kind when the obtuse superbasis is known~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  The algorithm requires $O(n^4)$ operations where $n$ is the dimension of the lattice.  The algorithm iteratively computes a series of relevant vectors that converge to a closest lattice point after at most $n$ terms.   Each relevant vector in the series can be efficiently computed in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  The algorithm has potential application in communications engineering problems such as coding and quantisation.  An interesting problem for future research is to find lattices of Voronoi's first kind that produce good codes, good quantisers, or dense sphere packings~\cite{SPLAG,Conway1982VoronoiRegions}.
+
+%\small
+\bibliography{../bib/bib}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+ 
