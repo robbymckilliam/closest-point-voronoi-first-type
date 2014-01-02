@@ -52,7 +52,7 @@ A related problem is to find a lattice point of minimum nonzero Euclidean length
 \[
 \min_{x\in \Lambda \backslash \{ \zerobf \} } \| x \|^2,
 \]
-where $\Lambda \backslash  \{\zerobf\}$ denotes the set of lattice point not equal to the origin $\zerobf$.  This is called the \emph{shortest vector problem}.
+where $\Lambda \backslash  \{\zerobf\}$ denotes the set of lattice points not equal to the origin $\zerobf$.  This is called the \emph{shortest vector problem}.
 
 The closest lattice point problem and the shortest vector problem have interested mathematicians and computer scientists due to their relationship with integer programming~\cite{Lenstra_integerprogramming1983,Kannan1987_fast_general_np,Babai1986}, the factoring of polynomials~\cite{Lenstra1982}, and cryptanalysis~\cite{Joux_toolbox_cryptanal1998,NyguyenStern_two_faces_crypto,Micciancio_lattice_based_post_quantum_crypto}.  
 Solutions of the closest lattice point problem also have engineering applications.  For example, if a lattice is used as a vector quantiser then the closest lattice point corresponds to the minimum distortion point~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec}.  If the lattice is used as a code, then the closest lattice point corresponds to what is called \emph{lattice decoding}\index{lattice decoding} and has been shown to yield arbitrarily good codes~\cite{Erex2004_lattice_decoding,Erez2005}.  The closest lattice point problem also occurs in communications systems involving multiple antennas~\cite{Ryan2008,Wubben_2011}.  The unwrapping of phase data for location estimation can also be posed as a closest lattice point problem and this has been applied to the global positioning system~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}.  The problem has also found applications to circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012}.
@@ -118,7 +118,7 @@ is called the \emph{packing radius} (or \emph{inradius}) of $\Lambda$~\cite{SPLA
 Let $\Lambda \subset \reals^{m}$ be an $n$-dimensional lattice with packing radius $\rho$.  Let $S$ be an $m$-dimensional hypersphere of radius $r$ centered at $t \in \reals^{m}$.  The number of lattice points from $\Lambda$ in the sphere $S$ is less than $\ceil{r/\rho}^{n}$ where $\ceil{\cdot}$ denotes the smallest integer strictly larger than its argument. 
  \end{proposition}
  \begin{proof}
-Since the packing radius $\rho$ is the point on the boundary of the Voronoi that is closest to the origin, the hypersphere $S$ is a subset of the Voronoi cell scaled by $r/\rho$ and translated by $t$.  That is, $S \subset r/\rho \vor(\Lambda) + t$.  The proof follows because the number of lattice points in $r/\rho \vor(\Lambda) + t$ is less than $\ceil{r/\rho}^n$ (this follows from, for example, \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}, see also~\cite[Lemma~3.7]{Micciancio09adeterministic}).
+The packing radius $\rho$ is the point on the boundary of the Voronoi cell $\vor(\Lambda)$ that is closest to the origin. Therefore, the sphere $S$ is a subset of $\vor(\Lambda)$ scaled by $r/\rho$ and translated by $t$.  That is, $S \subset r/\rho \vor(\Lambda) + t$.  The proof follows because the number of lattice points in $r/\rho \vor(\Lambda) + t$ is less than $\ceil{r/\rho}^n$ (this follows from, for example, \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}, see also~\cite[Lemma~3.7]{Micciancio09adeterministic}).
 \end{proof}
  
 
@@ -193,7 +193,7 @@ and so $x_0,x_1,\dots$ is an infinite sequence of distinct (due to the strict in
 Proposition~\ref{obs:2} above asserts that after some finite number $K$ of iterations the procedure arrives at $x_K$, a closest lattice point to $y$.  Using Proposition~\ref{obs:1} we can detect that $x_K$ is a closest lattice point by asserting that $\|y - x_K\| \leq \| y - x_{K+1} \|$.
 This simple iterative approach to compute a closest lattice point is related to what is called the \emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009}.  Micciancio~\cite{Micciancio09adeterministic} describes a related, but more sophisticated, iterative algorithm that can compute a closest lattice point in a number of operations that grows exponentially as $O(2^{2 n})$.  This single exponential growth in complexity is the best known.  %Most popular algorithms for computed closest lattice points require a number of operations of order $O(n^n)$\cite{Agrell2002,Viterbo_sphere_decoder_1999,Pohst_sphere_decoder_1981}. 
 
-Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors and so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory, and so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that, for a lattice of Voronoi's first kind, the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
+Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors and so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory, and so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that for a lattice of Voronoi's first kind the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
 
 The other factor affecting the complexity is the number of iterations required before the algorithm arrives at a closest lattice point, that is, the size of $K$.  Propositon~\ref{eq:latticepointsinsphere} suggests that this number can be as large as $\ceil{r/\rho}^n$ where $r = \|y - x_0\|^2$ and $\rho$ is the packing radius of the lattice.  Thus, the number of iterations required can potentially grow exponentially with $n$.  The number of iterations required depends on the lattice point that starts the iteration $x_0$.  It is helpful for $x_0$ to be, in some sense, a close approximation of the closest lattice point $x_K$.  Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004}.  We will show that for a lattice of Voronoi's first kind a simple and easy to compute choice for $x_0$ ensures that a closest lattice point is reached in at most $n$ iterations, and so $K \leq n$.  Combining this with the fact that each iteration of the algorithm requires $O(n^3)$ operations results in an algorithm that requires $O(n^4)$ operations to compute a closest point in a lattice of Voronoi's first kind. 
 
@@ -234,7 +234,7 @@ We can equivalently find $n+1$ integers $w_1,\dots,w_{n+1}$ that minimise
 \[
 \| y - \sum_{i=1}^{n+1} b_i w_i \|^2.
 \]
-We will use the iterative procedure described in~\eqref{eq:relvectsminimslicer} to do this.  In what follows we will assume that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the projection of $y$ orthogonal into the space spanned by $b_1,\dots,b_{n+1}$.  Let
+We will use the iterative procedure described in~\eqref{eq:relvectsminimslicer} to do this.  In what follows we will assume that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the projection of $y$ orthogonal into the space spanned by $b_1,\dots,b_{n}$.  Let
 \begin{equation}\label{eq:matrxBobtusebasis}
 B = (b_1\,\,b_2\,\,\dots\,\,b_{n+1})
 \end{equation}
@@ -254,22 +254,15 @@ where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with ele
 \newcommand{\subrng}{\operatorname{subr}}
 \newcommand{\decrng}{\operatorname{decrng}}
 
-It is necessary to introduce some notation.  Given a subset $S$ of indices from $\{1,\dots,n+1\}$ we denote by $I_S$ the vector of length $n+1$ with elements equal to zero except for those with indices from $S$ that are equal to one.  That is, if $g = I_S$ then $g$ is the vector with elements
-\[
-g_i = \begin{cases}
-1 & i \in S\\
-0 & i \notin S.
-\end{cases}
-\]
-If $p \in \reals^{n+1}$ then $p - I_S$ denotes the vector $p$ with those elements with index from $S$ decremented by one.  Similarly, $p + I_S$ denotes the vector $p$ with those elements with index from $S$ incremented by one.
+It is necessary to introduce some notation.  For $S$ and subset of the indices $\{1,\dots,n+1\}$ let $I_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise.
 
 \begin{lemma}\label{lem:decSellings}
-Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with column given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
+Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with columns given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
 \begin{enumerate}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
 \end{enumerate}
-where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters.
+where $q_{ij} = \dotprod{b_i}{b_j} \leq 0$ are the Selling parameters.
 \end{lemma}
 \begin{proof}
 We give a proof for part~\ref{eq:lem:decSellingsdec}.  The proof for part~\ref{eq:lem:decSellingsinc} is similar.  Observe that
@@ -280,7 +273,7 @@ and
 \[
 \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_j^2 =  \sum_{j=1}^{n+1}p_j^2\sum_{i=1}^{n+1} q_{ij} = 0
 \]
-since $\sum_{i=1}^{n+1} q_{ij} = 0$ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Now
+since $\sum_{i=1}^{n+1} q_{ij} = \sum_{j=1}^{n+1} q_{ij} = 0$ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Now
 \begin{align*}
 \|Bp\|^2 &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} p_i p_j \\
 &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (\tfrac{1}{2}p_j^2 + p_i p_j -  \tfrac{1}{2}p_i^2) \\
@@ -427,9 +420,9 @@ A = \{i \mid g_i = 1, v_i = \min(v) \}, \qquad D = \{i \mid g_i = 0, v_i = \max(
 \]
 Put $d = g - I_A + I_D$ and put $w = v - d$.  Observe that $d_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-d) = \min(v)$.  Also, $d_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-d) = \max(v) - 1$.  Thus,
 \[
-\rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1.
+\rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1 = \ell - 1.
 \]
-The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $h = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, suppose that 
+The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $h = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, suppose that 
 \[
 \|B(z-u-g-h)\|^2 = \|B(z-u-v-I_A)\|^2 > \|B(z-u-v)\|^2.
 \]
@@ -439,7 +432,7 @@ In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S =
 \end{equation}
 contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
 \[
-\|B(z-u-g-h+I_D)\|^2 > \|B(z-u-h-g)\|^2.
+\|B(z-u-g-h+I_D)\|^2 > \|B(z-u-g-h)\|^2.
 \]
 Lemma~\ref{lem:vqcontramax} (proved below) with $t = z-u$ and $S = D$ shows that~\eqref{eq:lem:rng:contag} occurs again, contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
  \end{proof}
@@ -450,14 +443,37 @@ The proof of the previous Lemma~\ref{lem:rngdecreases} relies upon Lemmas~\ref{l
 Let $x_0,x_1,\dots$ be the sequence of lattice points given by the iterative procedure~\eqref{eq:xseqfirsttype}.  There exists $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 \end{theorem}
 \begin{proof}
-Let $x_k = B u_k$ with $u_k \in \ints^{n+1}$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $p_{k} \in \{0,1\}^{n+1}$ satisfying
+Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $p_{k} \in \{0,1\}^{n+1}$ satisfying
 \[
 \|B(z - u_k - p_{k})\|^2 = \min_{p \in \{0,1\}^{n+1}}\|B(z - u_k - p)\|^2
 \]
 and puts $x_{k+1} = B(u_k + p_k)$.  It follows from Lemma~\ref{lem:rngdecreases} that $x_{k+1}$ is $(\ell-1)$-close to $y$.  By Lemma~\ref{lem:roundzclose} the lattice point that initialises the procedure $x_0 = B \floor{z}$ is $K$-close to $y$ where $K \leq n$.  Thus, $x_1$ is $(K-1)$-close, $x_2$ is $(K-2)$-close, and so on until $x_K$ is $0$-close.  That $x_K$ is a closest lattice point to $y$ follows from Lemma~\ref{lem:rngzeroclosestpoint}.
 \end{proof}
 
-We now provide proof of Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax} that were used in the proof of Lemma~\ref{lem:rngdecreases}.
+We now provide proof of Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax} that were used in the proof of Lemma~\ref{lem:rngdecreases}.  We first require the following two simple Lemmas.
+
+\begin{lemma}\label{lem:simplevminh}
+Let $v \in \ints^{n+1}$ and $h \in \{0,1\}^{n+1}$ be such that $h_i = 0$ whenever $v_i = \min(v)$.  If $S \subseteq \{ i \mid v_i = \min(v) \}$ then $h_i - h_j \geq v_i - v_j$ for all $i \in S$ and $j = 1,\dots,n+1$.
+\end{lemma}
+\begin{proof}
+For $i \in S$ we have $v_i = \min(v)$ and $h_i = 0$ and so the lemma is true if we show that $-h_j \geq \min(v) - v_j$ for all $j=1,\dots,n+1$.  If $v_j = \min(v)$ then $h_j = 0$ so that $-h_j = 0 = \min(v) - v_j$.  Otherwise, if $v_j \neq \min(v)$ then 
+\[
+-h_j \geq -1 \geq \min(v) - v_j
+\] 
+because $h_j \in \{0,1\}$ and $v_j$ and $\min(v)$ are integers with $v_j > \min(v)$.
+\end{proof}
+
+\begin{lemma}\label{lem:simplevmaxh}
+Let $v \in \ints^{n+1}$ and $h \in \{0,1\}^{n+1}$ be such that $h_i = 1$ whenever $v_i = \max(v)$.  If $S \subseteq \{ i \mid v_i = \max(v) \}$ then $h_j - h_i \geq v_j - v_i$ for all $i \in S$ and $j = 1,\dots,n+1$.
+\end{lemma}
+\begin{proof}
+For $i \in S$ we have $v_i = \max(v)$ and $h_i = 1$ and so the lemma is true if we show that $h_j-1 \geq v_j - \max(v)$ for all $j=1,\dots,n+1$.  If $v_j = \max(v)$ then $h_j = 1$ and $h_j-1 = 0 = v_j - \max(v)$.  Otherwise, if $v_j \neq \max(v)$ then 
+\[
+h_j-1 \geq -1 \geq v_j - \max(v)
+\] 
+because $h_j \in \{0,1\}$ and $v_j$ and $\max(v)$ are integers with $v_j < \max(v)$.
+\end{proof}
+
 
 \begin{lemma}\label{lem:vqcontramin}
 Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest lattice point to $Bt$.  Let $g \in \{0,1\}^{n+1}$ and let $S$ be the subset of indices $\{1,\dots,n+1\}$ such that $g_i=1$ and $v_i = \min(v)$ for $i \in S$.  If $\|B(t-v)\|^2 < \|B(t-v-I_S)\|^2$, then
@@ -468,13 +484,13 @@ Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest 
 \begin{proof}
 From our hypothesis and part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
 \[
-\|B(t-v)\|^2 - \|B(t-v-I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0,
+\|B(t-v)\|^2 - \|B(t-v-I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0, 
 \]
-where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g - I_S$ and observe that $h_i = 0$ when $v_i = \min(v)$ and so, since $S \subset \{i \mid v_i = \min(v) \}$, we have
+where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g - I_S$ and observe that $h_i = 0$ whenever $v_i = \min(v)$ and so, since $S \subset \{i \mid v_i = \min(v) \}$, we have
 \[
-h_i - h_j \geq v_i - v_j \qquad \text{when $i \in S$ and $j=1,\dots,n+1$.}
+h_i - h_j \geq v_i - v_j \qquad \text{when $i \in S$ and $j=1,\dots,n+1$}
 \]
-Thus, since $q_{ij} \leq 0$,
+by Lemma~\ref{lem:simplevminh}.  Thus, since $q_{ij} \leq 0$,
 \[
 q_{ij}\big(1 + \gamma_{ij} + 2(h_i - h_j)\big) \leq q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big)
 \]
@@ -498,15 +514,15 @@ Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest 
 \]
 \end{lemma}
 \begin{proof}
-The proof mimics that of Lemma~\ref{lem:vqcontramin} with only minor modification.  We give the proof in full for completeness, and since the small modifications that do exist might not be obvious. From our hypothesis and part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
+The proof mimics that of Lemma~\ref{lem:vqcontramin} with only minor modification.  We give the proof in full for completeness and because the small modifications that do exist might not be obvious. From our hypothesis and part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
 \[
 \|B(t-v)\|^2 - \|B(t-v+I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big) < 0,
 \]
 where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g + I_S$ and observe that $h_i = 1$ when $v_i = \max(v)$ and so, since $S \subset \{i \mid v_i = \max(v) \}$, we have
 \[
-h_j - h_i \geq v_j - v_i \qquad \text{for $i \in S$ and $j=1,\dots,n+1$.}
+h_j - h_i \geq v_j - v_i \qquad \text{for $i \in S$ and $j=1,\dots,n+1$}
 \]
-Thus, since $q_{ij} \leq 0$,
+by Lemma~\ref{lem:simplevmaxh}.  Thus, since $q_{ij} \leq 0$,
 \[
 q_{ij}\big(1 + \gamma_{ji} + 2(h_j - h_i)\big) \leq q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big)
 \]
