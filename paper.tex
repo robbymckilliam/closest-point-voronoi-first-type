@@ -257,11 +257,13 @@ where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with ele
 It is necessary to introduce some notation.  For $S$ a subset of the indices $\{1,\dots,n+1\}$ let $I_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise. Thus, for example, $p+I_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.
 
 \begin{lemma}\label{lem:decSellings}
-Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with columns given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
+Let $p \in \reals^{n+1}$, let $S$ and $T$ be subsets of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with columns given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
 \begin{enumerate}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
-%\item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsincanddec}
+% \item  \label{eq:lem:decSellingsincanddec} \begin{align*}
+% \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i) + \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2p_j - 2p_i) + \sum_{i\in S}\sum_{j\in S} q_{ij}, 
+% \end{align*}
 \end{enumerate}
 where $q_{ij} = \dotprod{b_i}{b_j} \leq 0$ are the Selling parameters.
 \end{lemma}
@@ -422,28 +424,50 @@ Let $Bu$ with $u \in \ints^{n+1}$ be a lattice point that is $\ell$-close to $y 
 The lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
 \end{lemma}
 \begin{proof}
-Because $Bu$ is $\ell$-close to $y$ there exists $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $B(u+v)$ is a closest lattice point to $y$.  Let $A$ be the (possibly empty) subset of indices $\{1,\dots,n+1\}$ such that $g_i = 1$ and $v_i = \min(v)$ and let $D$ be the (possibly empty) subset of indices such that $g_i = 0$ and $v_i = \max(v)$. That is,
+Because $Bu$ is $\ell$-close to $y$ there exists $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $B(u+v)$ is a closest lattice point to $y$.  Define subsets of indices
 \[
-A = \{i \mid g_i = 1, v_i = \min(v) \}, \qquad D = \{i \mid g_i = 0, v_i = \max(v) \}.
+A = \{i \mid g_i = 1, v_i = \min(v) \}, \qquad D = \{i \mid g_i = 0, v_i = \max(v) \}
 \]
-Put $d = g - I_A + I_D$ and put $w = v - d$.  Observe that $d_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-d) = \min(v)$.  Also, $d_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-d) = \max(v) - 1$.  Thus,
+and put $d = g - I_A + I_D \in \{0,1\}^{n+1}$ and $w = v - d$.  Observe that $d_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-d) = \min(v)$.  Also, $d_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-d) = \max(v) - 1$.  Thus,
 \[
 \rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1 = \ell - 1.
 \]
-The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $h = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, suppose that 
+The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $f = g - I_A \in \{0,1\}^{n+1}$ and  $h = v - f = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, with $t = z-u$, suppose that
 \[
-\|B(z-u-g-h)\|^2 = \|B(z-u-v-I_A)\|^2 > \|B(z-u-v)\|^2.
+\|B(t-g-h)\|^2 = \|B(t-v-I_A)\|^2 > \|B(t-v)\|^2.
+\]
+By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we obtain the inequality
+\[
+\|B(t-v)\|^2 - \|B(t-v-I_A)\|^2 =  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0.
+\]
+Because $v_i = \min(v)$ only when $f_i= g_i - 1 = 0$ and because $v_i = \min(v)$ for $i \in A$ we have $f_i - f_j \geq v_i - v_j$ for all $i \in S$ and $j =1,\dots,n+1$.  Now, since $q_{ij} \leq 0$ for $i\neq j$,
+\begin{align*}
+\|B(z-u-f)\|^2 - \|B(z-u-g)\|^2 &= \|B(t-f)\|^2 - \|B(t-f-I_A)\|^2 \\
+&= \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(f_i-f_j)) \\
+&\leq  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0,
+\end{align*}
+contradicting~\eqref{eq:qismin} because $f \in \{0,1\}^{n+1}$.  Thus, $B(u+g+h)$ is a closest lattice point to $y = Bz$.
+
+Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
+\[
+\|B(t-g-w)\|^2 = \|B(t-g-h+I_D)\|^2 > \|B(t-g-h)\|^2.
+\]
+By part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} we obtain the inequality
+\[
+\|B(t-v)\|^2 - \|B(t-v-I_A)\|^2 =  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0.
 \]
 
-In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S = A$ shows that 
-\begin{equation}\label{eq:lem:rng:contag}
-\|B(z- u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
-\end{equation}
-contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
-\[
-\|B(z-u-g-h+I_D)\|^2 > \|B(z-u-g-h)\|^2.
-\]
-Lemma~\ref{lem:vqcontramax} (proved below) with $t = z-u$ and $S = D$ shows that~\eqref{eq:lem:rng:contag} occurs again, contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
+% In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S = A$ shows that 
+% \begin{equation}\label{eq:lem:rng:contag}
+% \|B(z- u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
+% \end{equation}
+% contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
+% \[
+% \|B(z-u-g-h+I_D)\|^2 > \|B(z-u-g-h)\|^2.
+% \]
+% Lemma~\ref{lem:vqcontramax} (proved below) with $t = z-u$ and $S = D$ shows that~\eqref{eq:lem:rng:contag} occurs again, contradicting~\eqref{eq:qismin}.  
+
+Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
  \end{proof}
 
 The proof of the previous Lemma~\ref{lem:rngdecreases} relies upon Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax}.  Before we prove these lemmas we state the following theorem asserting that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
