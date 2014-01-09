@@ -59,7 +59,7 @@ Solutions of the closest lattice point problem also have engineering application
 
 The closest lattice point problem is known to be NP-hard under certain conditions when the lattice itself, or rather a basis thereof, is considered as an additional input parameter~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard, Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms all require a number of operations that grows as $O(n^{O(n)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio~\cite{Micciancio09adeterministic} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known. 
 
-Although the problem is NP-hard in general, fast algorithms are known for specific highly regular lattices, such as the root lattices $A_n$ and $D_n$, their dual lattices $A_n^*$ and $D_n^*$, the integer lattice $\ints^{n}$, and the Leech lattice~\cite[Chap. 4]{SPLAG}\cite{Conway1982FastQuantDec,Conway1986SoftDecLeechGolay, Clarkson1999:Anstar, McKilliam2008, McKilliam2008b, McKilliam2009CoxeterLattices,Vardy1993_leech_lattice_MLD}.  In this paper we consider a particular class of lattices, those of \emph{Voronoi's first kind}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases,Valentin2003_coverings_tilings_low_dimension,Voronoi1908_main_paper}.  Each lattice of Voronoi's first kind has what is called an \emph{obtuse superbasis}.  We show that if the obtuse superbasis is known, then a closest lattice point can be computed in $O(n^4)$ operations.  This is achieved by enumerating a series of \emph{relevant vectors} of the lattice.  Each relevant vector in the series can be computed in $O(n^3)$ operations using an algorithm for computing a minimum cut in an undirected flow network.  We show that the series converges to a closest lattice point after at most $n$ terms, resulting in $O(n^4)$ operations in total.  This result extends upon a recent result by some of the authors showing that a short vector in a lattice of Voronoi's first kind can be found by computing a minimum cut in a weighted graph~\cite{McKilliam_short_vectors_first_type_isit_2012}.
+Although the problem is NP-hard in general, fast algorithms are known for specific highly regular lattices, such as the root lattices $A_n$ and $D_n$, their dual lattices $A_n^*$ and $D_n^*$, the integer lattice $\ints^{n}$, and the Leech lattice~\cite[Chap. 4]{SPLAG}\cite{Conway1982FastQuantDec,Conway1986SoftDecLeechGolay, Clarkson1999:Anstar, McKilliam2008, McKilliam2008b, McKilliam2009CoxeterLattices,Vardy1993_leech_lattice_MLD}.  In this paper we consider a particular class of lattices, those of \emph{Voronoi's first kind}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases,Valentin2003_coverings_tilings_low_dimension,Voronoi1908_main_paper}.  Each lattice of Voronoi's first kind has what is called an \emph{obtuse superbasis}.  We show that if the obtuse superbasis is known, then a closest lattice point can be computed in $O(n^4)$ operations.  This is achieved by enumerating a series of \emph{relevant vectors} of the lattice.  Each relevant vector in the series can be computed in $O(n^3)$ operations using an algorithm for computing a minimum cut in an undirected flow network~\cite{Picard_min_cuts_1974,Sankaran_solving_CDMA_mincut_1998,Ulukus_cdma_mincut_1998,Cormen2001}.  We show that the series converges to a closest lattice point after at most $n$ terms, resulting in $O(n^4)$ operations in total.  This result extends upon a recent result by some of the authors showing that a short vector in a lattice of Voronoi's first kind can be found by computing a minimum cut in a weighted graph~\cite{McKilliam_short_vectors_first_type_isit_2012}.
 
 The paper is structured as follows.  Section~\ref{sec:voron-cells-relev} describes the relevant vectors and the \emph{Voronoi cell} of a lattice. Section~\ref{sec:iterative-slicer} describes a procedure to find a closest lattice point by enumerating a series of relevant vectors.  The series is guaranteed to converge to a closest lattice point after a finite number of terms.  In general the procedure might be computationally expensive because the number of terms required might be large and because computation of each relevant vector in the series might be expensive.  Section~\ref{sec:latt-voron-first} describes lattices of Voronoi's first kind and their obtuse superbasis.  It is shown that for these lattices, the series of relevant vectors results in a closest lattice point after at most $n$ terms.  Section~\ref{sec:comp-clos-relev} shows that each relevant vector in the series can be computed in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  Section~\ref{sec:discussion} discusses some potential applications of this algorithm and poses some interesting questions for future research.
 
@@ -141,7 +141,7 @@ Let $\Lambda$ be a lattice in $\reals^m$ and let $y \in \reals^m$. A simple meth
 x_{k+1} &= x_k + v_k \nonumber \\
 v_k &= \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\} } \|y - x_k - v \|, \label{eq:relvectsminimslicer}
 \end{align} 
-where $\relevant(\Lambda) \cup \{\zerobf\}$ is the set of relevant vectors of $\Lambda$ including the origin.  Observe that the minimum over $\relevant(\Lambda) \cup \{\zerobf\}$ may not be unique.  That is, there may be multiple vectors from $\relevant(\Lambda) \cup \{\zerobf\}$ that are closest to $y - x_k$.  In this case, any one of the minimisers may be chosen.  The results that we will describe do not depend on this choice. We make the following straightforward propositions.
+where $\relevant(\Lambda) \cup \{\zerobf\}$ is the set of relevant vectors of $\Lambda$ including the origin.  The minimum over $\relevant(\Lambda) \cup \{\zerobf\}$ may not be unique, that is, there may be multiple vectors from $\relevant(\Lambda) \cup \{\zerobf\}$ that are closest to $y - x_k$.  In this case, any one of the minimisers may be chosen.  The results that we will describe do not depend on this choice. We make the following straightforward propositions.
 
 \begin{proposition}\label{obs:1}
 %After a finite number, say $K$ iterations, the above proceedure The above proceedure reaches a stationary point after a finite number $K$ of iterations
@@ -187,15 +187,15 @@ Suppose no such finite $K$ exists, then
 \[
 \|y - x_0\| >  \|y - x_1\| > \|y - x_2\| > \dots
 \]
-and so $x_0,x_1,\dots$ is an infinite sequence of distinct (due to the strict inequality) lattice points  all contained inside an $n$-dimensional hypersphere of radius $r = \|y - x_0\|$ centered at $y$.  This is a contradiction since, if $\rho$ is the packing radius of the lattice, then less than $\ceil{r/\rho}^n$ lattice points lie inside this sphere by Proposition~\ref{eq:latticepointsinsphere}. 
+and so $x_0,x_1,\dots$ is an infinite sequence of distinct (due to the strict inequality) lattice points  all contained inside an $n$-dimensional hypersphere of radius $r = \|y - x_0\|$ centered at $y$.  This is a contradiction because, if $\rho$ is the packing radius of the lattice, then less than $\ceil{r/\rho}^n$ lattice points lie inside this sphere by Proposition~\ref{eq:latticepointsinsphere}. 
 \end{proof}
 
 Proposition~\ref{obs:2} above asserts that after some finite number $K$ of iterations the procedure arrives at $x_K$, a closest lattice point to $y$.  Using Proposition~\ref{obs:1} we can detect that $x_K$ is a closest lattice point by asserting that $\|y - x_K\| \leq \| y - x_{K+1} \|$.
 This simple iterative approach to compute a closest lattice point is related to what is called the \emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009}.  Micciancio~\cite{Micciancio09adeterministic} describes a related, but more sophisticated, iterative algorithm that can compute a closest lattice point in a number of operations that grows exponentially as $O(2^{2 n})$.  This single exponential growth in complexity is the best known.  %Most popular algorithms for computed closest lattice points require a number of operations of order $O(n^n)$\cite{Agrell2002,Viterbo_sphere_decoder_1999,Pohst_sphere_decoder_1981}. 
 
-Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors and so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory, and so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that for a lattice of Voronoi's first kind the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
+Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors and so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory and so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that for a lattice of Voronoi's first kind the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
 
-The other factor affecting the complexity is the number of iterations required before the algorithm arrives at a closest lattice point, that is, the size of $K$.  Propositon~\ref{eq:latticepointsinsphere} suggests that this number can be as large as $\ceil{r/\rho}^n$ where $r = \|y - x_0\|^2$ and $\rho$ is the packing radius of the lattice.  Thus, the number of iterations required can potentially grow exponentially with $n$.  The number of iterations required depends on the lattice point that starts the iteration $x_0$.  It is helpful for $x_0$ to be, in some sense, a close approximation of the closest lattice point $x_K$.  Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004}.  We will show that for a lattice of Voronoi's first kind a simple and easy to compute choice for $x_0$ ensures that a closest lattice point is reached in at most $n$ iterations, and so $K \leq n$.  Combining this with the fact that each iteration of the algorithm requires $O(n^3)$ operations results in an algorithm that requires $O(n^4)$ operations to compute a closest point in a lattice of Voronoi's first kind. 
+The other factor affecting the complexity is the number of iterations required before the algorithm arrives at a closest lattice point, that is, the size of $K$.  Propositon~\ref{eq:latticepointsinsphere} suggests that this number might be as large as $\ceil{r/\rho}^n$ where $r = \|y - x_0\|^2$ and $\rho$ is the packing radius of the lattice.  Thus, the number of iterations required might grow exponentially with $n$.  The number of iterations required depends on the lattice point that starts the iteration $x_0$.  It is helpful for $x_0$ to be, in some sense, a close approximation of the closest lattice point $x_K$.  Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004}.  We will show that for a lattice of Voronoi's first kind a simple and easy to compute choice for $x_0$ ensures that a closest lattice point is reached in at most $n$ iterations and so $K \leq n$.  Combining this with the fact that each iteration of the algorithm requires $O(n^3)$ operations results in an algorithm that requires $O(n^4)$ operations to compute a closest point in a lattice of Voronoi's first kind. 
 
 
 \begin{figure}[tp] 
@@ -223,7 +223,7 @@ The relevant vectors of $\Lambda$ are of the form,
 \[
 \sum_{i \in I} b_i
 \]
-where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e. $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
+where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e., $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
 \end{theorem}  
  
 We are interested in solving the closest lattice point problem for lattices of Voronoi's first kind.  Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  We want to find $n$ integers $w_1,\dots,w_n$ that minimise
@@ -234,7 +234,7 @@ We can equivalently find $n+1$ integers $w_1,\dots,w_{n+1}$ that minimise
 \[
 \| y - \sum_{i=1}^{n+1} b_i w_i \|^2.
 \]
-We will use the iterative procedure described in~\eqref{eq:relvectsminimslicer} to do this.  In what follows we will assume that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the projection of $y$ orthogonal into the space spanned by $b_1,\dots,b_{n}$.  Let
+The iterative procedure described in~\eqref{eq:relvectsminimslicer} will be used to do this.  In what follows it is assumed that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is a closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the orthogonalprojection of $y$ into the space spanned by $b_1,\dots,b_{n}$.  Let
 \begin{equation}\label{eq:matrxBobtusebasis}
 B = (b_1\,\,b_2\,\,\dots\,\,b_{n+1})
 \end{equation}
@@ -261,6 +261,7 @@ Let $p \in \reals^{n+1}$, let $S$ be a subset of the indices of $p$, and let $B$
 \begin{enumerate}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
 \item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
+%\item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsincanddec}
 \end{enumerate}
 where $q_{ij} = \dotprod{b_i}{b_j} \leq 0$ are the Selling parameters.
 \end{lemma}
@@ -303,6 +304,13 @@ We thus have
 where the last line holds because $q_{ij} = q_{ji}$.
 \end{proof}
 
+% \begin{lemma}\label{lem:decSellingsincanddec}
+% With the same symbols as in Lemma~\ref{lem:decSellings} and with $T$ a subset of the indices of $p$,
+% \[
+% \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in T}\sum_{j \notin T}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in S}\sum_{j \in T} 2q_{ij}
+% \]
+% \end{lemma}
+
 We denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$.  We define the function
 \[
 \rng(p) = \max(p) - \min(p)
@@ -311,7 +319,7 @@ to return the difference between the maximum and minimum of $p$.  For example, i
 \[
 \subrng(2,-1,4) = \{1,3\}, \qquad \subrng(2,1,3) = \emptyset, \quad  \subrng(1,3,1) = \{2\}.
 \]  
-To make the definition of $\subrng$ clear we give the following alternative and equivalent definition.  Let $p \in \ints^n$ and let $\sigma$ be the permutation of the indices $\{1,\dots,n\}$ that puts the elements of $p$ in ascending order, that is
+To make the definition of $\subrng$ clear we give the following alternative and equivalent definition.  Let $p \in \reals^n$ and let $\sigma$ be the permutation of the indices $\{1,\dots,n\}$ that puts the elements of $p$ in ascending order, that is
 \[
 p_{\sigma(1)} \leq p_{\sigma(2)} \leq \dots \leq p_{\sigma(n)}.
 \]  
@@ -376,11 +384,11 @@ v_i - v_j \geq \min\{ v_i, i \in S\} - \max\{v_j, j \notin S\} \geq 2
 \]
 by definition of $\subrng(v) = S$.  Thus,
 \[
-1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0.
+1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0 \qquad \text{for $i \in S$ and $j \notin S$}.
 \]
 Substituting this inequality into~\eqref{eq:sumsumBzBu} and using that $q_{ij} \leq 0$ (the obtuse condition~\eqref{eq:obtusecond}) we find that
 \[
-\|B(z - \floor{z} - v)\|^2 - \|B(z - \floor{z} - u)\|^2 \geq 0,
+\|B(z - \floor{z} - v)\|^2 - \|B(z - \floor{z} - u)\|^2 \geq 0
 \]
 and so $B(\floor{z} + u) = B\big(\floor{z} + \decrng(v)\big)$ is a closest lattice point to $y = Bz$ whenever $B(\floor{z} + v)$ is.
 \end{proof}
@@ -402,7 +410,7 @@ Let $\ell$ be a nonegative integer.  We will say that a lattice point $x$ is $\e
 If $x$ is a lattice point that is $0$-close to $y$, then $x$ is a closest lattice point to $y$.
 \end{lemma}
 \begin{proof}
-Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest lattice point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical.  That is $v_1=v_2=\dots=v_{n+1}$.  In this case $Bu = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
+Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest lattice point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical.  That is $v_1=v_2=\dots=v_{n+1}$.  In this case $Bv = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
 as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
 \end{proof}
 
@@ -426,9 +434,10 @@ The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $
 \[
 \|B(z-u-g-h)\|^2 = \|B(z-u-v-I_A)\|^2 > \|B(z-u-v)\|^2.
 \]
+
 In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S = A$ shows that 
 \begin{equation}\label{eq:lem:rng:contag}
-\|B(z-u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
+\|B(z- u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
 \end{equation}
 contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
 \[
