@@ -245,8 +245,8 @@ be the matrix with columns given by $b_1,\dots,b_{n+1}$ and let $z \in \reals^{n
 is minimised.  Define the column vector $u_0 = \floor{z}$ where $\floor{\cdot}$ denotes the largest integer less than or equal to its argument and operates on vectors elementwise. In view of Theorem~\ref{thm:revvecssuperbase} the iterative procedure~\eqref{eq:relvectsminimslicer} to compute a closest lattice point can be written in the form
 \begin{align}
 x_{k+1} &= B u_{k+1} \label{eq:xseqfirsttype}  \\
-u_{k+1} &= u_k + p_k \nonumber \\
-p_k &= \arg\min_{p \in \{0,1\}^{n+1}}\| B(z - u_k - p) \|^2, \label{eq:pvecmin}
+u_{k+1} &= u_k + t_k \nonumber \\
+t_k &= \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - u_k - t) \|^2, \label{eq:pvecmin}
 \end{align}
 where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  Observe that the procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how the minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 
@@ -254,70 +254,88 @@ where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with ele
 \newcommand{\subrng}{\operatorname{subr}}
 \newcommand{\decrng}{\operatorname{decrng}}
 
-It is necessary to introduce some notation.  For $S$ a subset of the indices $\{1,\dots,n+1\}$ let $I_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise. Thus, for example, $p+I_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.
+It is necessary to introduce some notation.  For $S$ a subset of the indices $\{1,\dots,n+1\}$ let $\onebf_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise. %Thus, for example, if $p \in \reals^{n+1}$, then $p+\onebf_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.  
+We define the function
+\[
+\Phi(S, p) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)
+\]
+where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters.  We denote by $\bar{S}$ the complement of the set of indices $S$, that is $\bar{S} = \{ i =1,\dots,n+1 \mid i \notin S\}$. 
 
 \begin{lemma}\label{lem:decSellings}
-Let $p \in \reals^{n+1}$, let $S$ and $T$ be subsets of the indices of $p$, and let $B$ be the matrix from~\eqref{eq:matrxBobtusebasis} with columns given by the superbasis vectors $b_1,\dots,b_{n+1}$.  The following equalities hold:
+Let $p \in \reals^{n+1}$ and let $S$ and $T$ be subsets of the indices of $p$.  The following equalities hold:
 \begin{enumerate}
-\item  ${\displaystyle \|Bp\|^2 - \|B(p - I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i)}$, \label{eq:lem:decSellingsdec}
-\item  ${\displaystyle \|Bp\|^2 - \|B(p + I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)}$, \label{eq:lem:decSellingsinc}
-% \item  \label{eq:lem:decSellingsincanddec} \begin{align*}
-% \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i) + \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2p_j - 2p_i) + \sum_{i\in S}\sum_{j\in S} q_{ij}, 
-% \end{align*}
+\item  $\|Bp\|^2 - \|B(p + \onebf_S)\|^2 = \Phi(S, p)$, \label{eq:lem:decSellingsinc}
+\item  $\|Bp\|^2 - \|B(p - \onebf_S)\|^2 = \Phi(\bar{S}, p)$, \label{eq:lem:decSellingsdec}
+\item  ${\displaystyle \|Bp\|^2 - \|B(p + \onebf_S - \onebf_T)\|^2 = \Phi(S, p) + \Phi(\bar{T},p) + \sum_{i\in S}\sum_{j\in T} q_{ij} }$.  \label{eq:lem:decSellingsincdec}
 \end{enumerate}
-where $q_{ij} = \dotprod{b_i}{b_j} \leq 0$ are the Selling parameters.
 \end{lemma}
 \begin{proof}
-We give a proof for part~\ref{eq:lem:decSellingsdec}.  The proof for part~\ref{eq:lem:decSellingsinc} is similar.  Observe that
-\[
-\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_i^2 =  \sum_{i=1}^{n+1}p_i^2\sum_{j=1}^{n+1} q_{ij} = 0
-\]
-and
-\[
-\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_j^2 =  \sum_{j=1}^{n+1}p_j^2\sum_{i=1}^{n+1} q_{ij} = 0
-\]
-since $\sum_{i=1}^{n+1} q_{ij} = \sum_{j=1}^{n+1} q_{ij} = 0$ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Now
+Part~\ref{eq:lem:decSellingsincdec} follows immediately from parts~\ref{eq:lem:decSellingsinc} and~\ref{eq:lem:decSellingsdec} because
 \begin{align*}
-\|Bp\|^2 &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} p_i p_j \\
-&= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (\tfrac{1}{2}p_j^2 + p_i p_j -  \tfrac{1}{2}p_i^2) \\
-&= -\frac{1}{2} \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (p_i - p_j)^2.
+\|Bp\|^2 - &\|B(p + \onebf_S - \onebf_T)\|^2 \\
+&= \|Bp\|^2-\|B(p + \onebf_S)\|^2 +  \|Bp\|^2-\|B(p - \onebf_T)\|^2 + \sum_{i\in S}\sum_{j\in T} q_{ij}.
 \end{align*}
-This is closely related to what is known as Sellings formula~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  Put $g = p - I_S$.  It follows that
-\[
-\|Bp\|^2 - \|Bg\|^2 = \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij},
-\]
-where $d_{ij} = (g_i - g_j)^2 - (p_i - p_j)^2$.  If both $i \notin S$ and $j \notin S$ then $p_i = g_i$, $p_j = g_j$ and so $d_{ij} = 0$.  Similarly if both $i \in S$ and $j \in S$ then 
-\[
-d_{ij} = (p_i-1 - p_j+1)^2 - (p_i - p_j)^2 = 0.
-\]
-If $i \in S$ and $j \notin S$ then
-\[
-d_{ij} = (p_i-1 - p_j)^2 - (p_i - p_j)^2= 1 + 2p_j - 2p_i,
-\]
-while if $i \notin S$ and $j \in S$ then
-\[
-d_{ij} = (p_i - p_j+1)^2 - (p_i - p_j)^2 = 1 + 2p_i - 2p_j.
-\]
-We thus have
-\begin{align*}
-\|Bp\|^2 - \|Bg\|^2 &= \frac{1}{2} \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i) + \frac{1}{2} \sum_{i \notin S}\sum_{j \in S}q_{ij}(1 + 2p_i - 2p_j) \\
-&= \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i),
-\end{align*}
-where the last line holds because $q_{ij} = q_{ji}$.
+We give a proof for part~\ref{eq:lem:decSellingsinc}.  The proof for part~\ref{eq:lem:decSellingsdec} is similar.  
+Put $Q = B^\prime B$ where supercript $^\prime$ indicates the vector or matrix transpose.  Denote by $\onebf$ the column vector of length $n+1$ containing all ones.  We have $B\onebf = \sum_{i=1}^{n+1}b_i = \zerobf$ as a result of the superbasis condition~\eqref{eq:superbasecond} and so $Q\onebf = 0$.  Observe that $\onebf_S = \onebf - \onebf_{\bar{S}}$ and so $Q\onebf_S = -Q\onebf_{\bar{S}}$.  With $\circ$ the elementwise vector product, i.e., the Schur or Hadamard product, we have
+ \begin{align*}
+ \|Bp\|^2 - \|B(p + \onebf_S)\|^2 &= -\onebf^\prime_S Q \onebf_S - 2 p^\prime Q \onebf_S \\
+ &= \onebf^\prime_S Q \onebf_{\bar{S}} - 2 p^\prime Q \onebf_S \\
+&= \onebf^\prime_S Q \onebf_{\bar{S}} - 2 (p\circ\onebf_{\bar{S}})^\prime Q \onebf_S - 2 (p\circ\onebf_S)^\prime Q \onebf_S \\
+&= \onebf^\prime_S Q \onebf_{\bar{S}} - 2 (p\circ\onebf_{\bar{S}})^\prime Q \onebf_{S} + 2 (p\circ\onebf_S)^\prime Q \onebf_{\bar{S}} \\
+ \end{align*}
+which is precisely $\Phi(S,p)$.
+% Observe that
+% \[
+% \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_i^2 =  \sum_{i=1}^{n+1}p_i^2\sum_{j=1}^{n+1} q_{ij} = 0
+% \]
+% and
+% \[
+% \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} p_j^2 =  \sum_{j=1}^{n+1}p_j^2\sum_{i=1}^{n+1} q_{ij} = 0
+% \]
+% since $\sum_{i=1}^{n+1} q_{ij} = \sum_{j=1}^{n+1} q_{ij} = 0$ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Now
+% \begin{align*}
+% \|Bp\|^2 &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} p_i p_j \\
+% &= \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (\tfrac{1}{2}p_j^2 + p_i p_j -  \tfrac{1}{2}p_i^2) \\
+% &= -\frac{1}{2} \sum_{i=1}^{n+1} \sum_{j=1}^{n+1} q_{ij} (p_i - p_j)^2.
+% \end{align*}
+% This is closely related to what is known as Sellings formula~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  Put $g = p - \onebf_S$.  It follows that
+% \[
+% \|Bp\|^2 - \|Bg\|^2 = \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij},
+% \]
+% where $d_{ij} = (g_i - g_j)^2 - (p_i - p_j)^2$.  If both $i \notin S$ and $j \notin S$ then $p_i = g_i$, $p_j = g_j$ and so $d_{ij} = 0$.  Similarly if both $i \in S$ and $j \in S$ then 
+% \[
+% d_{ij} = (p_i-1 - p_j+1)^2 - (p_i - p_j)^2 = 0.
+% \]
+% If $i \in S$ and $j \notin S$ then
+% \[
+% d_{ij} = (p_i-1 - p_j)^2 - (p_i - p_j)^2= 1 + 2p_j - 2p_i,
+% \]
+% while if $i \notin S$ and $j \in S$ then
+% \[
+% d_{ij} = (p_i - p_j+1)^2 - (p_i - p_j)^2 = 1 + 2p_i - 2p_j.
+% \]
+% We thus have
+% \begin{align*}
+% \|Bp\|^2 - \|Bg\|^2 &= \frac{1}{2} \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i) + \frac{1}{2} \sum_{i \notin S}\sum_{j \in S}q_{ij}(1 + 2p_i - 2p_j) \\
+% &= \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_j - 2p_i),
+% \end{align*}
+% where the last line holds because $q_{ij} = q_{ji}$.
 \end{proof}
 
 % \begin{lemma}\label{lem:decSellingsincanddec}
 % With the same symbols as in Lemma~\ref{lem:decSellings} and with $T$ a subset of the indices of $p$,
 % \[
-% \|Bp\|^2 - \|B(p + I_S + I_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in T}\sum_{j \notin T}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in S}\sum_{j \in T} 2q_{ij}
+% \|Bp\|^2 - \|B(p + \onebf_S + \onebf_T)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in T}\sum_{j \notin T}q_{ij}(1 + 2p_i - 2p_j) + \sum_{i \in S}\sum_{j \in T} 2q_{ij}
 % \]
 % \end{lemma}
 
-We denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$.  We define the function
+Denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$ and define the function
 \[
 \rng(p) = \max(p) - \min(p)
 \] 
-to return the difference between the maximum and minimum of $p$.  For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also write simply $\rng(4,-1,5)=5$.  Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  We define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
+to return the difference between the maximum and minimum of $p$.  %For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also 
+%For example $\rng(2,-1,4)= 4 - (-1) = 5$.  
+Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  We define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
 \[
 \subrng(2,-1,4) = \{1,3\}, \qquad \subrng(2,1,3) = \emptyset, \quad  \subrng(1,3,1) = \{2\}.
 \]  
@@ -344,7 +362,7 @@ and so $\rng(p) = p_{\sigma(n+1)} - p_{\sigma(1)} \leq n$.
 
 Finally we define the function
 \[
-\decrng(p) = p -  I_{\subrng(p)}
+\decrng(p) = p -  \onebf_{\subrng(p)}
 \]
 that decrements those elements from $p$ with indices from $\subrng(p)$.  If $\subrng(p) = \emptyset$, then $\decrng(p) = p$, that is, $\decrng$ does not modify $p$.  On the other hand, if $\subrng(p) \neq \emptyset$ then
 \[
@@ -352,10 +370,10 @@ that decrements those elements from $p$ with indices from $\subrng(p)$.  If $\su
 \]
 because $\subrng(p)$ contains all those indices $i$ such that $p_i = \max(p)$.  Observe that by repeatedly applying $\decrng$ to a vector one eventually obtains a vector for which further application of $\decrng$ has no effect.  For example,
 \begin{align*}
-\decrng(2,-1,4) &= (2,-1,4) - I_{\subrng(2,-1,4)} = (2,-1,4) - I_{\{1,3\}} = (1,-1,3) \\ 
-\decrng(1,-1,3) &= (1,-1,3) - I_{\{1,3\}} = (0,-1,2) \\ 
-\decrng(0,-1,2) &= (0,-1,2) - I_{\{3\}} = (0,-1,1) \\ 
-\decrng(0,-1,1) &= (0,-1,1) - I_{\emptyset} = (0,-1,1).
+\decrng(2,-1,4) &= (2,-1,4) - \onebf_{\subrng(2,-1,4)} = (2,-1,4) - \onebf_{\{1,3\}} = (1,-1,3) \\ 
+\decrng(1,-1,3) &= (1,-1,3) - \onebf_{\{1,3\}} = (0,-1,2) \\ 
+\decrng(0,-1,2) &= (0,-1,2) - \onebf_{\{3\}} = (0,-1,1) \\ 
+\decrng(0,-1,1) &= (0,-1,1) - \onebf_{\emptyset} = (0,-1,1).
 \end{align*}
 This will be a useful property so we state it formally in the following proposition.
 
@@ -375,9 +393,9 @@ We are now ready to study properties of a closest lattice point in a lattice of 
 If $v \in \ints^{n+1}$ such that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$, then $B\big(\floor{z} + \decrng(v)\big)$ is also a closest lattice point to $y$.
 \end{lemma}
 \begin{proof}
-The lemma is trivial if $\subrng(v) = \emptyset$ so that $\decrng(v) = v$.  It remains to prove the lemma when $\subrng(v) \neq \emptyset$.  In this case put $S = \subrng(v)$ and put $u = \decrng(v) = v - I_S$.  Let $\zeta = z - \floor{z}$ be the column vector containing the fractional parts of the elements of $z$.  We have $\zeta - u = \zeta - v + I_S$.  Applying part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = \zeta - v$ we obtain
+The lemma is trivial if $\subrng(v) = \emptyset$ so that $\decrng(v) = v$.  It remains to prove the lemma when $\subrng(v) \neq \emptyset$.  In this case put $S = \subrng(v)$ and put $u = \decrng(v) = v - \onebf_S$.  Let $\zeta = z - \floor{z}$ be the column vector containing the fractional parts of the elements of $z$.  We have $\zeta - u = \zeta - v + \onebf_S$.  Applying part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = \zeta - v$ we obtain
 \begin{align}
-\|B(\zeta - v)\|^2 - \|B(\zeta - u)\|^2 &= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + 2(\zeta_i - v_i)  - 2(\zeta_j - v_j) \big) \nonumber \\
+\|B(\zeta - v)\|^2 - \|B(\zeta - u)\|^2 &= \Phi(S, \zeta-v) \nonumber \\
 &= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j)\big). \label{eq:sumsumBzBu}
 \end{align}
 Observe that $\zeta_i =  z_i - \floor{z_i} \in [0,1)$ for all $i=1,\dots,n+1$ and so $-1 < \zeta_i-\zeta_j < 1$ for all $i,j=1,\dots,n+1$.  Also, for $i \in S$ and $j\notin S$ we have 
@@ -416,251 +434,90 @@ Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ s
 as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
 \end{proof}
 
+Before giving the proof of Lemma~\ref{lem:rngdecreases} we require the following simple result.
+
+\begin{lemma}\label{eq:integergreaterless}
+Let $h \in \{0,1\}^{n+1}$ and $v \in \ints^{n+1}$.  Suppose that
+$h_i = 0$ whenever $v_i = \min(v)$ and that $h_i = 1$ whenever $v_i = \max(v)$.  Then
+\[
+h_i - h_j \geq v_i - v_j
+\]
+when either $v_i = \min(v)$ or $v_j = \max(v)$.
+\end{lemma}
+\begin{proof}
+If $v_i = \min(v)$ then $h_i = 0$ and we need only show that $-h_j \geq \min(v) - v_j$ for all $j$.  If $v_j = \min(v)$ then $h_j = 0 = \min(v) - v_j$ and the results holds.  Otherwise if $v_j > \min(v)$ then $-h_j \geq -1 \geq \min(v) - v_j$ because $\min(v)$ and $v_j$ are integers.
+
+Now, if $v_j = \max(v)$ then $h_j = 1$ and we need only show that $h_i - 1 \geq v_i - \max(v)$ for all $i$.  If $v_i = \max(v)$ then $h_i = 1$ and $h_i - 1 = 0 = v_i - \max(v)$.  Otherwise if $v_i < \max(v)$ then $h_i - 1 \geq -1 \geq v_i - \max(v)$.
+\end{proof}
+
 \begin{lemma}\label{lem:rngdecreases}
 Let $Bu$ with $u \in \ints^{n+1}$ be a lattice point that is $\ell$-close to $y = Bz$ where $\ell > 0$.  Let $g \in \{0,1\}^{n+1}$ be such that
 \begin{equation}\label{eq:qismin}
-\|B(z - u - g)\|^2 = \min_{p \in \{0,1\}^{n+1}}\|B(z - u - p)\|^2.
+\|B(z - u - g)\|^2 = \min_{t \in \{0,1\}^{n+1}}\|B(z - u - t)\|^2.
 \end{equation}
 The lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
 \end{lemma}
 \begin{proof}
 Because $Bu$ is $\ell$-close to $y$ there exists $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $B(u+v)$ is a closest lattice point to $y$.  Define subsets of indices
 \[
-A = \{i \mid g_i = 1, v_i = \min(v) \}, \qquad D = \{i \mid g_i = 0, v_i = \max(v) \}
+S = \{i \mid g_i = 0, v_i = \max(v) \}, \qquad T = \{i \mid g_i = 1, v_i = \min(v) \}, 
 \]
-and put $d = g - I_A + I_D \in \{0,1\}^{n+1}$ and $w = v - d$.  Observe that $d_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-d) = \min(v)$.  Also, $d_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-d) = \max(v) - 1$.  Thus,
+and put $h = g + \onebf_S - \onebf_T \in \{0,1\}^{n+1}$ and $w = v - h$.  Observe that $h_i = 0$ whenever $v_i = \min(v)$ and so $\min(w) = \min(v-h) = \min(v)$.  Also, $h_i = 1$ whenever $v_i = \max(v)$ and so $\max(w) = \max(v-h) = \max(v) - 1$.  Thus,
 \[
 \rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1 = \ell - 1.
 \]
-The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  We show this in two stages.  First put $f = g - I_A \in \{0,1\}^{n+1}$ and  $h = v - f = v - g + I_A$.  Suppose that $B(u+g+h)$ is not a closest lattice point to $y = Bz$.  That is, with $t = z-u$, suppose that
+The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  The proof is by contradiction.  Suppose that $B(u+g+w)$ is not a closest point to $y$, that is, suppose that
 \[
-\|B(t-g-h)\|^2 = \|B(t-v-I_A)\|^2 > \|B(t-v)\|^2.
+\|B(z-u-g-w)\|^2 > |B(z-u-v)\|^2.
 \]
-By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we obtain the inequality
+Putting $p = z-u-v$ we have
 \[
-\|B(t-v)\|^2 - \|B(t-v-I_A)\|^2 =  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0.
+\|B(p+\onebf_S-\onebf_T)\|^2 > \|Bp\|^2.
 \]
-Because $v_i = \min(v)$ only when $f_i= g_i - 1 = 0$ and because $v_i = \min(v)$ for $i \in A$ we have $f_i - f_j \geq v_i - v_j$ for all $i \in S$ and $j =1,\dots,n+1$.  Now, since $q_{ij} \leq 0$ for $i\neq j$,
+By part~\ref{eq:lem:decSellingsincdec} of Lemma~\ref{lem:decSellings} we obtain
+\begin{equation}\label{eq:BpBpdecincineq}
+\|Bp\|^2 - \|B(p+\onebf_S-\onebf_T)\|^2 = \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0.
+\end{equation}
+
+As stated already $h_i = 0$ whenever $v_i = \min(v)$ and $h_i = 1$ whenever $v_i = \max(v)$.  It follows by Lemma~\ref{eq:integergreaterless} that
+\begin{equation}\label{eq:hijvijieq}
+h_{i} - h_j \geq v_{i} - v_j
+\end{equation}
+when either $v_i = \min(v)$ or $v_j = \max(v)$.  Since $v_i = \min(v)$ for $i \in T$ and $v_j = \max(v)$ for $j \in S$ the inequality~\eqref{eq:hijvijieq} holds whenever $i \in T$ or $j \in S$.
+
+Put $r = z - u - h$.  By~\eqref{eq:hijvijieq} we have $r_i - r_j \leq p_{i} - p_{j}$ when either $i \in T$ or $j \in S$.  Now, since $q_{ij} \leq 0$ for $i \neq j$,
+\[
+\Phi(S,r) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2r_i - 2r_j) \geq \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) = \Phi(S,p).
+\]
+Similarly
+\[
+\Phi(\bar{T},r) = \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2r_i - 2r_j) \geq \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2p_i - 2p_j) = \Phi(\bar{T},p).
+\]\
+Now
 \begin{align*}
-\|B(z-u-f)\|^2 - \|B(z-u-g)\|^2 &= \|B(t-f)\|^2 - \|B(t-f-I_A)\|^2 \\
-&= \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(f_i-f_j)) \\
-&\leq  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0,
+\|B(z-u-h)\|^2 - \|B(z-u-g)\|^2 &= \|Br\|^2 - \|B(r+\onebf_S - \onebf_T)\|^2 \\
+&= \Phi(S,r) + \Phi(\bar{T},r) + \sum_{i\in S}\sum_{j \in S} q_{ij} \\
+&\leq \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0. 
 \end{align*}
-contradicting~\eqref{eq:qismin} because $f \in \{0,1\}^{n+1}$.  Thus, $B(u+g+h)$ is a closest lattice point to $y = Bz$.
-
-Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
+as a result of~\eqref{eq:BpBpdecincineq}.  However, $d \in \{0,1\}^{n+1}$ and so
 \[
-\|B(t-g-w)\|^2 = \|B(t-g-h+I_D)\|^2 > \|B(t-g-h)\|^2.
+\|B(z-u-g)\|^2 > \|B(z-u-h)\|^2 \geq \min_{t \in \{0,1\}^{n+1}}\|B(z - u - t)\|^2
 \]
-By part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} we obtain the inequality
-\[
-\|B(t-v)\|^2 - \|B(t-v-I_A)\|^2 =  \sum_{i \in A}\sum_{j \notin A}q_{ij}(1 + 2(t_j-t_i) + 2(v_i-v_j)) < 0.
-\]
-
-% In this case, Lemma~\ref{lem:vqcontramin} (proved below) with $t = z-u$ and $S = A$ shows that 
-% \begin{equation}\label{eq:lem:rng:contag}
-% \|B(z- u - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(z- u - p)\|^2,
-% \end{equation}
-% contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+h)$ is a closest lattice point to $y$.  Now suppose that $B(u+g+w) = B(u+g+h-I_D)$ is not a closest lattice point to $y$.  That is, suppose that
-% \[
-% \|B(z-u-g-h+I_D)\|^2 > \|B(z-u-g-h)\|^2.
-% \]
-% Lemma~\ref{lem:vqcontramax} (proved below) with $t = z-u$ and $S = D$ shows that~\eqref{eq:lem:rng:contag} occurs again, contradicting~\eqref{eq:qismin}.  
-
-Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
+contradicting~\eqref{eq:qismin}.  Thus, $B(u+g+w)$ is a closest lattice point to $y$ and, since $\rng(w) = \ell-1$, the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
  \end{proof}
 
-The proof of the previous Lemma~\ref{lem:rngdecreases} relies upon Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax}.  Before we prove these lemmas we state the following theorem asserting that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
+The next theorem asserts that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
 
 \begin{theorem}
 Let $x_0,x_1,\dots$ be the sequence of lattice points given by the iterative procedure~\eqref{eq:xseqfirsttype}.  There exists $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 \end{theorem}
 \begin{proof}
-Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $p_{k} \in \{0,1\}^{n+1}$ satisfying
+Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $t_{k} \in \{0,1\}^{n+1}$ satisfying
 \[
-\|B(z - u_k - p_{k})\|^2 = \min_{p \in \{0,1\}^{n+1}}\|B(z - u_k - p)\|^2
+\|B(z - u_k - t_{k})\|^2 = \min_{t \in \{0,1\}^{n+1}}\|B(z - u_k - t)\|^2
 \]
-and puts $x_{k+1} = B(u_k + p_k)$.  It follows from Lemma~\ref{lem:rngdecreases} that $x_{k+1}$ is $(\ell-1)$-close to $y$.  By Lemma~\ref{lem:roundzclose} the lattice point that initialises the procedure $x_0 = B \floor{z}$ is $K$-close to $y$ where $K \leq n$.  Thus, $x_1$ is $(K-1)$-close, $x_2$ is $(K-2)$-close, and so on until $x_K$ is $0$-close.  That $x_K$ is a closest lattice point to $y$ follows from Lemma~\ref{lem:rngzeroclosestpoint}.
+and puts $x_{k+1} = B(u_k + t_k)$.  It follows from Lemma~\ref{lem:rngdecreases} that $x_{k+1}$ is $(\ell-1)$-close to $y$.  By Lemma~\ref{lem:roundzclose} the lattice point that initialises the procedure $x_0 = B \floor{z}$ is $K$-close to $y$ where $K \leq n$.  Thus, $x_1$ is $(K-1)$-close, $x_2$ is $(K-2)$-close, and so on until $x_K$ is $0$-close.  That $x_K$ is a closest lattice point to $y$ follows from Lemma~\ref{lem:rngzeroclosestpoint}.
 \end{proof}
-
-We now provide proof of Lemmas~\ref{lem:vqcontramin} and~\ref{lem:vqcontramax} that were used in the proof of Lemma~\ref{lem:rngdecreases}.  We first require the following two simple Lemmas.
-
-\begin{lemma}\label{lem:simplevminh}
-Let $v \in \ints^{n+1}$ and $h \in \{0,1\}^{n+1}$ be such that $h_i = 0$ whenever $v_i = \min(v)$.  If $S \subseteq \{ i \mid v_i = \min(v) \}$ then $h_i - h_j \geq v_i - v_j$ for all $i \in S$ and $j = 1,\dots,n+1$.
-\end{lemma}
-\begin{proof}
-For $i \in S$ we have $v_i = \min(v)$ and $h_i = 0$ and so the lemma is true if we show that $-h_j \geq \min(v) - v_j$ for all $j=1,\dots,n+1$.  If $v_j = \min(v)$ then $h_j = 0$ so that $-h_j = 0 = \min(v) - v_j$.  Otherwise, if $v_j \neq \min(v)$ then 
-\[
--h_j \geq -1 \geq \min(v) - v_j
-\] 
-because $h_j \in \{0,1\}$ and $v_j$ and $\min(v)$ are integers with $v_j > \min(v)$.
-\end{proof}
-
-\begin{lemma}\label{lem:simplevmaxh}
-Let $v \in \ints^{n+1}$ and $h \in \{0,1\}^{n+1}$ be such that $h_i = 1$ whenever $v_i = \max(v)$.  If $S \subseteq \{ i \mid v_i = \max(v) \}$ then $h_j - h_i \geq v_j - v_i$ for all $i \in S$ and $j = 1,\dots,n+1$.
-\end{lemma}
-\begin{proof}
-For $i \in S$ we have $v_i = \max(v)$ and $h_i = 1$ and so the lemma is true if we show that $h_j-1 \geq v_j - \max(v)$ for all $j=1,\dots,n+1$.  If $v_j = \max(v)$ then $h_j = 1$ and $h_j-1 = 0 = v_j - \max(v)$.  Otherwise, if $v_j \neq \max(v)$ then 
-\[
-h_j-1 \geq -1 \geq v_j - \max(v)
-\] 
-because $h_j \in \{0,1\}$ and $v_j$ and $\max(v)$ are integers with $v_j < \max(v)$.
-\end{proof}
-
-
-\begin{lemma}\label{lem:vqcontramin}
-Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest lattice point to $Bt$.  Let $g \in \{0,1\}^{n+1}$ and let $S$ be the subset of indices $\{1,\dots,n+1\}$ such that $g_i=1$ and $v_i = \min(v)$ for $i \in S$.  If $\|B(t-v)\|^2 < \|B(t-v-I_S)\|^2$, then
-\[
-\|B(t - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(t - p)\|^2.
-\]
-\end{lemma}
-\begin{proof}
-From our hypothesis and part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
-\[
-\|B(t-v)\|^2 - \|B(t-v-I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0, 
-\]
-where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g - I_S$ and observe that $h_i = 0$ whenever $v_i = \min(v)$ and so, since $S \subset \{i \mid v_i = \min(v) \}$, we have
-\[
-h_i - h_j \geq v_i - v_j \qquad \text{when $i \in S$ and $j=1,\dots,n+1$}
-\]
-by Lemma~\ref{lem:simplevminh}.  Thus, since $q_{ij} \leq 0$,
-\[
-q_{ij}\big(1 + \gamma_{ij} + 2(h_i - h_j)\big) \leq q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big)
-\]
-when $i \in S$ and $j =1,\dots,n+1$.  By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we have
-\begin{align*}
-\|B(t-h)\|^2 - \|B(t-g)\|^2 &= \|B(t-h)\|^2 - \|B(t-h-I_S)\|^2 \\
-&= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(h_i - h_j)\big) \\
-&\leq \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ij} + 2(v_i - v_j)\big) < 0
-\end{align*}
-from which it follows that
-\[
-\|B(t-g)\|^2 > \|B(t-h)\|^2 \geq \min_{p \in \{0,1\}^{n+1}}\|B(t  - p)\|^2
-\]
-as required.
-\end{proof}
-
-\begin{lemma}\label{lem:vqcontramax}
-Let $t \in \reals^{n+1}$ and $v \in \ints^{n+1}$ be such that $Bv$ is a closest lattice point to $Bt$.  Let $g \in \{0,1\}^{n+1}$ and let $S$ be the subset of indices $\{1,\dots,n+1\}$ such that $g_i=0$ and $v_i = \max(v)$ for $i \in S$.  If $\|B(t-v)\|^2 < \|B(t-v+I_S)\|^2$, then
-\[
-\|B(t - g)\|^2 > \min_{p \in \{0,1\}^{n+1}}\|B(t - p)\|^2.
-\]
-\end{lemma}
-\begin{proof}
-The proof mimics that of Lemma~\ref{lem:vqcontramin} with only minor modification.  We give the proof in full for completeness and because the small modifications that do exist might not be obvious. From our hypothesis and part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = t-v$ we have
-\[
-\|B(t-v)\|^2 - \|B(t-v+I_S)\|^2 = \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big) < 0,
-\]
-where $\gamma_{ij} = 2(t_j - t_i)$.  Put $h = g + I_S$ and observe that $h_i = 1$ when $v_i = \max(v)$ and so, since $S \subset \{i \mid v_i = \max(v) \}$, we have
-\[
-h_j - h_i \geq v_j - v_i \qquad \text{for $i \in S$ and $j=1,\dots,n+1$}
-\]
-by Lemma~\ref{lem:simplevmaxh}.  Thus, since $q_{ij} \leq 0$,
-\[
-q_{ij}\big(1 + \gamma_{ji} + 2(h_j - h_i)\big) \leq q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big)
-\]
-when $i \in S$ and $j =1,\dots,n+1$.  By part~\ref{eq:lem:decSellingsdec} of Lemma~\ref{lem:decSellings} we have
-\begin{align*}
-\|B(t-h)\|^2 - \|B(t-g)\|^2 &= \|B(t-h)\|^2 - \|B(t-h+I_S)\|^2 \\
-&= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(h_j - h_i)\big) \\
-&\leq \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + \gamma_{ji} + 2(v_j - v_i)\big) < 0
-\end{align*}
-from which it follows that
-\[
-\|B(t-g)\|^2 > \|B(t-h)\|^2 \geq \min_{p \in \{0,1\}^{n+1}}\|B(t  - p)\|^2
-\]
-as required.
-\end{proof}
-
-% \begin{lemma}
-% Let $x \in \ints^{n+1}$.  If there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $B(x + v)$ is a closest lattice point to $y = Bz$, then $Bx$ is also a closest lattice point to $y$.  
-% \end{lemma}
-% \begin{proof}
-% Because $\rng(v) = 0$ all of the elements $v_1=v_2=\dots=v_{n+1} = V$ for some integer $V$. Now
-% \begin{align*}
-% \|B(z - x - v)\|^2 &= \| \sum_{i=1}^{n+1} b_i (z_i-x_i-v_i) \|^2 \\
-% &= \| \sum_{i=1}^{n+1} b_i (z_i-x_i) -V\sum_{i=1}^{n+1}b_i \|^2 \\
-% &=  \| \sum_{i=1}^{n+1} b_i (z_i-x_i) \|^2 \\
-% &=  \|B(z-x)\|^2
-% \end{align*}
-% because $\sum_{i=1}^{n+1}b_i = 0$ due to the superbase condition~\eqref{eq:superbasecond}.  So $Bx$ is a closest point to $y$ whenever $B(x+v)$ is.
-% \end{proof}
-
-
-
-
-
-% \begin{lemma}\label{lem:minrelvecsisonesonh}
-% Let $x \in \ints^{n+1}$ be such that $w_i = x_i + h_i$ are minimisers of~\eqref{eq:tominimise} and such that $h_1,\dots,h_{n+1}$ starts at zero and increments in step of one.  Let $s$ be the largest integer such that $h_s = 0$ and let
-% \[
-% \alpha = \min_{p \in \{0,1\}^{n+1}} \| B(z - x - p) \|^2.
-% \]
-% The first $s$ elements of the vector $\alpha$ are equal to zero, that is, $\alpha_1,\alpha_2,\dots,\alpha_s = 0$.
-% \end{lemma}
-% \begin{proof}
-% Let $S$ be some nonempty subset of the indices $\{1, 2,\dots,s\}$ and let $\beta$ be the column vector with elements satisfying
-% \[
-% \beta_i = \begin{cases}
-% 1 & i \in S \\
-% \alpha_i & \text{otherwise}.
-% \end{cases}
-% \]
-% Since the subset $S$ is arbitrary, our proof holds if we show that
-% \[
-% A = \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 \leq 0.
-% \]
-
-% Let $g$ be the column of length $n+1$ with elements
-% \[
-% g_i = \begin{cases}
-% 1 & i \in S \\
-% h_i & \text{otherwise}.
-% \end{cases}
-% \]
-% Since $w_i = x_i + h_i$ are minimsers of~\eqref{eq:tominimise} we have
-% \[
-% \| B(z - x - h) \|^2  \leq \| B(z - x - g) \|^2
-% \]
-% and by Selling's formula
-% \begin{equation}\label{eq:sellingswithhg}
-%  - \frac{1}{2} \sum_{i=1}^{n+1}\sum_{j=1}^{n+1}q_{ij}d_{ij}^2 \leq 0,
-% \end{equation}
-% where 
-% \[
-% d_{ij} = d_{ji} = (\gamma_{ij} - h_j + h_i)^2 - (\gamma_{ij} - g_j + g_i)^2,
-% \]
-% and where $\gamma_{ij} = z_i - x_i - z_j + x_i$.  When $i, j \in S$ or $i,j \notin S$ we have $d_{ij} = 0$.  When $i \in S, j \notin S$ we have
-% \[
-% d_{ij} = (\gamma_{ij} - h_j)^2 - (\gamma_{ij} - h_j + 1)^2 = -2(\gamma_{ij} - h_j) - 1.
-% \]
-% and when $i \notin S, j \in S$ we have
-% \[
-% d_{ij} = (\gamma_{ij} + h_i)^2 - (\gamma_{ij} - 1 + h_i)^2 = 2(\gamma_{ij} + h_i) - 1.
-% \]
-% Substituting these values for $d_{ij}$ into~\eqref{eq:sellingswithhg} gives
-% \begin{align*}
-% -\frac{1}{2} \sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) -  &\frac{1}{2} \sum_{i \notin S, j \in S} q_{ij}( 2h_i + 2\gamma_{ij} - 1 ) \\
-% &= -\sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) \leq 0.
-% \end{align*}
-% where equality on the second line hold because $q_{ij}=q_{ji}$ and $\gamma_{ij}=\gamma_{ji}$.  Use of Sellings formula and similar working to previously shows that
-% \[
-% \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 = - \sum_{i \in S, j \notin S} q_{ij}(2\alpha_j - 2\gamma_{ij} - 1) 
-% \]
-% and, since $h_j \geq \alpha_j$ for all $j = 1,\dots,n+1$ and $q_{ij} \leq 0$ for all $i \neq j$ we have 
-% \[
-% q_{ij}(2\alpha_j - 2\gamma_{ij} - 1) \geq q_{ij}(2h_j - 2\gamma_{ij} - 1)
-% \]
-% for all $i \neq j$ and so,
-% \begin{align*}
-% \| B(z - x - \alpha) \|^2 - \| B(z - x - \beta) \|^2 &= - \sum_{i \in S, j \notin S} q_{ij}(2\alpha_j - 2\gamma_{ij} - 1)  \\
-% &\leq - \sum_{i \in S, j \notin S} q_{ij}(2h_j - 2\gamma_{ij} - 1) \leq 0.
-% \end{align*}
-% \end{proof}
-
-
-% \begin{theorem}
-% Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  Define the vectors $x_1,x_2,\dots$ according to~\eqref{eq:xseqfirsttype}.  There is a positive integer $K \leq (n+1)^2$ such that $x_K$ is a closest lattice point to $y$. 
-% \end{theorem}
 
 
 \section{Computing a closest relevant vector}\label{sec:comp-clos-relev}
