@@ -234,7 +234,7 @@ We can equivalently find $n+1$ integers $w_1,\dots,w_{n+1}$ that minimise
 \[
 \| y - \sum_{i=1}^{n+1} b_i w_i \|^2.
 \]
-The iterative procedure described in~\eqref{eq:relvectsminimslicer} will be used to do this.  In what follows it is assumed that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is a closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the orthogonalprojection of $y$ into the space spanned by $b_1,\dots,b_{n}$.  Let
+The iterative procedure described in~\eqref{eq:relvectsminimslicer} will be used to do this.  In what follows it is assumed that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is a closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the orthogonal projection of $y$ into the space spanned by $b_1,\dots,b_{n}$.  Let
 \begin{equation}\label{eq:matrxBobtusebasis}
 B = (b_1\,\,b_2\,\,\dots\,\,b_{n+1})
 \end{equation}
@@ -248,18 +248,18 @@ x_{k+1} &= B u_{k+1} \label{eq:xseqfirsttype}  \\
 u_{k+1} &= u_k + t_k \nonumber \\
 t_k &= \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - u_k - t) \|^2, \label{eq:pvecmin}
 \end{align}
-where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  Observe that the procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how the minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
+where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  The procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how the minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 
 \newcommand{\rng}{\operatorname{rng}}
 \newcommand{\subrng}{\operatorname{subr}}
 \newcommand{\decrng}{\operatorname{decrng}}
 
-It is necessary to introduce some notation.  For $S$ a subset of the indices $\{1,\dots,n+1\}$ let $\onebf_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise. %Thus, for example, if $p \in \reals^{n+1}$, then $p+\onebf_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.  
-We define the function
+It is necessary to introduce some notation.  For $S$ a subset of indices $\{1,\dots,n+1\}$ let $\onebf_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and $0$ otherwise. %Thus, for example, if $p \in \reals^{n+1}$, then $p+\onebf_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.  
+For $S \subseteq \{1,\dots,n+1\}$ and $p \in \reals^{n+1}$ we define the function
 \[
 \Phi(S, p) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)
 \]
-where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters.  We denote by $\bar{S}$ the complement of the set of indices $S$, that is $\bar{S} = \{ i =1,\dots,n+1 \mid i \notin S\}$. 
+where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters from~\eqref{eq:obtusecond}.  We denote by $\bar{S}$ the complement of the set of indices $S$, that is $\bar{S} = \{ i \in \{1,\dots,n+1\} \mid i \notin S\}$. 
 
 \begin{lemma}\label{lem:decSellings}
 Let $p \in \reals^{n+1}$ and let $S$ and $T$ be subsets of the indices of $p$.  The following equalities hold:
@@ -331,9 +331,9 @@ which is precisely $\Phi(S,p)$.
 
 Denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$ and define the function
 \[
-\rng(p) = \max(p) - \min(p)
+\rng(p) = \max(p) - \min(p).
 \] 
-to return the difference between the maximum and minimum of $p$.  %For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also 
+%to return the difference between the maximum and minimum of $p$.  %For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also 
 %For example $\rng(2,-1,4)= 4 - (-1) = 5$.  
 Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  We define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
 \[
@@ -393,7 +393,11 @@ We are now ready to study properties of a closest lattice point in a lattice of 
 If $v \in \ints^{n+1}$ such that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$, then $B\big(\floor{z} + \decrng(v)\big)$ is also a closest lattice point to $y$.
 \end{lemma}
 \begin{proof}
-The lemma is trivial if $\subrng(v) = \emptyset$ so that $\decrng(v) = v$.  It remains to prove the lemma when $\subrng(v) \neq \emptyset$.  In this case put $S = \subrng(v)$ and put $u = \decrng(v) = v - \onebf_S$.  Let $\zeta = z - \floor{z}$ be the column vector containing the fractional parts of the elements of $z$.  We have $\zeta - u = \zeta - v + \onebf_S$.  Applying part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = \zeta - v$ we obtain
+The lemma is trivial if $\subrng(v) = \emptyset$ so that $\decrng(v) = v$.  It remains to prove the lemma when $\subrng(v) \neq \emptyset$.  In this case put $S = \subrng(v)$ and put 
+\[
+u = \decrng(v) = v - \onebf_S.
+\] 
+Let $\zeta = z - \floor{z}$ be the column vector containing the fractional parts of the elements of $z$.  We have $\zeta - u = \zeta - v + \onebf_S$.  Applying part~\ref{eq:lem:decSellingsinc} of Lemma~\ref{lem:decSellings} with $p = \zeta - v$ we obtain
 \begin{align}
 \|B(\zeta - v)\|^2 - \|B(\zeta - u)\|^2 &= \Phi(S, \zeta-v) \nonumber \\
 &= \sum_{i \in S}\sum_{j \notin S}q_{ij}\big(1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j)\big). \label{eq:sumsumBzBu}
@@ -406,11 +410,11 @@ by definition of $\subrng(v) = S$.  Thus,
 \[
 1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0 \qquad \text{for $i \in S$ and $j \notin S$}.
 \]
-Substituting this inequality into~\eqref{eq:sumsumBzBu} and using that $q_{ij} \leq 0$ (the obtuse condition~\eqref{eq:obtusecond}) we find that
+Substituting this inequality into~\eqref{eq:sumsumBzBu} and using that $q_{ij} \leq 0$ for $i \neq j$ (the obtuse condition~\eqref{eq:obtusecond}) we find that
 \[
-\|B(z - \floor{z} - v)\|^2 - \|B(z - \floor{z} - u)\|^2 \geq 0
+\|B(z - \floor{z} - v)\|^2 - \|B(z - \floor{z} - u)\|^2 \geq 0.
 \]
-and so $B(\floor{z} + u) = B\big(\floor{z} + \decrng(v)\big)$ is a closest lattice point to $y = Bz$ whenever $B(\floor{z} + v)$ is.
+It follows that $B(\floor{z} + u) = B\big(\floor{z} + \decrng(v)\big)$ is a closest lattice point to $y = Bz$ whenever $B(\floor{z} + v)$ is.
 \end{proof}
 
 \begin{lemma}\label{lem:roundzclose}
@@ -440,14 +444,14 @@ Before giving the proof of Lemma~\ref{lem:rngdecreases} we require the following
 Let $h \in \{0,1\}^{n+1}$ and $v \in \ints^{n+1}$.  Suppose that
 $h_i = 0$ whenever $v_i = \min(v)$ and that $h_i = 1$ whenever $v_i = \max(v)$.  Then
 \[
-h_i - h_j \geq v_i - v_j
+h_i - h_j \leq v_i - v_j
 \]
-when either $v_i = \min(v)$ or $v_j = \max(v)$.
+when either $v_i = \max(v)$ or $v_j = \min(v)$.
 \end{lemma}
 \begin{proof}
-If $v_i = \min(v)$ then $h_i = 0$ and we need only show that $-h_j \geq \min(v) - v_j$ for all $j$.  If $v_j = \min(v)$ then $h_j = 0 = \min(v) - v_j$ and the results holds.  Otherwise if $v_j > \min(v)$ then $-h_j \geq -1 \geq \min(v) - v_j$ because $\min(v)$ and $v_j$ are integers.
+If $v_i = \max(v)$ then $h_i = 1$ and we need only show that $1-h_j \leq \max(v) - v_j$ for all $j$.  If $v_j = \max(v)$ then $h_j = 0 = \min(v) - v_j$ and the results holds.  Otherwise if $v_j < \max(v)$ then $1-h_j \leq 1 \leq \max(v) - v_j$ because $\max(v)$ and $v_j$ are integers.
 
-Now, if $v_j = \max(v)$ then $h_j = 1$ and we need only show that $h_i - 1 \geq v_i - \max(v)$ for all $i$.  If $v_i = \max(v)$ then $h_i = 1$ and $h_i - 1 = 0 = v_i - \max(v)$.  Otherwise if $v_i < \max(v)$ then $h_i - 1 \geq -1 \geq v_i - \max(v)$.
+Now, if $v_j = \min(v)$ then $h_j = 0$ and we need only show that $h_i \leq v_i - \min(v)$ for all $i$.  If $v_i = \min(v)$ then $h_i = 0 = v_i - \min(v)$ and the results holds.  Otherwise if $v_i > \min(v)$ then $h_i \leq 1 \leq v_i - \min(v)$ because $\min(v)$ and $v_i$ are integers.
 \end{proof}
 
 \begin{lemma}\label{lem:rngdecreases}
@@ -479,25 +483,25 @@ By part~\ref{eq:lem:decSellingsincdec} of Lemma~\ref{lem:decSellings} we obtain
 \|Bp\|^2 - \|B(p+\onebf_S-\onebf_T)\|^2 = \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0.
 \end{equation}
 
-As stated already $h_i = 0$ whenever $v_i = \min(v)$ and $h_i = 1$ whenever $v_i = \max(v)$.  It follows by Lemma~\ref{eq:integergreaterless} that
+As stated already $h_i = 0$ whenever $v_i = \min(v)$ and $h_i = 1$ whenever $v_i = \max(v)$.  It follows from Lemma~\ref{eq:integergreaterless} that
 \begin{equation}\label{eq:hijvijieq}
-h_{i} - h_j \geq v_{i} - v_j
+h_{i} - h_j \leq v_{i} - v_j
 \end{equation}
-when either $v_i = \min(v)$ or $v_j = \max(v)$.  Since $v_i = \min(v)$ for $i \in T$ and $v_j = \max(v)$ for $j \in S$ the inequality~\eqref{eq:hijvijieq} holds whenever $i \in T$ or $j \in S$.
+when either $v_i = \max(v)$ or $v_j = \min(v)$.  Since $v_i = \max(v)$ for $i \in S$ and $v_j = \min(v)$ for $j \in T$ the inequality~\eqref{eq:hijvijieq} holds whenever $i \in S$ or $j \in T$.
 
-Put $r = z - u - h$.  By~\eqref{eq:hijvijieq} we have $r_i - r_j \leq p_{i} - p_{j}$ when either $i \in T$ or $j \in S$.  Now, since $q_{ij} \leq 0$ for $i \neq j$,
+Put $r = z - u - h$.  By~\eqref{eq:hijvijieq} we have $r_i - r_j \geq p_{i} - p_{j}$ when either $i \in S$ or $j \in T$.  Now, since $q_{ij} \leq 0$ for $i \neq j$,
 \[
-\Phi(S,r) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2r_i - 2r_j) \geq \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) = \Phi(S,p).
+\Phi(S,r) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2r_i - 2r_j) \leq \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j) = \Phi(S,p).
 \]
-Similarly
+Similarly,
 \[
-\Phi(\bar{T},r) = \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2r_i - 2r_j) \geq \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2p_i - 2p_j) = \Phi(\bar{T},p).
+\Phi(\bar{T},r) = \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2r_i - 2r_j) \leq \sum_{i \notin T}\sum_{j \in T}q_{ij}(1 + 2p_i - 2p_j) = \Phi(\bar{T},p).
 \]\
 Now
 \begin{align*}
 \|B(z-u-h)\|^2 - \|B(z-u-g)\|^2 &= \|Br\|^2 - \|B(r+\onebf_S - \onebf_T)\|^2 \\
 &= \Phi(S,r) + \Phi(\bar{T},r) + \sum_{i\in S}\sum_{j \in S} q_{ij} \\
-&\leq \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0. 
+&\leq \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0 
 \end{align*}
 as a result of~\eqref{eq:BpBpdecincineq}.  However, $d \in \{0,1\}^{n+1}$ and so
 \[
