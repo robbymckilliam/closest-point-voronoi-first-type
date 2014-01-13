@@ -466,11 +466,7 @@ fill ((-0.5, -0.5)--(-0.5, 0.5)--(0.5, 0.5)--(0.5, -0.5)--cycle)  scaled 15cm wi
 vorregion := currentpicture; currentpicture := ORIGINAL_PICTURE;
 
 picture picsphp;
-draw ((0.15000000000000002cm, 0.03cm)--(1.35cm, 0.27cm)) ;
-
-draw ((0.016666666666666666cm, -0.08333333333333334cm)--(-0.016666666666666666cm, 0.08333333333333334cm))  shifted (0.15000000000000002cm, 0.03cm);
-
-draw ((0.016666666666666666cm, -0.08333333333333334cm)--(-0.016666666666666666cm, 0.08333333333333334cm))  shifted (1.35cm, 0.27cm);
+drawarrow ((0.0cm, 0.0cm)--(1.5cm, 0.3cm)) ;
 
 label.top(btex $\displaystyle \rho$ etex, (0.75cm, 0.15cm)) ;
 

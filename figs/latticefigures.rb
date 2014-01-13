@@ -68,16 +68,16 @@ end
 picsphp = Picture.new('picsphp')
 v = M*Vector[1,0]/2.0
 inradp = Path.new
-alpha = 0.1
+alpha = 0.0
 inradp.add_pair(Pair.new((v[0]*alpha).cm, (v[1]*alpha).cm))
 inradp.add_pair(Pair.new((v[0]*(1-alpha)).cm, (v[1]*(1-alpha)).cm))
-picsphp.add_drawable(Draw.new(inradp))
-pv = Vector[1/v[0], -1/v[1]]*0.025
-lengthtickpair = Path.new
-lengthtickpair.add_pair(Pair.new(pv[0].cm,pv[1].cm))
-lengthtickpair.add_pair(Pair.new((-pv[0]).cm,(-pv[1]).cm))
-picsphp.add_drawable(Draw.new(lengthtickpair).translate((v[0]*alpha).cm, (v[1]*alpha).cm))
-picsphp.add_drawable(Draw.new(lengthtickpair).translate((v[0]*(1-alpha)).cm, (v[1]*(1-alpha)).cm))
+picsphp.add_drawable(Arrow.new(inradp))
+#pv = Vector[1/v[0], -1/v[1]]*0.025
+#lengthtickpair = Path.new
+#lengthtickpair.add_pair(Pair.new(pv[0].cm,pv[1].cm))
+#lengthtickpair.add_pair(Pair.new((-pv[0]).cm,(-pv[1]).cm))
+#picsphp.add_drawable(Draw.new(lengthtickpair).translate((v[0]*alpha).cm, (v[1]*alpha).cm))
+#picsphp.add_drawable(Draw.new(lengthtickpair).translate((v[0]*(1-alpha)).cm, (v[1]*(1-alpha)).cm))
 picsphp.add_drawable(Label.new(latex('$\displaystyle \rho$'), Pair.new((v[0]/2).cm, (v[1]/2).cm)) )
 (-7..7).each do |x|
   (-7..7).each do |y|

@@ -118,7 +118,7 @@ is called the \emph{packing radius} (or \emph{inradius}) of $\Lambda$~\cite{SPLA
 Let $\Lambda \subset \reals^{m}$ be an $n$-dimensional lattice with packing radius $\rho$.  Let $S$ be an $m$-dimensional hypersphere of radius $r$ centered at $t \in \reals^{m}$.  The number of lattice points from $\Lambda$ in the sphere $S$ is less than $\ceil{r/\rho}^{n}$ where $\ceil{\cdot}$ denotes the smallest integer strictly larger than its argument. 
  \end{proposition}
  \begin{proof}
-The packing radius $\rho$ is the point on the boundary of the Voronoi cell $\vor(\Lambda)$ that is closest to the origin. Therefore, the sphere $S$ is a subset of $\vor(\Lambda)$ scaled by $r/\rho$ and translated by $t$.  That is, $S \subset r/\rho \vor(\Lambda) + t$.  The proof follows because the number of lattice points in $r/\rho \vor(\Lambda) + t$ is less than $\ceil{r/\rho}^n$ (this follows from, for example, \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}, see also~\cite[Lemma~3.7]{Micciancio09adeterministic}).
+The packing radius $\rho$ is the Euclidean length of a point on the boundary of the Voronoi cell $\vor(\Lambda)$ that is closest to the origin. Therefore, the sphere $S$ is a subset of $\vor(\Lambda)$ scaled by $r/\rho$ and translated by $t$.  That is, $S \subset r/\rho \vor(\Lambda) + t$.  The proof follows because the number of lattice points in $r/\rho \vor(\Lambda) + t$ is less than $\ceil{r/\rho}^n$ (this follows from, for example, \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}, see also~\cite[Lemma~3.7]{Micciancio09adeterministic}).
 \end{proof}
  
 
@@ -189,8 +189,8 @@ Suppose no such finite $K$ exists, then
 \]
 and so $x_0,x_1,\dots$ is an infinite sequence of distinct (due to the strict inequality) lattice points  all contained inside an $n$-dimensional hypersphere of radius $r = \|y - x_0\|$ centered at $y$.  This is a contradiction because, if $\rho$ is the packing radius of the lattice, then less than $\ceil{r/\rho}^n$ lattice points lie inside this sphere by Proposition~\ref{eq:latticepointsinsphere}. 
 \end{proof}
-
-Proposition~\ref{obs:2} above asserts that after some finite number $K$ of iterations the procedure arrives at $x_K$, a closest lattice point to $y$.  Using Proposition~\ref{obs:1} we can detect that $x_K$ is a closest lattice point by asserting that $\|y - x_K\| \leq \| y - x_{K+1} \|$.
+ 
+Proposition~\ref{obs:2} above asserts that after some finite number $K$ of iterations the procedure arrives at $x_K$, a closest lattice point to $y$.  Using Proposition~\ref{obs:1} we can detect that $x_K$ is a closest lattice point by checking whether $\|y - x_K\| \leq \| y - x_{K+1} \|$.
 This simple iterative approach to compute a closest lattice point is related to what is called the \emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009}.  Micciancio~\cite{Micciancio09adeterministic} describes a related, but more sophisticated, iterative algorithm that can compute a closest lattice point in a number of operations that grows exponentially as $O(2^{2 n})$.  This single exponential growth in complexity is the best known.  %Most popular algorithms for computed closest lattice points require a number of operations of order $O(n^n)$\cite{Agrell2002,Viterbo_sphere_decoder_1999,Pohst_sphere_decoder_1981}. 
 
 Two factors contribute to the computational complexity of this iterative approach to compute a closest lattice point.  The first factor is computing the minimum over the set $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer}.  In general a lattice can have as many as $2^{n+1}-2$ relevant vectors so computing a minimiser directly can require a number of operations that grows exponentially with $n$.  To add to this it is typically the case that the set of relevant vectors $\relevant(\Lambda)$ must be stored in memory so the algorithm can require an amount of memory that grows exponentially with $n$.  We will show that for a lattice of Voronoi's first kind the set of relevant vectors has a compact representation in terms of what is called its \emph{obtuse superbasis}.  To store the obtuse superbasis requires an amount of memory of order $O(n^2)$ in the worst case.  We also show that for a lattice of Voronoi's first kind the minimisation over $\relevant(\Lambda) \cup \{\zerobf\}$ in~\eqref{eq:relvectsminimslicer} can be solved efficiently by computing a minimum cut in an undirected flow network.  Using known algorithms a minimiser can be computed in $O(n^3)$ operations~\cite{Goldberg:1986:NAM:12130.12144,EdmondsKarp_max_flow,Cormen2001}. 
@@ -226,6 +226,36 @@ The relevant vectors of $\Lambda$ are of the form,
 where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e., $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
 \end{theorem}  
  
+% A number of important lattices are of Voronoi's first kind.  For example, the \emph{root lattices} $\ints^n, A_n, E_6, E_7$ and $E_8$ are of Voronoi's first kind~\cite{SPLAG}.  The root lattice $E_8$ has obtuse superbasis
+% \[
+
+% \]
+
+% The root lattice $D_n$ has obtuse superbasis given by the vectors
+% \begin{align*}
+% b_1 &= -e_1 - e_2 \\
+% b_i &= e_{i} - e_{i+1}, \qquad i = 2,\dots,n \\
+% b_{n+1} &= e_{2} + e_{n}.
+% \end{align*}
+
+Classical examples of lattices of Voronoi's first kind are the $n$ dimensional root lattice $A_n$ and it's dual lattice $A_n^*$.  These lattices have convenient bases represented in $n+1$ dimensional space.  An obtuse superbasis for $A_n$ are $n+1$ vectors of length $n+1$ of the form
+\begin{align*}
+b_i &= e_i - e_{i+1}, \qquad i = 1, \dots, n \\
+b_{n+1} &= e_{n+1} - e_{1},
+\end{align*}
+where $e_i$ is a vector of length $n+1$ with elements equal to zero except for the $i$th element that is equal to one.  The dual lattice $A_{n}^*$ is also of Voronoi's first kind.  The $i$th vector $b_i$ of the obtuse superbasis is of length $n+1$ with $j$th element equal to
+\[
+b_{ij} = \begin{cases}
+\frac{n}{n+1} & j = i \\
+-\frac{1}{n+1} & j \neq i.
+\end{cases}
+\]
+For $A_n$ and $A_n^*$ there exists efficient algorithms that can compute a closest lattice point in $O(n)$ operations~\cite{McKilliam2009CoxeterLattices,Conway1982FastQuantDec}, and so, we do not recommend using the algorithm we describe here for these specific lattices.  %However, there exist a large number of lattice of first
+%A lattice of Voronoi's first kind appears nontrivial.  One approach would be to construct the matrix $Q = B^\prime B$ containing the Selling parameters $q_{ij}$.  The matrix $Q$ requires to have nonpositive off diagonal entries and to be positive semidefinite with null space containing the vector $\onebf$ of all ones.  The explicit construction of such matrices is an interesting question for future research.  A related question is to determine, in some sense, how `large' the set of matrices satisfying these criteria is.  This would shed some light on how `large' the set of lattices of Voronoi's first kind is.  
+
+
+\section{A series of relevant vectors from a lattice of Voronoi's first kind}
+
 We are interested in solving the closest lattice point problem for lattices of Voronoi's first kind.  Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  We want to find $n$ integers $w_1,\dots,w_n$ that minimise
 \[
 \| y - \sum_{i=1}^n b_i w_i \|^2.
@@ -617,8 +647,6 @@ because $\sum_{j=1}^{n+1} q_{ij} = 0$ due to the superbase condition~\eqref{eq:s
 The closest lattice point problem has a number of applications, for example, channel coding and data quantisation~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec,Erex2004_lattice_decoding,Erez2005}.  A significant hurdle in the practical application of lattices as codes or as quantisers is that computing a closest lattice point is computationally difficult in general~\cite{micciancio_hardness_2001}.  The best known general purpose algorithms require a number of operations of order $O(2^{2n})$~\cite{Micciancio09adeterministic}.
 
 In this paper we have focused on the class of lattices of Voronoi's first kind.  We have shown that computing a closest point in a lattice of Voronoi's first kind can be achieved in a comparatively modest number of operations of order $O(n^4)$.  Besides being of theoretical interest, the algorithm has potential for practical application.  A question of immediate interest is: do there exist lattices of Voronoi's first kind that produce good codes or good quantisers?  Since lattices that produce good codes and quantisers often also describe dense~\emph{sphere packings}~\cite{SPLAG}, a related question is: do there exist lattices of Voronoi's first kind that produce dense sphere packings?  These question do not appear to have trivial answers.  The questions have heightened importance due to the algorithm described in this paper.
-
-The root lattices $A_n$ and their dual lattices $A_n^*$ are classical examples of lattices of Voronoi's first kind~\cite{SPLAG}.  The construction of an `arbitrary' lattice of Voronoi's first kind appears nontrivial.  One approach would be to construct the matrix $Q = B^\prime B$ containing the Selling parameters $q_{ij}$.  The matrix $Q$ requires to have nonpositive off diagonal entries and to be positive semidefinite with null space containing the vector $\onebf$ of all ones.  The explicit construction of such matrices is an interesting question for future research.  A related question is to determine, in some sense, how `large' the set of matrices satisfying these criteria is.  This would shed some light on how `large' the set of lattices of Voronoi's first kind is.  
 
 A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than 4 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 4 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find an obtuse superbasis if it exists?
 

@@ -2,7 +2,7 @@
 %%BoundingBox: -185 -114 185 114 
 %%HiResBoundingBox: -184.25194 -113.3858 184.25194 113.3858 
 %%Creator: MetaPost 1.803
-%%CreationDate: 2013.12.15:0759
+%%CreationDate: 2014.01.13:1754
 %%Pages: 1
 %%DocumentResources: procset mpost-minimal
 %%+ font CMMI10
@@ -2166,12 +2166,13 @@ gsave newpath -184.25194 -113.3858 moveto
 -184.25194 113.3858 lineto
  closepath clip
  1 setlinecap
-newpath 4.2518 0.85036 moveto
-38.26788 7.65366 lineto stroke
-newpath 4.72412 -1.5117 moveto
-3.77948 3.21242 lineto stroke
-newpath 38.7402 5.2916 moveto
-37.79556 10.01572 lineto stroke
+newpath 0 0 moveto
+42.51968 8.50403 lineto stroke
+newpath 39.1959 6.27808 moveto
+42.51968 8.50403 lineto
+38.59544 9.28036 lineto
+ closepath
+gsave fill grestore stroke
 18.68443 9.189 moveto
 (\032) cmmi10 9.96265 fshow
 newpath -670.96866 -714.33047 moveto
