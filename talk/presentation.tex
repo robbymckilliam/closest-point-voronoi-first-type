@@ -2,7 +2,7 @@
 
 \input{presentationdefs}
 
-\input{../../../bib/mathbf-abbrevs.sty}
+\input{../mathbf-abbrevs.sty}
 
 \usepackage{ulem}
 
@@ -19,10 +19,14 @@
 \setbeamercovered{transparent=20}
 
 
-\title{Finding short vectors in a lattice of Voronoi's first kind}
-\author{Robby McKilliam and Alex Grant \\ 
+\title{Finding shortest and closest vectors in a lattice of Voronoi's first kind}
+\author{Robby McKilliam, Alex Grant, and I. Vaughan L. Clarkson \\ 
 \vspace{0.5cm}
-Institute for Telecommunications Research \\ University of South Australia
+{\small
+Institute for Telecommunications Research \\ University of South Australia 
+\\ \vspace{0.2cm}
+School of Information Technology and Electrical Engineering \\ The University of Queensland
+}
 }
 
 \date{\today}
@@ -36,13 +40,13 @@ Institute for Telecommunications Research \\ University of South Australia
 \frame{\tableofcontents}
 
 
-\section{Lattices and short vectors}
+\section{Lattices}
 
 \frame{
-\frametitle{Lattices and short vectors}
+\frametitle{Lattices}
 An $n$-dimensional \term{lattice} $\Lambda$ is a discrete set of vectors from $\reals^m$, $m \geq n$, given by
 \[
-  \Lambda = \{ x = b_1 u_1 + b_2u_2 + \dots + b_n u_n \mid u_1, \dots u_n \in \ints \},
+  \Lambda = \{ b_1 u_1 + b_2u_2 + \dots + b_n u_n \mid u_1, \dots u_n \in \ints \},
 \] 
 where $b_1, \dots, b_n \in \reals^m$ are \term{basis vectors} of $\Lambda$.
 }
@@ -50,15 +54,15 @@ where $b_1, \dots, b_n \in \reals^m$ are \term{basis vectors} of $\Lambda$.
 \frame{
 \begin{figure}[tp]
 	\centering 
-		\includegraphics[width=\linewidth]{preslatticefigures-1.mps}
+		\includegraphics[width=\linewidth]{figs/preslatticefigures-1.mps}
 		\caption{A 2-dimensional lattice.}
 		\label{fig:latfig1}
 \end{figure}
 }
 
 \frame{
-\frametitle{Lattices and short vectors}
-Those points in the lattice with smallest non-zero length are called \term{short vectors}.  That is, the short vectors have squared length
+\frametitle{Short vectors}
+Those lattice points with smallest non-zero length are called \term{short vectors}.  That is, the short vectors have squared length
 \[
 \min_{x\in \Lambda \backslash \{ 0 \} } \| x \|^2.
 \]
@@ -67,7 +71,7 @@ Those points in the lattice with smallest non-zero length are called \term{short
 \frame{
 \begin{figure}[tp]
 	\centering 
-		\includegraphics[width=\linewidth]{preslatticefigures-1.mps}
+		\includegraphics[width=\linewidth]{figs/preslatticefigures-1.mps}
 		\caption{A 2-dimensional lattice.}
 		\label{fig:latfig2}
 \end{figure}
@@ -76,14 +80,18 @@ Those points in the lattice with smallest non-zero length are called \term{short
 \frame{
 \begin{figure}[tp]
 	\centering 
-		\includegraphics[width=\linewidth]{preslatticefigures-3.mps}
+		\includegraphics[width=\linewidth]{figs/preslatticefigures-3.mps}
 		\caption{A 2-dimensional lattice.  There are 4 short vectors.}
 		\label{fig:latfigandpacking1}
 \end{figure}
 }
 
 \frame{
-\frametitle{Lattices and short vectors}
+\frametitle{The Voronoi cell}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
 \begin{itemize}
 \item Computing a short vector is called the \term{shortest vector problem}.
 \item Applications in cryptography and number theory.
@@ -93,8 +101,6 @@ Those points in the lattice with smallest non-zero length are called \term{short
 \item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
 \end{itemize}
 }
-
-
 
 \section{Lattices of Voronoi's first kind}
 \frame{
@@ -226,7 +232,7 @@ Let $G$ be a weighted graph with:
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-3.mps}
+        \includegraphics{figs/graphs-3.mps}
 		\caption{A graph with 4 vertices and 4 weighted edges.}
 		\label{fig:graphexample}
 \end{figure}
@@ -249,7 +255,7 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-4.mps}
+        \includegraphics{figs/graphs-4.mps}
 		\caption{A graph with 4 vertices and 4 weighted edges.}
 		\label{fig:graphexample2}
 \end{figure}
@@ -258,7 +264,7 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-5.mps} 
+        \includegraphics{figs/graphs-5.mps} 
 		\caption{The cut $C = \{v_2\}$ and $\bar{C} = \{v_1,v_3,v_4 \}$}
 		\label{fig:graphcut1}
 \end{figure}
@@ -267,7 +273,7 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-6.mps}
+        \includegraphics{figs/graphs-6.mps}
 		\caption{The cut $C = \{v_2\}$ and $\bar{C} = \{v_1,v_3,v_4 \}$ has weight 5.}
 		\label{fig:graphcut2}
 \end{figure}
@@ -276,7 +282,7 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-7.mps}
+        \includegraphics{figs/graphs-7.mps}
 		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$}
 		\label{fig:graphcut3}
 \end{figure}
@@ -285,7 +291,7 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-8.mps}
+        \includegraphics{figs/graphs-8.mps}
 		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$ has weight 2.}
 		\label{fig:graphcut4}
 \end{figure}
@@ -399,7 +405,7 @@ q_{41} & q_{42} & q_{43} & q_{44}
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-4.mps}
+        \includegraphics{figs/graphs-4.mps}
 		\caption{We have seen this graph before!}
 		%\label{fig:graphcut4}
 \end{figure}
@@ -409,14 +415,14 @@ q_{41} & q_{42} & q_{43} & q_{44}
 \frame{
 \begin{figure}[tp]
 	\centering 
-        \includegraphics{graphs-8.mps}
+        \includegraphics{figs/graphs-8.mps}
 		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$ has weight 2.}
 		%\label{fig:graphcut4}
 \end{figure}
 } 
 
 \frame{
-\frametitle{Another example}
+\frametitle{An example}
 The minimum cut corresponds with the short vectors
 \[
 b_1 + b_2 = [1,1,0]
@@ -428,47 +434,43 @@ b_3 + b_4 = -b_1 - b_2 = [-1,-1,0]
 of squared length 2.
 } 
 
-
-\section{What's next}
 \frame{
-\frametitle{What's next}
+\frametitle{Some questions we asked in 2012}
 
 \begin{itemize}
-\item Is it possible to efficiently decide whether a lattice is of Voronoi's first kind?
-\item Is it possible to efficiently find an obtuse superbase if it exists?
+\item Can we efficiently decide whether a lattice is of Voronoi's first kind?
+\item Can we efficiently find an obtuse superbase if it exists?
 \item Can a similar approach be taken to solve the \term{nearest lattice point problem}?
 \end{itemize}
 
 }
 
-% \frame{
-% \frametitle{The nearest point problem}
-% \begin{itemize}
-% \item Given some vector $y \in \reals^m$ we wish to find a lattice point $x \in \Lambda$ such that the squared Euclidean distance
-% \[
-% \| y - x \|^2
-% \] 
-% is minimised.  
-% \item Equivalently we can minimise
-% \[
-% \| y - \sum_{i=1}^{n+1} b_i u_i \|^2
-% \]
-% over integers $u_1,\dots,u_{n+1}$.
-% \end{itemize}
-% }
+\frame{
+\frametitle{Some questions we asked in 2012}
 
-% \frame{
-% \begin{theorem}
-% Let $z \in \reals^{n+1}$ be a column vector such that $y = \sum_{i=1}^{n+1}b_i z_i$.  A nearest point $x \in \Lambda$ to $y$ is of the form
-% \[
-% x = \sum_{i=1}^{n+1} b_i (\floor{z_i} + u_i)
-% \]
-% where the $u_i \in \{-1, 0, 1\}$ and $\floor{z_i}$ denotes the largest integer smaller that $z_i$.
-% \end{theorem}
+\begin{itemize}
+\item Can we \sout{efficiently} decide whether a lattice is of Voronoi's first kind? {\color{red}\textbf{Yes}}
+\item Can we \sout{efficiently} find an obtuse superbase if it exists? {\color{red}\textbf{Yes}}
+\item Can a similar approach be taken to solve the \term{closest lattice point problem}? {\color{red}\textbf{$O(n^4)$}}
+\end{itemize}
 
-% %So for a lattice of Voronoi's first kind, the nearest point problem can be turned into a quadratic minimisation problem over vectors in $u_i \in \{-1,0,1\}$ rather that $u_i \in \ints$.
+}
 
-% }
+\frame{
+START TALKING ABOUT CLOSEST POINT ALGORITHM
+}
+
+
+\section{What now?}
+\frame{
+\frametitle{What now?}
+
+\begin{itemize}
+\item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
+\item Signal processing applications, phase unwrapping, circular statistics, etc.
+\end{itemize}
+
+}
 
 
 

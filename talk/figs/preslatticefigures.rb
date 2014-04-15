@@ -270,4 +270,4 @@ fig.add_drawable(Draw.new(pic))
 file.add_figure(fig)
 
 file.compile
-file.view
+#file.view
