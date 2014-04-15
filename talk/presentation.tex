@@ -1,0 +1,475 @@
+\documentclass{beamer}
+
+\input{presentationdefs}
+
+\input{../../../bib/mathbf-abbrevs.sty}
+
+\usepackage{ulem}
+
+\usetheme{default}
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+
+%\usepackage{beamerthemesplit}
+
+%\usetheme[width=2.8cm, hideothersubsections]{Goettingen}
+%\usetheme[width=2.8cm]{Goettingen}
+
+\setbeamercovered{transparent=20}
+
+
+\title{Finding short vectors in a lattice of Voronoi's first kind}
+\author{Robby McKilliam and Alex Grant \\ 
+\vspace{0.5cm}
+Institute for Telecommunications Research \\ University of South Australia
+}
+
+\date{\today}
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\frame{\tableofcontents}
+
+
+\section{Lattices and short vectors}
+
+\frame{
+\frametitle{Lattices and short vectors}
+An $n$-dimensional \term{lattice} $\Lambda$ is a discrete set of vectors from $\reals^m$, $m \geq n$, given by
+\[
+  \Lambda = \{ x = b_1 u_1 + b_2u_2 + \dots + b_n u_n \mid u_1, \dots u_n \in \ints \},
+\] 
+where $b_1, \dots, b_n \in \reals^m$ are \term{basis vectors} of $\Lambda$.
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+		\includegraphics[width=\linewidth]{preslatticefigures-1.mps}
+		\caption{A 2-dimensional lattice.}
+		\label{fig:latfig1}
+\end{figure}
+}
+
+\frame{
+\frametitle{Lattices and short vectors}
+Those points in the lattice with smallest non-zero length are called \term{short vectors}.  That is, the short vectors have squared length
+\[
+\min_{x\in \Lambda \backslash \{ 0 \} } \| x \|^2.
+\]
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+		\includegraphics[width=\linewidth]{preslatticefigures-1.mps}
+		\caption{A 2-dimensional lattice.}
+		\label{fig:latfig2}
+\end{figure}
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+		\includegraphics[width=\linewidth]{preslatticefigures-3.mps}
+		\caption{A 2-dimensional lattice.  There are 4 short vectors.}
+		\label{fig:latfigandpacking1}
+\end{figure}
+}
+
+\frame{
+\frametitle{Lattices and short vectors}
+\begin{itemize}
+\item Computing a short vector is called the \term{shortest vector problem}.
+\item Applications in cryptography and number theory.
+\item NP-hard for arbitrary lattices.
+\item Easier for specific lattices.
+\item For example, short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$ and $D_n$.
+\item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
+\end{itemize}
+}
+
+
+
+\section{Lattices of Voronoi's first kind}
+\frame{
+\frametitle{Lattices of Voronoi's first kind}
+An $n$-dimensional lattice $\Lambda$ is of \term{Voronoi's first kind} if it has an \term{obtuse superbase}, that is, a set of $n+1$ vectors 
+\[
+b_1,\dots,b_{n+1}
+\] 
+such that
+\begin{itemize}
+\item $b_1,\dots,b_n$ are a basis for $\Lambda$,
+\item $b_1 + b_2 \dots + b_{n+1} = 0$ \hspace{0.2cm} (the superbase condition),
+\item $q_{ij} = b_i \cdot b_j \leq 0$ whenever $i \neq j$ \hspace{0.2cm} (the obtuse condition).
+\end{itemize}
+\vspace{0.2cm}
+The $q_{ij}$ are called \term{Selling parameters}.
+%\begin{itemize}
+%\item Conway and Sloane have shown that every lattice of dimensional less than 3 is of Vornoi's first kind.
+%\end{itemize}
+}
+
+\frame{
+\frametitle{An example}
+Consider the 3-dimensional lattice with basis
+\[
+\begin{split}
+b_1 &= \left[ \begin{array}{rrr} 2 & -1 & 0 \end{array}\right] \\
+b_2 &= \left[ \begin{array}{rrr}  -1 & 2 & 0  \end{array}\right] \\
+b_3 &= \left[ \begin{array}{rrr}  0 & 0 & 2   \end{array}\right].
+\end{split}
+\]
+Define a $4$th vector as
+\[
+b_4 = -b_1 - b_2 - b_3 =  \left[ \begin{array}{rrr} -1 &  -1  & -2 \end{array}\right],
+\]
+so that $b_1, b_2, b_3, b_4$ satisfy the superbase condition.
+}
+
+\frame{
+\frametitle{An example}
+The Selling parameters can be written in a matrix
+\[
+\left[ \begin{array}{cccc} 
+q_{11} & q_{12} & q_{13} & q_{14}\\
+q_{21} & q_{22} & q_{23} & q_{24} \\
+q_{31} & q_{32} & q_{33} & q_{34} \\
+q_{41} & q_{42} & q_{43} & q_{44}
+ \end{array}\right]
+=
+\left[ \begin{array}{rrrr} 
+5 & -4 & 0 & -1 \\
+-4 & 5 & 0 & -1 \\
+0 & 0 & 4 & -4 \\
+-1 & -1 & -4 & 6
+ \end{array}\right].
+\]
+The off diagonal elements are not positive so the obtuse condition is satisfied.
+%\begin{itemize}
+%\item All lattices of dimension less than 4 are of Vornoi's first kind.
+%\end{itemize}
+} 
+
+% \frame{
+% \frametitle{Example: The root lattice $A_n$}
+% \begin{itemize}
+% \item The root lattice $A_n$ is of Voronoi's first kind.
+% \item An obtuse superbase is all cyclic shifts of the vector 
+% \[
+% \left[ \begin{array}{rrrrrrr} 1 & -1 & 0 & 0 & \cdots & 0 \end{array}\right]
+% \] 
+% from $\reals^{n+1}$, that is,
+% \begin{align*}
+% b_1 &= \left[ \begin{array}{rrrrrrr} 1 & -1 & 0 & 0 & \cdots & 0 \end{array}\right] \\
+% b_2 &= \left[ \begin{array}{rrrrrrr} 0 & 1 & -1 & 0 & \cdots & 0 \end{array}\right] \\
+% &\vdots \\
+% b_{n+1} &= \left[ \begin{array}{rrrrrrr} -1 & 0 & 0 & \cdots & 0 & 1 \end{array}\right].
+% \end{align*}
+% \item The Selling parameters are 
+% \[
+% q_{ij} = \dotprod{b_i}{b_j} = \begin{cases} 2, & i = j \\
+% -1, & i - j \equiv 1 \bmod{n+1} \\
+% 0, & \text{otherwise}.
+% \end{cases}
+% \]
+% \end{itemize}
+% }
+
+
+
+\frame{
+\frametitle{Lattices of Voronoi's first kind}
+\begin{theorem}
+Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase 
+\[
+b_1, \dots, b_{n+1}.
+\]  
+The short vectors in $\Lambda$ are of the form 
+\[
+\sum_{i \in I} b_i
+\] 
+where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ and $I$ is not empty.
+\end{theorem}
+}
+
+\frame{
+\frametitle{Lattices of Voronoi's first kind}
+A na\"{i}ve way to compute a short vector is to compute
+\[
+\| \sum_{i \in I} b_i \|^2
+\]
+for all of the $2^{n+1} - 2$ possible subsets $I$.  
+\begin{itemize}
+\item Requires a number of operations that grows exponentially with the dimension $n$.
+\item We can improve this using a \term{minimum cut algorithm}.
+\end{itemize}
+}
+
+\section{Graphs, cuts, and minimum cuts}
+\frame{
+\frametitle{Graphs, cuts, and minimum cuts}
+Let $G$ be a weighted graph with:
+\begin{itemize}
+\item $n+1$ vertices $v_1, \dots, v_{n+1}$,  
+\item edges $e_{ij}$ connecting vertex $v_i$ to vertex $v_j$,
+\item edge weights $w_{ij} \in \reals$.
+\end{itemize} 
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-3.mps}
+		\caption{A graph with 4 vertices and 4 weighted edges.}
+		\label{fig:graphexample}
+\end{figure}
+}
+
+\frame{
+\frametitle{Graphs, cuts, and minimum cuts}
+A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ and its complement $\bar{C}$.
+\begin{itemize}
+\item The \term{weight} of a cut is the sum of the weights on the edges crossing from the vertices in $C$ to the vertices in $\bar{C}$.%, that is,
+%\[
+%W(C,\bar{C}) = \sum_{i \in I} \sum_{j \in J} w_{ij}, 
+%\]
+%where $I = \{ i \mid v_i \in C\}$ and $J = \{j \mid v_j \in \bar{C}\}$.
+%\item \term{Loops} and zero weight edges don't affect the weight of any cut, so we ignore them.
+\item A \term{minimum cut} is a pair ($C$,$\bar{C}$) with smallest weight. %that minimise $W(C,\bar{C})$.  
+\end{itemize} 
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-4.mps}
+		\caption{A graph with 4 vertices and 4 weighted edges.}
+		\label{fig:graphexample2}
+\end{figure}
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-5.mps} 
+		\caption{The cut $C = \{v_2\}$ and $\bar{C} = \{v_1,v_3,v_4 \}$}
+		\label{fig:graphcut1}
+\end{figure}
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-6.mps}
+		\caption{The cut $C = \{v_2\}$ and $\bar{C} = \{v_1,v_3,v_4 \}$ has weight 5.}
+		\label{fig:graphcut2}
+\end{figure}
+} 
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-7.mps}
+		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$}
+		\label{fig:graphcut3}
+\end{figure}
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-8.mps}
+		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$ has weight 2.}
+		\label{fig:graphcut4}
+\end{figure}
+} 
+
+\frame{
+\frametitle{Graphs, cuts, and minimum cuts}
+If the edge weights $w_{ij}$ are all nonnegative, a minimum cut can be computed:
+\begin{itemize}
+\item deterministically in $O(n^3)$ operations using the algorithm of Stoer and Wagner,
+\item with high probability in $O(n^2 \log(n)^3)$ operations using the randomised algorithm of Karger and Stien.
+\end{itemize}	
+}
+ 
+     
+\frame{
+\begin{theorem}
+Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase 
+\[
+b_1, \dots, b_{n+1}.
+\]  
+Let $G$ be a graph with $n+1$ vertices $v_{1}, \dots, v_{n+1}$ and edge weights 
+\[
+w_{ij} = -q_{ij} = -b_i \cdot b_j \geq 0 \qquad i \neq j.
+\]  
+Let $(C, \bar{C})$ be a minimum cut in $G$.  A short vector in $\Lambda$ is 
+\[
+\sum_{i \in I} b_i \;\;\; \text{where} \;\;\; I = \{ i \mid v_i \in C\}.
+\]  
+The squared length of the short vector is given by the weight of the minimum cut. %$W(C,\bar{C})$.
+\end{theorem}
+}
+
+\section{Examples}
+
+% \frame{
+% \frametitle{Example: The root lattice $A_n$}
+% \begin{itemize} 
+% \item Recall the root lattice $A_n$ of Voronoi's first kind.
+% \item The Selling parameters are
+% \[ 
+% q_{ij} = \dotprod{b_i}{b_j} = \begin{cases} 2, & i = j \\
+% -1, & i - j \equiv 1 \bmod{n+1} \\
+% 0, & \text{otherwise}.
+% \end{cases}
+% \]  
+% \item The corresponding graph has positive edge weights
+% \[
+% w_{ij} = 1 \qquad i - j \equiv 1 \bmod{n+1}.
+% \]
+% \item This is the cycle graph with $n+1$ vertices and weight 1 on every edge.
+% \end{itemize}
+% }
+
+% \frame{
+% \begin{figure}[tp]
+% 	\centering 
+%         \includegraphics{cyclegraph-1.mps}
+% 		\caption{The cycle graph corresponding to $A_n$.}
+% 		\label{fig:graphcycleAn}  
+% \end{figure}
+% }
+
+% \frame{
+% \begin{figure}[tp]
+% 	\centering 
+%         \includegraphics{cyclegraph-2.mps}
+% 		\caption{Cut corresponding with short vector $b_1 = [1,-1,0,\dots,0]$}
+% 		\label{fig:graphcycleAn}  
+% \end{figure}
+% } 
+
+% \frame{
+% \begin{figure}[tp]
+% 	\centering 
+%         \includegraphics{cyclegraph-3.mps} 
+% 		\caption{Cut corresponding with $b_1+b_{2}+b_3 = [1,0,0,-1\dots,0]$}
+% 		\label{fig:graphcycleAn}  
+% \end{figure}
+% } 
+
+\frame{
+\frametitle{An example}
+Consider again the 3-dimensional lattice with obtuse superbase
+\[
+\begin{split}
+b_1 &= \left[ \begin{array}{rrr} 2 & -1 & 0 \end{array}\right] \\
+b_2 &= \left[ \begin{array}{rrr}  -1 & 2 & 0  \end{array}\right] \\
+b_3 &= \left[ \begin{array}{rrr}  0 & 0 & 2   \end{array}\right] \\
+b_4 &= \left[ \begin{array}{rrr} -1 &  -1  & -2 \end{array}\right].
+\end{split} 
+\]
+The Selling parameters are given in matrix form as
+\[
+\left[ \begin{array}{cccc} 
+q_{11} & q_{12} & q_{13} & q_{14}\\
+q_{21} & q_{22} & q_{23} & q_{24} \\
+q_{31} & q_{32} & q_{33} & q_{34} \\
+q_{41} & q_{42} & q_{43} & q_{44}
+ \end{array}\right]
+=
+\left[ \begin{array}{rrrr} 
+5 & -4 & 0 & -1 \\
+-4 & 5 & 0 & -1 \\
+0 & 0 & 4 & -4 \\
+-1 & -1 & -4 & 6
+ \end{array}\right].
+\]
+}
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-4.mps}
+		\caption{We have seen this graph before!}
+		%\label{fig:graphcut4}
+\end{figure}
+} 
+
+
+\frame{
+\begin{figure}[tp]
+	\centering 
+        \includegraphics{graphs-8.mps}
+		\caption{The minimum cut $C = \{v_3,v_4\}$ and $\bar{C} = \{v_1,v_2 \}$ has weight 2.}
+		%\label{fig:graphcut4}
+\end{figure}
+} 
+
+\frame{
+\frametitle{Another example}
+The minimum cut corresponds with the short vectors
+\[
+b_1 + b_2 = [1,1,0]
+\]
+and 
+\[
+b_3 + b_4 = -b_1 - b_2 = [-1,-1,0]
+\]
+of squared length 2.
+} 
+
+
+\section{What's next}
+\frame{
+\frametitle{What's next}
+
+\begin{itemize}
+\item Is it possible to efficiently decide whether a lattice is of Voronoi's first kind?
+\item Is it possible to efficiently find an obtuse superbase if it exists?
+\item Can a similar approach be taken to solve the \term{nearest lattice point problem}?
+\end{itemize}
+
+}
+
+% \frame{
+% \frametitle{The nearest point problem}
+% \begin{itemize}
+% \item Given some vector $y \in \reals^m$ we wish to find a lattice point $x \in \Lambda$ such that the squared Euclidean distance
+% \[
+% \| y - x \|^2
+% \] 
+% is minimised.  
+% \item Equivalently we can minimise
+% \[
+% \| y - \sum_{i=1}^{n+1} b_i u_i \|^2
+% \]
+% over integers $u_1,\dots,u_{n+1}$.
+% \end{itemize}
+% }
+
+% \frame{
+% \begin{theorem}
+% Let $z \in \reals^{n+1}$ be a column vector such that $y = \sum_{i=1}^{n+1}b_i z_i$.  A nearest point $x \in \Lambda$ to $y$ is of the form
+% \[
+% x = \sum_{i=1}^{n+1} b_i (\floor{z_i} + u_i)
+% \]
+% where the $u_i \in \{-1, 0, 1\}$ and $\floor{z_i}$ denotes the largest integer smaller that $z_i$.
+% \end{theorem}
+
+% %So for a lattice of Voronoi's first kind, the nearest point problem can be turned into a quadratic minimisation problem over vectors in $u_i \in \{-1,0,1\}$ rather that $u_i \in \ints$.
+
+% }
+
+
+
+\end{document}
