@@ -91,6 +91,23 @@ Those lattice points with smallest non-zero length are called \term{short vector
 }
 
 \frame{
+PICTURE OF VORONOI CELL
+}
+
+\frame{
+\frametitle{Relevant vectors}
+}
+
+\frame{
+PICTURE OF RELEVANT VECTORS
+}
+
+\frame{
+\frametitle{}
+}
+
+
+\frame{
 \frametitle{The shortest vector problem}
 \begin{itemize}
 \item Computing a short vector is called the \term{shortest vector problem}.
@@ -100,6 +117,11 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \item For example, short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$ and $D_n$.
 \item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
 \end{itemize}
+}
+
+\frame{
+\frametitle{The closest lattice point problem}
+ADD THIS
 }
 
 \section{Lattices of Voronoi's first kind}
@@ -193,16 +215,16 @@ The off diagonal elements are not positive so the obtuse condition is satisfied.
 \frame{
 \frametitle{Lattices of Voronoi's first kind}
 \begin{theorem}
-Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase 
-\[
-b_1, \dots, b_{n+1}.
-\]  
-The short vectors in $\Lambda$ are of the form 
+Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  The relevant vectors in $\Lambda$ are of the form 
 \[
 \sum_{i \in I} b_i
 \] 
 where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ and $I$ is not empty.
 \end{theorem}
+
+\begin{corollary}
+Short vectors in $\Lambda$ are of the form $\sum_{i \in I} b_i$.
+\end{corollary}
 }
 
 \frame{
@@ -441,6 +463,17 @@ of squared length 2.
 \item Can we efficiently decide whether a lattice is of Voronoi's first kind?
 \item Can we efficiently find an obtuse superbase if it exists?
 \item Can a similar approach be taken to solve the \term{nearest lattice point problem}?
+\end{itemize}
+
+}
+
+\frame{
+\frametitle{Some questions we asked in 2012}
+
+\begin{itemize}
+\item Can we \sout{efficiently} decide whether a lattice is of Voronoi's first kind? {\color{red}\textbf{Yes}}
+\item Can we \sout{efficiently} find an obtuse superbase if it exists? {\color{red}\textbf{Yes}}
+\item Can a similar approach be taken to solve the \term{closest lattice point problem}? 
 \end{itemize}
 
 }
