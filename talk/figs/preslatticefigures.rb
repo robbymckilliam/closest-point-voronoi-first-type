@@ -23,8 +23,6 @@ yaxis.add_pair(Pair.new(0, 3.95.cm))
 #axes.add_drawable(Label.new(latex("$y$"), Pair.new(0,3.95.cm)).bottom_right)
 #axes.add_drawable(Label.new(latex("$x$"), Pair.new(3.95.cm, 0)).top_left)
 
-
-
 pic = Picture.new('picL')
 pic.add_drawable(Draw.new(axes))
 
@@ -157,7 +155,7 @@ end
 #this is a figure that shows a sphere packing and the inradius
 fig3 = Figure.new
 #fig3.add_drawable(Clip.new(Square.new, vorPic).scale(2.cm))
-fig.add_drawable(Clip.new("(-4.05cm,-3.1cm)--(4.05cm,-3.1cm)--(4.05cm,3.1cm)--(-4.05cm,3.1cm)--cycle", picsphp))
+fig3.add_drawable(Clip.new("(-4.05cm,-3.1cm)--(4.05cm,-3.1cm)--(4.05cm,3.1cm)--(-4.05cm,3.1cm)--cycle", picsphp))
 #fig3.add_drawable(Clip.new(Square.new, piccovering).scale(7.93.cm))
 #fig3.add_drawable(Draw.new(vorPic).scale(3))
 fig3.add_drawable(Draw.new(picsphp))
@@ -172,13 +170,14 @@ picrel = Picture.new('picrel')
 picrel.add_drawable(Draw.new(axes))
 (-4..4).each do |x|
 	(-4..4).each do |y|
-		v = M*Vector[x,y]*2
+		v = M*Vector[x,y]*1.6
 		picrel.add_drawable(Fill.new(Circle.new()).scale(0.05.cm).translate(v[0].cm,v[1].cm).colour(0.8,0.1,0.1))
 	end
 end
 
 #this is a figure that shows a sphere packing and the inradius
 fig4 = Figure.new
+fig4.add_drawable(Clip.new("(-4.5cm,-3.1cm)--(4.5cm,-3.1cm)--(4.5cm,3.1cm)--(-4.5cm,3.1cm)--cycle", picrel))
 fig4.add_drawable(Clip.new(Square.new, vorPic).scale(2.cm))
 fig4.add_drawable(Clip.new(Square.new, picrel).scale(7.93.cm))
 fig4.add_drawable(Draw.new(vorPic).scale(2.0))
@@ -186,7 +185,7 @@ fig4.add_drawable(Draw.new(picrel))
 (-1..1).each do |x|
 	(-1..1).each do |y|
     if( (x+y).abs != 2 ) 
-      v = M*Vector[x,y]*(2.0)
+      v = M*Vector[x,y]*(1.6)
       relv = Path.new
       relv.add_pair(Pair.new).add_pair(Pair.new(v[0].cm, v[1].cm))
       fig4.add_drawable(Arrow.new(relv))
