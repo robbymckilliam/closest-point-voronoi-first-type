@@ -75,11 +75,11 @@ H_{v} &= \{x \in \reals^n \mid \|x\| \leq \|x - v\| \} \\
 for all $v \in \Lambda \backslash  \{\zerobf\}$.  %We denote by $x^\prime$ the transpose of the vector $x$ and so $\dotprod{x}{v}$ is the inner product between column vectors $x$ and $v$.  
 We denote by $\dotprod{x}{v}$ the inner product between vectors $x$ and $v$.
 It is not necessary to consider all $v \in \Lambda \backslash  \{\zerobf\}$ to define the Voronoi cell.   %Figure \ref{lattices:fig:vorregion} depicts the relevant vectors of the lattice with generator given by~\eqref{lattices:eq:genB}.  A lattice point in $\calR$ is called \term{relevant}. The following remark follow trivially from the preceding discussion.
-The \emph{relevant vectors} $v \in \Lambda$ are those for which  
+The \emph{relevant vectors} are those lattice points $v \in \Lambda \backslash  \{\zerobf\}$ for which  
 \[
-\dotprod{v}{x} \leq \dotprod{x}{x}
+\dotprod{v}{x} \leq \dotprod{x}{x} \qquad \text{for all $x \in \Lambda$}.
 \]
-for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.  We denote by $\relevant(\Lambda)$ the set of relevant vectors of the lattice $\Lambda$.  The Voronoi cell is the intersection of the halfspaces corresponding with the relevant vectors, that is, 
+We denote by $\relevant(\Lambda)$ the set of relevant vectors of the lattice $\Lambda$.  The Voronoi cell is the intersection of the halfspaces corresponding with the relevant vectors, that is, 
 \[
 %\begin{equation}\label{eq:defvortermsrelvecs}
 \vor(\Lambda) = \cap_{v\in\relevant(\Lambda)}{H_{v}}.
@@ -87,9 +87,8 @@ for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.  We denote by $\re
 \]
 The closest lattice point problem and the Voronoi cell are related in that $x\in\Lambda$ is a closest lattice point to $y$ if and only $y - x \in \vor(\Lambda)$, that is, if and only if
 \begin{equation}\label{eq:relvectnearpointieq}
-\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v}
+\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v} \qquad \text{for all $v \in \relevant(\Lambda)$}.  
 \end{equation} 
-for all $v \in \relevant(\Lambda)$.  
 
 % Every short vector in a lattice is also a relevant vector, because, if a lattice point $s$ is not relevant there exists a lattice point $x$ not equal to $s$ or $\zerobf$ such that $\dotprod{x}{s} \geq \dotprod{x}{x}$ or equivalently $\dotprod{\tfrac{x}{\|x\|}}{s} \geq \|x\|$ after dividing by $\|x\|$.  Since both $\tfrac{x}{\|x\|}$ and $\tfrac{s}{\|s\|}$ are unit vectors and $s \neq x$ then,
 % \[

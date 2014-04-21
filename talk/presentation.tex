@@ -103,7 +103,7 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \frame{ 
 \frametitle{The Voronoi cell}
 
-The \term{Voronoi cell} of a lattice $\Lambda \subset \reals^m$ is the subset of $\reals^m$ with points at least as close to the origin than to any lattice point,
+The \term{Voronoi cell} of a lattice $\Lambda \subset \reals^m$ is the subset of $\reals^m$ at least as close to the origin than to any lattice point,
 \[
 \vor(\Lambda) = \{ x \in \reals^m \mid \|x\| \leq \|x - y\|, y \in \Lambda \}.
 \]
@@ -138,14 +138,13 @@ The \term{relevant vectors} of a lattice $\Lambda$ are those which contribute a 
 \frame{ 
 \frametitle{Relevant vectors}
 \begin{itemize}
-\item The set of relevant vectors $\relevant(\Lambda)$ contains those $v \in \Lambda$ such that  
+\item The relevant vectors are those $v \in \Lambda \backslash \{0\}$ such that  
 \[
-\dotprod{v}{x} \leq \dotprod{x}{x}
+\dotprod{v}{x} \leq \dotprod{x}{x} \qquad \text{for all $x \in \Lambda$.}
 \]
-for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.  
 \item The Voronoi cell can be defined using the relevant vectors, 
 \[
-\vor(\Lambda) = \{ x \in\reals^m \mid \|x\| \leq \|x - v\|, v \in\relevant(\Lambda) \}
+\vor(\Lambda) = \{ x \in\reals^m \mid \|x\| \leq \|x - v\|, v \in\relevant(\Lambda) \}.
 \]
 \item Short vectors are relevant vectors.
 \end{itemize}
@@ -163,7 +162,7 @@ for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.
 \frame{
 \frametitle{The closest lattice point problem}
 
-Given a lattice $\Lambda \subset \reals^m$ and a vector $y \in \reals^m$, a problem of interest is to find $x \in \Lambda$ such that
+Given a lattice $\Lambda \subset \reals^m$ and a vector $y \in \reals^m$ find $x \in \Lambda$ such that
 \[
 \| y - x \|^2
 \] 
@@ -598,7 +597,7 @@ of squared length 2.
 Let $x_0$ be some lattice point from $\Lambda$ and consider the following iteration,
 \begin{align*}
 x_{k+1} &= x_k + v_k \\
-v_k &= \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\} } \|y - x_k - v \|
+v_k &= \arg\min_{ v \in \relevant(\Lambda) \cup \{0\} } \|y - x_k - v \|
 \end{align*} 
 }
 
@@ -631,7 +630,7 @@ x_K, x_{K+1}, x_{K+2}, \dots
 \item The initial point $x_0$ affects $K$.
 \item Minimising over the set of relevant vectors, that is computing
 \[
-\arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\} } \|y - x_k - v \|
+\arg\min_{ v \in \relevant(\Lambda) \cup \{0\} } \|y - x_k - v \|
 \]
 might be expensive.
 \item There are as many as $2^{n+1}-2$ relevant vectors.
