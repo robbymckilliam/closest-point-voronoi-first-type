@@ -87,37 +87,6 @@ Those lattice points with smallest non-zero length are called \term{short vector
 }
 
 \frame{
-\frametitle{The Voronoi cell}
-}
-
-\frame{
-\begin{figure}[tp]
-	\centering 
-		\includegraphics{figs/latticefigures-1.mps}
-		\caption{A 2-dimensional lattice and the Voronoi cell.}
-		\label{fig:latfigandpacking1}
-\end{figure}
-}
-
-\frame{
-\frametitle{Relevant vectors}
-}
-
-\frame{
-\begin{figure}[tp]
-	\centering 
-		\includegraphics{figs/latticefigures-1.mps} 
-		\caption{A 2-dimensional lattice with 6 relevant vectors.}
-		\label{fig:latfigandpacking1}
-\end{figure}
-}
-
-\frame{
-\frametitle{}
-}
-
-
-\frame{
 \frametitle{The shortest vector problem}
 \begin{itemize}
 \item Computing a short vector is called the \term{shortest vector problem}.
@@ -128,11 +97,83 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
 \end{itemize}
 }
+ 
+\frame{ 
+\frametitle{The Voronoi cell}
+
+The \term{Voronoi cell} of a lattice $\Lambda \subset \reals^m$ is the subset of $\reals^m$ with points at least as close to the origin than to any lattice point,
+\[
+\vor(\Lambda) = \{ x \in \reals^m \mid \|x\| \leq \|x - y\|, y \in \Lambda \}.
+\]
+
+}  
+
+\frame{ 
+\begin{figure}[tp]
+	\centering 
+		\includegraphics{figs/voronoicell-1.mps}
+		\caption{A 2-dimensional lattice and its Voronoi cell.}
+		\label{fig:latfigandpacking1} 
+\end{figure}
+}
+
+\frame{ 
+\frametitle{Relevant vectors}
+
+The \term{relevant vectors} of a lattice $\Lambda$ are those which contribute a face to the Voronoi cell.  
+
+}
 
 \frame{
-\frametitle{The closest lattice point problem}
-ADD THIS
+\begin{figure}[tp] 
+	\centering 
+		\includegraphics{figs/relevantvectors-1.mps}  
+		\caption{A 2-dimensional lattice with 6 relevant vectors.}
+		\label{fig:latfigandpacking1}
+\end{figure}
 }
+
+\frame{ 
+\frametitle{Relevant vectors}
+\begin{itemize}
+\item The set of relevant vectors $\relevant(\Lambda)$ contains those $v \in \Lambda$ such that  
+\[
+\dotprod{v}{x} \leq \dotprod{x}{x}
+\]
+for all $x \in \Lambda$ with $x \neq v$ and $x \neq \zerobf$.  
+\item The Voronoi cell can be defined using the relevant vectors, 
+\[
+\vor(\Lambda) = \{ x \in\reals^m \mid \|x\| \leq \|x - v\|, v \in\relevant(\Lambda) \}
+\]
+\item Short vectors are relevant vectors.
+\end{itemize}
+}
+
+\frame{
+\begin{figure}[tp] 
+	\centering 
+		\includegraphics{figs/relevantvectorsandspherepacking-1.mps}   
+		\caption{A lattice with 6 relevant vectors and 4 short vectors.}
+		\label{fig:latfigandpacking1}
+\end{figure}
+}
+
+\frame{
+\frametitle{Closest lattice points}
+
+Given a lattice $\Lambda \subset \reals^m$ and a vector $y \in \reals^m$, a problem of interest is to find $x \in \Lambda$ such that
+\[
+\| y - x \|^2
+\] 
+is minimised.  
+
+\begin{itemize}
+\item This is called the \term{closest lattice point problem} and a solution is called a \term{closest lattice point} to $y$
+\end{itemize}
+
+}
+
+
 
 \section{Lattices of Voronoi's first kind}
 \frame{
