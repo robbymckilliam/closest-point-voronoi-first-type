@@ -171,6 +171,10 @@ is minimised.
 
 \begin{itemize}
 \item This is called the \term{closest lattice point problem} and a solution is called a \term{closest lattice point} to $y$.
+\item The lattice point $x \in \Lambda$ is closest to $y \in \reals^m$ if and only if
+\[
+y \in \vor(\Lambda) + x.
+\]
 \end{itemize}
 
 }
@@ -185,20 +189,16 @@ is minimised.
 \end{figure}
 }
 
-\frame{
-\frametitle{The closest lattice point problem}
-\begin{itemize}
-\item The lattice point $x \in \Lambda$ is closest to $y \in \reals^m$ if and only if
-\[
-y \in \vor(\Lambda) + x.
-\]
-\item Equivalently $x$ is closest to $y$ if and only if
-\[
-\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v}
-\]
-for all $v \in \relevant(\Lambda)$.
-\end{itemize}
-}
+% \frame{
+% \frametitle{The closest lattice point problem}
+% \begin{itemize}
+% \item Equivalently $x$ is closest to $y$ if and only if
+% \[
+% \dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v}
+% \]
+% for all $v \in \relevant(\Lambda)$.
+% \end{itemize}
+% }
 
 \frame{
 \frametitle{The closest lattice point problem}
@@ -638,11 +638,12 @@ might be expensive.
 \end{itemize}
 }
 
+
 \frame{
 \frametitle{A series of relevant vectors}
 For a lattice of Voronoi's first kind:
 \begin{itemize}
-\item The intial point $x_0$ can be chosen to ensure that at most $K = n$ iterations is required before a closest point in found.
+\item $x_0$ can be chosen to ensure that a closest lattice point in found after at most $K \leq n$ iterations.
 \item Minimisation over the set of relevant vector can be performed by computing a minimimum cut in a flow network.
 \item Using known algorithms a minimum cut can be found in $O(n^3)$ operations.
 \item In total $O(n^4)$ operations are required to compute a closest lattice point.
@@ -651,14 +652,20 @@ For a lattice of Voronoi's first kind:
 
 \frame{
 \frametitle{A series of relevant vectors}
-{\color{gray}For a lattice of Voronoi's first kind:}
-\begin{itemize}
-\item The intial point $x_0$ can be chosen to ensure that at most $K = n$ iterations is required before a closest point in found.
-\item {\color{gray}Minimisation over the set of relevant vector can be performed by computing a minimimum cut in a flow network.}
-\item {\color{gray}Using known algorithms a minimum cut can be found in $O(n^3)$ operations.}
-\item {\color{gray}In total $O(n^4)$ operations are required to compute a closest lattice point.}
-\end{itemize}
+
+\begin{theorem}
+Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  Let $z_1,\dots,z_{n+1} \in \reals$ minimise
+\[
+\| y - \sum_{n=1}^{n+1} b_i z_i \| 
+\]
+and put
+\[
+x_0 = \sum_{n=1}^{n+1} b_i \floor{z_i}.
+\]
+The iterative proceedure, initialized at $x_0$, converges to a closest lattice point in at most $K \leq n$ iterations.
+\end{theorem}
 }
+
 
 
 \section{What now?}
@@ -667,7 +674,7 @@ For a lattice of Voronoi's first kind:
 
 \begin{itemize}
 \item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
-\item Do applications, such as global position, phase unwrapping, circular statistics, involve lattices of Voronoi's first kind?
+\item Do applications such as global position, phase unwrapping, circular statistics, etc., involve lattices of Voronoi's first kind?
 \end{itemize}
 
 }
