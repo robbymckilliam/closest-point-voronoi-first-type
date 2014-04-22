@@ -21,7 +21,7 @@
 
 \title{Finding shortest and closest vectors in a lattice of Voronoi's first kind}
 \author{Robby McKilliam \\
-\vspace{0.2cm}
+%\vspace{0.2cm}
 Alex Grant \\ Vaughan Clarkson \\
 \vspace{0.7cm}
 {\small
@@ -643,14 +643,14 @@ might be expensive.
 For a lattice of Voronoi's first kind:
 \begin{itemize}
 \item $x_0$ can be chosen to ensure that a closest lattice point in found after at most $K \leq n$ iterations.
-\item Minimisation over the set of relevant vector can be performed by computing a minimimum cut in a flow network.
+\item Minimisation over the set of relevant vectors can be performed by computing a minimum cut in a flow network.
 \item Using known algorithms a minimum cut can be found in $O(n^3)$ operations.
 \item In total $O(n^4)$ operations are required to compute a closest lattice point.
 \end{itemize}
 }
 
 \frame{
-\frametitle{A series of relevant vectors}
+%\frametitle{A series of relevant vectors}
 
 \begin{theorem}
 Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  Let $z_1,\dots,z_{n+1} \in \reals$ minimise
@@ -661,7 +661,7 @@ and put
 \[
 x_0 = \sum_{n=1}^{n+1} b_i \floor{z_i}.
 \]
-The iterative proceedure, initialized at $x_0$, converges to a closest lattice point in at most $K \leq n$ iterations.
+The iterative procedure, initialized at $x_0$, converges to a closest lattice point in at most $K \leq n$ iterations.
 \end{theorem}
 }
 
@@ -674,6 +674,8 @@ The iterative proceedure, initialized at $x_0$, converges to a closest lattice p
 \begin{itemize}
 \item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
 \item Do applications such as global position, phase unwrapping, circular statistics, etc., involve lattices of Voronoi's first kind?
+\item Are there subfamilies of Voronoi's first kind that admit even faster algorithms?
+\item Are there other families of lattices for which similar techniques lead to polynomial time algorithms?
 \end{itemize}
 
 }
