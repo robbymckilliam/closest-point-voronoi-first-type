@@ -610,24 +610,23 @@ v_k &= \arg\min_{ v \in \relevant(\Lambda) \cup \{0\} } \|y - x_k - v \|
 \end{figure}
 }
 
-\newtheorem{proposition}{Proposition}
+% \newtheorem{proposition}{Proposition}
 
-\frame{
-\frametitle{A series of relevant vectors}
- \begin{proposition}
- There is a finite number $K$ such that 
-\[
-x_K, x_{K+1}, x_{K+2}, \dots
-\]
- are all closest points to $y$.
- \end{proposition}
-}
+% \frame{
+% \frametitle{A series of relevant vectors}
+%  \begin{proposition}
+%  There is a finite number $K$ such that 
+% \[
+% x_K, x_{K+1}, x_{K+2}, \dots
+% \]
+%  are all closest points to $y$.
+%  \end{proposition}
+% }
 
 \frame{
 \frametitle{A series of relevant vectors}
 \begin{itemize}
-\item The number $K$ of iterations might be large.
-\item The initial point $x_0$ affects $K$.
+\item The number of iterations depends on $x_0$ and might be large.
 \item Minimising over the set of relevant vectors, that is computing
 \[
 \arg\min_{ v \in \relevant(\Lambda) \cup \{0\} } \|y - x_k - v \|
@@ -642,7 +641,7 @@ might be expensive.
 \frametitle{A series of relevant vectors}
 For a lattice of Voronoi's first kind:
 \begin{itemize}
-\item $x_0$ can be chosen to ensure that a closest lattice point in found after at most $K \leq n$ iterations.
+\item $x_0$ can be chosen to ensure that a closest lattice point in found after at most $n$ iterations.
 \item Minimisation over the set of relevant vectors can be performed by computing a minimum cut in a flow network.
 \item Using known algorithms a minimum cut can be found in $O(n^3)$ operations.
 \item In total $O(n^4)$ operations are required to compute a closest lattice point.
@@ -661,7 +660,7 @@ and put
 \[
 x_0 = \sum_{i=1}^{n+1} b_i \floor{z_i}.
 \]
-The iterative procedure, initialized at $x_0$, converges to a closest lattice point in at most $K \leq n$ iterations.
+The iterative procedure, initialized at $x_0$, converges to a closest lattice point in at most $n$ iterations.
 \end{theorem}
 }
 
