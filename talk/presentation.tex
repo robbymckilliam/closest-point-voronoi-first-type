@@ -95,7 +95,7 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \item Applications in cryptography and number theory.
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
-\item For example, short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
+\item Short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
 \item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
 \end{itemize}
 }
@@ -138,10 +138,11 @@ The \term{relevant vectors} of a lattice $\Lambda$ are those which contribute a 
 \frame{ 
 \frametitle{Relevant vectors}
 \begin{itemize}
-\item The relevant vectors are those $v \in \Lambda \backslash \{0\}$ such that  
-\[
-\dotprod{v}{x} \leq \dotprod{x}{x} \qquad \text{for all $x \in \Lambda$.}
-\]
+\item Denote the set of relevant vectors by $\relevant(\Lambda)$.
+%\item The relevant vectors are those $v \in \Lambda \backslash \{0\}$ such that  
+%\[
+%\dotprod{v}{x} \leq \dotprod{x}{x} \qquad \text{for all $x \in \Lambda$.}
+%\]
 \item The Voronoi cell can be defined using the relevant vectors, 
 \[
 \vor(\Lambda) = \{ x \in\reals^m \mid \|x\| \leq \|x - v\|, v \in\relevant(\Lambda) \}.
@@ -204,7 +205,7 @@ y \in \vor(\Lambda) + x.
 Applications to:
 \begin{itemize}
 \item coding and quantisation,
-\item multi-antenna communications (MIMO),
+\item multi-antenna communication (MIMO),
 \item unwrapping of phase data for electronic distance measurement in GPS and surveying,
 \item single frequency estimation,
 \item polynomial phase estimation,
@@ -217,7 +218,7 @@ Applications to:
 \begin{itemize}
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
-\item For example, fast algorithms exist for the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
+\item Fast algorithms exist for the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
 \item We will describe a fast algorithm to compute a closest point in lattices of \term{Voronoi's first kind}.
 \end{itemize}
 }
@@ -314,7 +315,7 @@ The off diagonal elements are not positive so the obtuse condition is satisfied.
 
 \frame{
 \frametitle{Lattices of Voronoi's first kind}
-\begin{theorem}
+\begin{theorem}[Conway and Sloane (1992)]
 Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  The relevant vectors in $\Lambda$ are of the form 
 \[
 \sum_{i \in I} b_i
@@ -423,14 +424,14 @@ A \term{cut} in $G$ is a partition of the vertices into two nonempty sets $C$ an
 \frametitle{Graphs, cuts, and minimum cuts}
 If the edge weights $w_{ij}$ are all nonnegative, a minimum cut can be computed:
 \begin{itemize}
-\item deterministically in $O(n^3)$ operations using the algorithm of Stoer and Wagner,
-\item with high probability in $O(n^2 \log(n)^3)$ operations using the randomised algorithm of Karger and Stien.
+\item deterministically in $O(n^3)$ operations using the algorithm of Stoer and Wagner (1997),
+\item with high probability in $O(n^2 \log(n)^3)$ operations using the randomised algorithm of Karger and Stien (1996).
 \end{itemize}	
 }
  
      
 \frame{
-\begin{theorem}
+\begin{theorem}[McKilliam and Grant (2012)]
 Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase 
 \[
 b_1, \dots, b_{n+1}.
@@ -641,7 +642,7 @@ might be expensive.
 \frametitle{A series of relevant vectors}
 For a lattice of Voronoi's first kind:
 \begin{itemize}
-\item $x_0$ can be chosen to ensure that a closest lattice point in found after at most $n$ iterations.
+\item $x_0$ can be chosen to ensure that a closest lattice point is found after at most $n$ iterations.
 \item Minimisation over the set of relevant vectors can be performed by computing a minimum cut in a flow network.
 \item Using known algorithms a minimum cut can be found in $O(n^3)$ operations.
 \item In total $O(n^4)$ operations are required to compute a closest lattice point.
@@ -651,7 +652,7 @@ For a lattice of Voronoi's first kind:
 \frame{
 %\frametitle{A series of relevant vectors}
 
-\begin{theorem}
+\begin{theorem}[McKilliam, Grant, Clarkson (2014)]
 Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  Let $z_1,\dots,z_{n+1} \in \reals$ minimise
 \[
 \| y - \sum_{i=1}^{n+1} b_i z_i \| 
@@ -672,12 +673,33 @@ The iterative procedure, initialized at $x_0$, converges to a closest lattice po
 
 \begin{itemize}
 \item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
-\item Do applications such as global position, phase unwrapping, circular statistics, etc., involve lattices of Voronoi's first kind?
+\item Do applications such as global positioning, phase unwrapping, etc., involve lattices of Voronoi's first kind?
 \item Are there subfamilies of Voronoi's first kind that admit even faster algorithms?
 \item Are there other families of lattices for which similar techniques lead to polynomial time algorithms?
 \end{itemize}
 
 }
+
+
+% \frame{
+
+% \frametitle{An extra problem}
+
+% Choose real numbers $\lambda_1,\dots,\lambda_n$ to minimise
+% \[
+% \sum_{i=1}^n \frac{P^2}{\lambda_i^2}
+% \]
+% where $P  = \operatorname{lcm}(\lambda_1,\dots,\lambda_n)$ subject to the constraints
+% \[
+% P > P_{\text{min}}
+% \]
+% and 
+% \[
+% \lambda_{\text{min}} < \lambda_i < \lambda_{\text{max}} \qquad i = 1,\dots,n.
+% \]
+
+% }
+
 
 
 
