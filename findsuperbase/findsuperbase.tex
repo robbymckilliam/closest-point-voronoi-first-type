@@ -33,6 +33,18 @@ The relevant vectors of $\Lambda$ are of the form,
 where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e., $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
 \end{theorem}  
 
+Notes:
+\begin{itemize}
+\item Need definition of `strict' and `lax' relevant vectors. 
+\item How many lax relevant vectors can there be (presumably this comes the integer lattice, so $3^{n}-1$?)
+\item Are vectors from a superbase always strict?  Can probably show this using the arguments in Conway and Sloane's paper.
+\end{itemize}
+
+Our algorithm begins by enumerating a superset $R$ of the set of relevant vectors $\relevant(\Lambda)$.  This can be achieved using the algorithm of Micciancio and Voulgaris~\cite{Micciancio09adeterministic} or the algorithm described by Agrell~et.~al.~\cite[Sec.~VI.C]{Agrell2002}.  In many cases these algorithms will return precisely the set of relevant vectors and so $R = \relevant(\Lambda)$, but for what follows it is sufficient if $R \supseteq \relevant(\Lambda)$.
+
+If $\Lambda$ is of first kind then, by Theorem~\ref{thm:revvecssuperbase}, the vectors $b_1,\dots,b_{n+1}$ from the obtuse superbase are contained in $R$.  A straightforward procedure to determine whether the lattice is of first kind consists of enumerating all $\binom{\abs{R}}{n+1}$ combinations of $n+1$ vectors from $R$ and checking whether any combination forms a superbase.  That is, let $v_1,\dots,v_{n+1}$ be a set of $n+1$ distinct vectors from $R$.  If both $v_1+\dots + v_{n+1} = 0$ and $\dotprod{v_{i}}{v_{j}} \leq 0$ for all $i \neq j$ then the lattice is of first kind with superbase is $v_1,\dots,v_{n+1}$.  If no such combination of vectors exists in $R$, then the lattice is not of first kind.
+
+In general there are as many as $2^{n+1}-2$ relevant vectors (BLERG strict, lax etc?)
 
 \bibliography{../bib}
 
