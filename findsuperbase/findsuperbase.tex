@@ -1,0 +1,39 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{../mathbf-abbrevs}
+
+\input{defs}
+
+%opening
+\title{Finding a obtuse superbase}
+\author{Robby McKilliam}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+This document describes an algorithm to determine whether a lattice, specified by a basis matrix, is of Voronoi's first kind.  The algorithm returns an obtuse superbase for the lattice if the lattice is of Vornoi's first kind.
+
+An $n$-dimensional lattice $\Lambda$ is said to be of \emph{Voronoi's first kind} if it has what is called an \emph{obtuse superbasis}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  That is, there exists a set of $n+1$ vectors $b_1,\dots,b_{n+1}$ such that $b_1,\dots,b_n$ are a basis for $\Lambda$,
+\begin{equation}\label{eq:superbasecond}
+b_1 + b_2 \dots + b_{n+1} = 0
+\end{equation}
+(the \emph{superbasis} condition), and the inner products satisfy
+\begin{equation}\label{eq:obtusecond}
+q_{ij} = b_i \cdot b_j \leq 0, \qquad \text{for} \qquad i,j = 1,\dots,n+1, i \neq j
+\end{equation}
+(the \emph{obtuse} condition).  The $q_{ij}$ are called the \emph{Selling parameters}~\cite{Selling1874}.  It is known that all lattices in dimensions less than $4$ are of Voronoi's first kind~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  An interesting property of lattices of Voronoi's first kind is that their relevant vectors have a straightforward description.
+
+\begin{theorem} \label{thm:revvecssuperbase} (Conway and Sloane~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases})
+The relevant vectors of $\Lambda$ are of the form,
+\[
+\sum_{i \in I} b_i
+\]
+where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty, i.e., $I \subset \{1, 2, \dots, n+1\}$ and $I \neq \emptyset$.
+\end{theorem}  
+
+
+\bibliography{../bib}
+
+\end{document}
