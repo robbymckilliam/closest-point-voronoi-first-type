@@ -4,6 +4,10 @@
 
 \input{defs}
 
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+
 %opening
 \title{Finding a obtuse superbase}
 \author{Robby McKilliam}
@@ -45,6 +49,17 @@ Our algorithm begins by enumerating a superset $R$ of the set of relevant vector
 If $\Lambda$ is of first kind then, by Theorem~\ref{thm:revvecssuperbase}, the vectors $b_1,\dots,b_{n+1}$ from the obtuse superbase are contained in $R$.  A straightforward procedure to determine whether the lattice is of first kind consists of enumerating all $\binom{\abs{R}}{n+1}$ combinations of $n+1$ vectors from $R$ and checking whether any combination forms a superbase.  That is, let $v_1,\dots,v_{n+1}$ be a set of $n+1$ distinct vectors from $R$.  If both $v_1+\dots + v_{n+1} = 0$ and $\dotprod{v_{i}}{v_{j}} \leq 0$ for all $i \neq j$ then the lattice is of first kind with superbase is $v_1,\dots,v_{n+1}$.  If no such combination of vectors exists in $R$, then the lattice is not of first kind.
 
 In general there are as many as $2^{n+1}-2$ relevant vectors (BLERG strict, lax etc?)
+
+\begin{figure}
+  \begin{tikzpicture}
+    \begin{axis}      
+      \addplot[mark=*,color=black,only marks,/pgfplots/error bars/.cd,
+        x dir=none,
+        y dir=both,
+        y explicit] table[x=n,y=proportion,y error=stddev] {code/data/testname};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
 
 
 
