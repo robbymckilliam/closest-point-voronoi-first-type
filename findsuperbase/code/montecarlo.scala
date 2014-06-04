@@ -2,6 +2,9 @@
 * Run montecarlo.
 */
 import pubsim.distributions.RealRandomVariable
+import pubsim.distributions.UniformNoise
+import pubsim.distributions.GaussianNoise
+import pubsim.lattices.firstkind.FirstKindCheck
 import pubsim.VectorFunctions.randomMatrix
 
 val iters = 10
