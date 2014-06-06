@@ -1,9 +1,7 @@
 function out = to_java_matrix(B)
-
-m = size(B,1)
-n = size(B,2)
-
-strObj = javaObjectEDT('Jama.Matrix',m,n);
-
+% to_java_matrix converts the matrix B to a Jama.Matrix
+%from the java matrix library
+    
+out = javaObjectEDT('Jama.Matrix',B);
 
 end
