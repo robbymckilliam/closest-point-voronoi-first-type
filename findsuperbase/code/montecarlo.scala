@@ -49,6 +49,6 @@ def runsim( basisgen : Int => Matrix, name : String ) {
   file.close
 
   val runtime = (new java.util.Date).getTime - starttime
-  println(" finished in " + (runtime/1000.0) + " seconds.\n")
+  println(" finished in " + (runtime/1000.0) + " seconds.")
 
 }
