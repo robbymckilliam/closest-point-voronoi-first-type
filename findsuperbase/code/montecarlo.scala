@@ -10,9 +10,9 @@ import pubsim.VectorFunctions.randomMIMObasis
 import Jama.Matrix
 import scala.math.sqrt
 
-val z = 1.96 //corresponds with 90% confidence intervals
-val L = 500 //the number of Monte Carlo iterations
-val Ns = List(1,2,3,4)
+val z = 1.96 //corresponds with 95% confidence intervals
+val L = 5000 //the number of Monte Carlo iterations
+val Ns = List(1,2,3,4,5,6)
 
 runsim( n=>randomMatrix(n,n,UniformNoise.constructFromMinMax(0,1)), "uniform")
 runsim( n=>randomMatrix(n,n,new GaussianNoise(0,1)), "gaussian")
@@ -27,7 +27,7 @@ def runsim( basisgen : Int => Matrix, name : String ) {
   val datalist = Ns.map{ n =>
 
     //run all the MonteCarlo iterations
-    val bdata = (1 to L).map { i =>
+    val bdata = (1 to L).par.map { i =>
       val B = basisgen(n)
       val fk = new FirstKindCheck(B)
       if(fk.isFirstKind) 1 else 0
