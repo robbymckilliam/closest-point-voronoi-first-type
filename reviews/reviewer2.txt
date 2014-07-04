@@ -1,0 +1,82 @@
+Referee 2 (Remarks to the Author): 
+
+Summary/Evaluation 
+
+The paper contains interesting new results on the complexity of the closest vector problem (CVP) on a certain type of lattices. The lattices considered are the so-called "lattices of Voronoi's first kind". Remarkably, this paper shows that for these lattices, CVP can be solved in polynomial time (n^4) in the lattice dimension n, provided an appropriate lattice basis. 
+The result is interesting because for arbitrary lattices, CVP is known to be NP-hard even when given the best possible lattice basis (or any other polynomial sized advice about the lattice.) There are very few lattices for which CVP is known to be solvable in polynomial time, mainly Zn, the root lattices An, Dn and their duals, and Coxeter lattices. Finding other classes of lattices for which CVP can be efficiently solved is both algorithmically interesting, and improves our understanding of CVP. 
+
+It is not entirely clear how many (interesting) lattices of Voronoi first kind are there, but the class is certainly nontrivial (e.g., all lattices in dimension up to 3 have been proved to satisfy this definition), and this paper provides a compelling motivation to further investigate this class of lattices. 
+
+This is a very well written paper, with good and interesting results. It seems also a very good fit for SIDMA in terms of topic, and I recommend acceptance without any reservation. 
+Below I provide some detailed comments that the authors may use to prepare the final version. All the corrections are minor, and the paper can already be accepted subject to minor revisions. 
+
+Detailed comments: 
+- page 1, last line "The closest lattice point problem is known to be NP-hard under certain condition ...": I found this paragraph very confusing, and somehow inaccurate. What "certain conditions"? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
+
+Additional comments about the above paragraph: one author is missing in the reference for 12. Of [1,23,40] only 23 achieves n^{O(n)} runnint time. (I think the algorithms in 40 take 2^{O(n^2)}.) There is a journal version of 37 in SIAM J. Computing, and the paper is by two authors (not just Micciancio). 
+
+page 2, second paragraph: Aren't the results of 3,29 and 30 subsumed by 34? (The authors sure know better than me. A a short clarification may direct the interested reader to the best paper to read.) Also, CVP is always solvable in polynomial time when the dimension is fixed. So, it is unclear the significance of CVP algorithms for Leech lattice (in fixed dimension 24) in the context of this discussion. 
+When saying "if the obtuse superbasis is known", you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
+
+page 2,bottom, displayed equation "v*x<=x*x". Maybe you mean strict inequality 
+page 3, and maybe elsewhere "short vector in a lattice" should probably be "shortest nonzero vector in a lattice". 
+
+page 3, definition of ceiling(r) as smallest integer strctly larger than 3 seems unconventional. The standard definition is not strict. Write floor(r)+1 instead, which is consistent with the definition of floor(r) given later in the papaer. 
+
+page 3, proof of Prop. 2.1. Your definition of "half-open voronoi cell" is not a proper definition, and also seems incorrect. E.g., take the integer lattice Z, then only one of the corners (rathern than half) of the corners of the voronoi cell should be included if you want a tiling. 
+
+page 3, prop 2.2, again definition of ceiling(r) is non-standard. Use floor(r)+1 instead. 
+
+page 3, section 3. 
+The process described in (3.1) is almost identical to those in [45,37], so those papers should probably be referenced at the very beginning, and a comparison provided. As far as I remember, the difference is that 37 picks the v that minimizes the voronoi norm (i.e., the norm defined by the voronoi cell of the origin) instead of the euclidean norm. On the other hand, 45 uses the euclidean norm, but selects an arbitrary relevant vector that reduces the euclidean norm, rather than the one that reduces it the most. In this respect, your process is a special case of the one described in 45, and termination (your propositions 3.1 and 3.2) is already proved in 45. 
+
+page 5, as before, you should probably mention also Voulgaris when citing 37. 
+
+page 5, last line, "dimension less than 4", does it include 4 or not? 
+
+page 6, Theorem 4.1 (this follows from [ 9, Theorem 2+3], not just theorem 3. 
+Also, make the theorem statement self contained by adding "Let L be a lattice of voronoi first kind with obtuse superbasis b1..bn+1". 
+
+page 8, lemma 5.1. I think you forgot a factor 2 preceding the double summations over S and T (at end of lemma statement, and also in the proof.) 
+
+page 11, 
+"with be" -> "will be" 
+Displayed equation before "Putting p=...", A | should be || 
+(5.7) again, missing factor 2 before double summation, and second set should be T, not S. 
+
+page 12, first displayed equation, usual problem: missing factor 2, and summation over S&S instead of S&T both on line 2 and 3. 
+
+page 12, last line, definition of s_i, missing (-2) factor. 
+
+page 13, after (6.1), "be computing" -> "by computing" 
+
+page 14, "have no effect" -> "has no effect" 
+
+page 15, definition of Q, should the summation defininig q_ii be restricted to j=/=i? 
+
+page 15, "there many" -> "there may" 
+
+References: 
+- 12: missing author (R. Raz) 
+- 18: "A V" -> "A. V." etc, 
+- 37: journal version in SIAM J. computing, 42(3):1364-1391 (2013) 
+
+Some additional references on CVPP you may find interesting 
+(cite at your own discretion): 
+
+- O. Regev (2004) Improved Inapproximability of Lattice and Coding Problems With Preprocessing. IEEE Transactions on Information Theory 50(9): 2031-2037 
+- "Hardness of Approximating the Closest Vector PRoblem with Pre-Processing", M. Alekhnovich, S. Khot, G. Kindler, N. Vishnoi, Computational Complexity 20(4):741-753, 2011. 
+
+(Improve NP-hardness result of [35,17] to any constant approximation factor) 
+
+- D. Aharonov & Oded Regev (2005). Lattice problems in NP ∩ co-NP. J. ACM 52, 749-765. 
+
+(Gives polynomial time solution to approximate the distance estimation version of CVPP within gamma=sqrt{n/log n} approximation factor, i.e., for any lattice there is an appropriate advice (more complex than just a good basis) that allows to approximate in polynomial time the distance of any target point to the lattice within gamma, but without actually finding a nearby lattice point.) 
+
+- On the Closest Vector Problem with a Distance Guarantee 
+D. Dadush, O. Regev, N. Stephens-Davidowitz, Computational Complexity Conference 2014, to appear (next week!) 
+
+I am not sure, as the paper has not appeared yet, but I suspect it is the same as the paper on Dadush webpage with title "On BDD and CVPP". 
+See link 
+http://cs.nyu.edu/~dadush/papers/cvpp.pdf 
+and read abstract for more information.
