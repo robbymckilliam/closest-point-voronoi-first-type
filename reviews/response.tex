@@ -39,13 +39,13 @@ I would like to thank reviwers for there thoughtful comments.  %The authors feel
 
 \section*{Reviewer 1}\label{sec:reviewer-1}
 
-\begin{enumerate}
+\begin{itemize}
 
 \item\textbf{Comment:} 
 From the perspective of quadratic forms, the quadratic forms induced by obtuse superbases are in one to one correspondance with graph Laplacians (this is not
 explicitly stated in the paper for some reason). Indeed, the quadratic form $\|Bx\|^2$ is exactly $x^T L_G x$, where $L_G$ is the Laplacian the weighted graph $G$ on vertices $\{ 1, . . . , n + 1 \}$ , with edges weights $w_{ij} = -b_i \cdot b_j \geq 0, i = j$ (which they call the Selling parameters). More precisely:
 \[
-\|Bx\|_2^2 = x^T L_G x = \sum_{ \{i,j\} \in E[G] } w_{ij} (x_{i} - x_{j} )^2.
+\|B\xbf\|_2^2 = \xbf^T L_G \xbf = \sum_{ \{i,j\} \in E[G] } w_{ij} (\xbf_{i} - \xbf_{j} )^2.
 \]
 \\ \textbf{Response:}
 
@@ -71,6 +71,70 @@ allow us to decide whether a lattice (given any of its bases) is a rotation of $
 of Voronoi’s first kind). This is a long standing open problem in the theory of lattices, which has
 only recently been solved in certain very special cases [6].
 \\\textbf{Response:}
+
+\item\textbf{Comment:} 
+This paper makes a solid contribution to the theory of lattice problems. I think the results here are
+well-motivated (I encourage the authors to include some of the motivation mentioned in the sum-
+mary), and point to the possibility that there might be large and useful classes of lattices where
+solving CVP is “easy”.
+\\\textbf{Response:}
+
+\item\textbf{Comment:} 
+On a technical level, I found the main convergence proof to be interesting, as I’ve rarely seen
+combinatorial arguments successfully applied to lattice problems. On the other hand, while I’ve
+convinced myself the authors have the “right” convergence proof, I found its presentation to be
+rather awkward and unintuitive. I highly recommend that the authors rephrase the proof using
+the language of Laplacians, which would make things more clear (see the additional comments
+below for some technical suggestions).
+\\\textbf{Response:}
+
+\end{itemize}
+
+We now respond to the reviewers numbered comments.
+
+\begin{enumerate}
+
+\item\textbf{Comment:} 
+BLERG REFS.  I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for Propositions
+3.1 (which is essentially by definition) and 3.2, they appear in [9]. I don’t think it adds any
+readibility/anything of value to reprove them here.
+\\\textbf{Response:}
+
+\newcommand{\rng}{\operatorname{rng}}
+\newcommand{\subrng}{\operatorname{subr}}
+\newcommand{\decrng}{\operatorname{decrng}}
+
+\item\textbf{Comment:} 
+Almost all the inequalities in the paper can be derived from the following simple obser-
+vation.  For and $n$ vertex weighted graph $G$ with non-negative edge weights, and vectors, $\xbf,\ybf \in \reals^n$, if there exists a permutation $\pi$ of $[n]$ such that $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \leq \dots \leq \ybf_{\pi[n]}$ then
+\[
+\xbf^T L_G \ybf = \sum_{ \{i,j\} \in E[G] } \wbf_{ij} (\xbf_{i} - \xbf_{j}) (\ybf_{i} - \ybf_{j}) \geq 0.
+\]
+Furthermore, if $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \geq \dots \geq \ybf_{\pi[n]}$ then the above inequality if reversed, i.e $\xbf^T L_G \ybf \leq 0$. 
+
+I believe using the above will make many of your proofs more transparent.  For example, if you redefine $\subrng(\xbf)$ to return the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq 1$, then noice that if $S \neq \emptyset$ then there is a permutation that puts both $\xbf - 1_S$ and $1_S$ in non-decreasing order. In particular this implies that
+\[
+\xbf L_G \xbf = (\xbf - 1_S)^T L_G (\xbf - 1_S) + 2(\xbf - 1_S)^T L_G 1_S + 1_S^T L_G 1_S \geq (\xbf - 1_S)^T L_G (\xbf - 1_S),
+\]
+i.e. $\xbf$ can be made ``shorter'' by squeezing its components closer together.
+
+Furthermore, one can use this to give a two line proof of Theorem 4.1.  This theorem I actually do think make sense to reprove here, because modifications of this proof are what drives the convergence bound. 
+\\\textbf{Response:}
+BLERG.  I think there's an error in the inquality above.
+
+\item\textbf{Comment:} 
+Lemma 5.1: there is a typo here.  The last identity should read
+\[
+\|B\pbf\|^2 - \|B(\pbf + 1_S - 1_T)\|^2 = \Phi(S,\pbf) + \Phi(\bar{T}, \pbf) + 2\sum_{i \in S}\sum_{j\in S} q_{ij}.
+\]
+Notice that factor 2 in front of the last term.  There are also two related typos on the top of page 12 where $\sum_{i \in S}\sum_{j\in S} q_{ij}$ (this appears twice on difference lines) should be $2\sum_{i \in S}\sum_{j\in T} q_{ij}$.
+\\\textbf{Response:}
+
+
+\item\textbf{Comment:} 
+Lemma 5.7: $h$ is ill-defined if $\rng(\vbf) = 0$.  You should explicitly state that $\rng(\vbf) \geq 1$.
+\\\textbf{Response:}
+
 
 \end{enumerate}
 
