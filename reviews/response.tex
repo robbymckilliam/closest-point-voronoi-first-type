@@ -40,11 +40,170 @@ I would like to thank reviwers for there thoughtful comments.  %The authors feel
 \section*{Reviewer 1}\label{sec:reviewer-1}
 
 \begin{enumerate}
-\item\textbf{Comment:} \label{comment:shortersec2}
-	\\\textbf{Response:}
-%\comment{look at shortening sec 2}
+
+\item\textbf{Comment:} 
+From the perspective of quadratic forms, the quadratic forms induced by obtuse superbases are in one to one correspondance with graph Laplacians (this is not
+explicitly stated in the paper for some reason). Indeed, the quadratic form $\|Bx\|^2$ is exactly $x^T L_G x$, where $L_G$ is the Laplacian the weighted graph $G$ on vertices $\{ 1, . . . , n + 1 \}$ , with edges weights $w_{ij} = -b_i \cdot b_j \geq 0, i = j$ (which they call the Selling parameters). More precisely:
+\[
+\|Bx\|_2^2 = x^T L_G x = \sum_{ \{i,j\} \in E[G] } w_{ij} (x_{i} - x_{j} )^2.
+\]
+\\ \textbf{Response:}
+
+\item\textbf{Comment:} 
+BLERG: NEED TO CHECK REFS MATHS ETC To present the result from the perspective of Computational Complexity (also not given in the
+paper), this paper can be viewed as giving a polynomial time algorithm for the Closest Vector
+Problem with Preprocessing (CVPP) over a special class of lattices. In the preprocessing model,
+we are allowed to compute any polynomial amount of advice about the lattice (i.e. a good ba-
+sis, or many short vectors in the lattice, etc.) before answering any CVP queries, where the re-
+sources needed to compute this advice are not counted in the runtime of the algorithm. In its
+gap decisional version, where we need only decide whether a target is at distance $\leq d$ or $> \alpha d$
+(for some approximation factor $α \geq 1$), it is was shown [1, 4] to be NP-Hard for any constant $\alpha = 2^{\log^{1-\epsilon}n}$, and to not be polynomial time solvable for $\alpha = 2 \log n$ , for any fixed $\epsilon > 0$, under the assumption  that $NP \subsetneq \text{RTIME}(2^{\log^{O(1/\epsilon)}n})$ (quasi-polynomial time). For its approximate search version (i.e. find a lattice vector whose distance to the target is some bounded factor away from optimal), an
+$O( n^{1.5} )$ approximation algorithm was (implicitly) given in [5], which was only recently improved to $O( n \log n )$ in [3].
+\\\textbf{Response:}
+
+\item\textbf{Comment:} 
+BLERG CHECK REFS Hence, from the standpoint of CVPP, the algorithm in this paper gives essentially the first
+exact polynomial time algorithm over a reasonably large and natural class of lattices, i.e. those
+of Voronoi’s first kind. Lastly, removing the need for preprocessing for these lattices, at least for
+solving SVP without being given an obtuse superbasis, would require a substantial breakthrough
+in the theory of lattice problems (not stated in paper). Indeed, by a simple reduction this would
+allow us to decide whether a lattice (given any of its bases) is a rotation of $Z_n$ (which is clearly
+of Voronoi’s first kind). This is a long standing open problem in the theory of lattices, which has
+only recently been solved in certain very special cases [6].
+\\\textbf{Response:}
 
 \end{enumerate}
+
+
+\section*{Reviewer 2}\label{sec:reviewer-2}
+
+\begin{enumerate}
+\item\textbf{Comment:}  
+page 1, last line "The closest lattice point problem is known to be NP-hard under certain condition ...": I found this paragraph very confusing, and somehow inaccurate. What "certain conditions"? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+Additional comments about the above paragraph: one author is missing in the reference for 12. Of [1,23,40] only 23 achieves $n^{O(n)}$ running time. (I think the algorithms in 40 take $2^{O(n^2)}$.) There is a journal version of 37 in SIAM J. Computing, and the paper is by two authors (not just Micciancio). 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 2, second paragraph: Aren't the results of 3,29 and 30 subsumed by 34? (The authors sure know better than me. A a short clarification may direct the interested reader to the best paper to read.) Also, CVP is always solvable in polynomial time when the dimension is fixed. So, it is unclear the significance of CVP algorithms for Leech lattice (in fixed dimension 24) in the context of this discussion. 
+When saying "if the obtuse superbasis is known", you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean strict inequality 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 3, and maybe elsewhere "short vector in a lattice" should probably be "shortest nonzero vector in a lattice". 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 3, definition of ceiling(r) as smallest integer strctly larger than 3 seems unconventional. The standard definition is not strict. Write floor(r)+1 instead, which is consistent with the definition of floor(r) given later in the paper. 
+\\\textbf{Response:}
+
+
+\item\textbf{Comment:}  
+page 3, and maybe elsewhere "short vector in a lattice" should probably be "shortest nonzero vector in a lattice". 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 3, proof of Prop. 2.1. Your definition of "half-open voronoi cell" is not a proper definition, and also seems incorrect. E.g., take the integer lattice Z, then only one of the corners (rathern than half) of the corners of the voronoi cell should be included if you want a tiling. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 3, prop 2.2, again definition of ceiling(r) is non-standard. Use floor(r)+1 instead. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 3, section 3. 
+The process described in (3.1) is almost identical to those in [45,37], so those papers should probably be referenced at the very beginning, and a comparison provided. As far as I remember, the difference is that 37 picks the v that minimizes the voronoi norm (i.e., the norm defined by the voronoi cell of the origin) instead of the euclidean norm. On the other hand, 45 uses the euclidean norm, but selects an arbitrary relevant vector that reduces the euclidean norm, rather than the one that reduces it the most. In this respect, your process is a special case of the one described in 45, and termination (your propositions 3.1 and 3.2) is already proved in 45. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 5, as before, you should probably mention also Voulgaris when citing 37. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 5, last line, "dimension less than 4", does it include 4 or not? 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 5, as before, you should probably mention also Voulgaris when citing 37. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 6, Theorem 4.1 (this follows from [ 9, Theorem 2+3], not just theorem 3. 
+Also, make the theorem statement self contained by adding "Let L be a lattice of voronoi first kind with obtuse superbasis b1..bn+1". 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 8, lemma 5.1. I think you forgot a factor 2 preceding the double summations over S and T (at end of lemma statement, and also in the proof.) 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 11, "with be" -> "will be" Displayed equation before "Putting p=...", A | should be || 
+(5.7) again, missing factor 2 before double summation, and second set should be T, not S. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 12, first displayed equation, usual problem: missing factor 2, and summation over S\&S instead of S\&T both on line 2 and 3. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 12, last line, definition of $s_i$, missing (-2) factor. 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 13, after (6.1), "be computing" -> "by computing" 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 14, "have no effect" -> "has no effect" 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 15, definition of $Q$, should the summation defininig $q_{ii}$ be restricted to $j\neq i$? 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+page 15, "there many" -> "there may" 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+References: 
+- 12: missing author (R. Raz) 
+- 18: "A V" -> "A. V." etc, 
+- 37: journal version in SIAM J. computing, 42(3):1364-1391 (2013) 
+\\\textbf{Response:}
+
+\item\textbf{Comment:}  
+Some additional references on CVPP you may find interesting 
+(cite at your own discretion): 
+
+- O. Regev (2004) Improved Inapproximability of Lattice and Coding Problems With Preprocessing. IEEE Transactions on Information Theory 50(9): 2031-2037 
+- "Hardness of Approximating the Closest Vector PRoblem with Pre-Processing", M. Alekhnovich, S. Khot, G. Kindler, N. Vishnoi, Computational Complexity 20(4):741-753, 2011. 
+
+(Improve NP-hardness result of [35,17] to any constant approximation factor) 
+
+- D. Aharonov and Oded Regev (2005). Lattice problems in NP ∩ co-NP. J. ACM 52, 749-765. 
+
+(Gives polynomial time solution to approximate the distance estimation version of CVPP within $\gamma=\sqrt(n \log n)$ approximation factor, i.e., for any lattice there is an appropriate advice (more complex than just a good basis) that allows to approximate in polynomial time the distance of any target point to the lattice within gamma, but without actually finding a nearby lattice point.) 
+
+- On the Closest Vector Problem with a Distance Guarantee 
+D. Dadush, O. Regev, N. Stephens-Davidowitz, Computational Complexity Conference 2014, to appear (next week!) 
+
+I am not sure, as the paper has not appeared yet, but I suspect it is the same as the paper on Dadush webpage with title "On BDD and CVPP". 
+See link 
+http://cs.nyu.edu/~dadush/papers/cvpp.pdf 
+and read abstract for more information.
+\\\textbf{Response:}
+
+\end{enumerate}
+
+
+
 
 \bibstyle{../siam}
 \bibliography{bib}
