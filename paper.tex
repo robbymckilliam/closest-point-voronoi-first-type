@@ -307,14 +307,14 @@ Let $p \in \reals^{n+1}$ and let $S$ and $T$ be subsets of the indices of $p$.  
 \begin{enumerate}
 \item  $\|Bp\|^2 - \|B(p + \onebf_S)\|^2 = \Phi(S, p)$, \label{eq:lem:decSellingsinc}
 \item  $\|Bp\|^2 - \|B(p - \onebf_S)\|^2 = \Phi(\bar{S}, p)$, \label{eq:lem:decSellingsdec}
-\item  ${\displaystyle \|Bp\|^2 - \|B(p + \onebf_S - \onebf_T)\|^2 = \Phi(S, p) + \Phi(\bar{T},p) + \sum_{i\in S}\sum_{j\in T} q_{ij} }$.  \label{eq:lem:decSellingsincdec}
+\item  ${\displaystyle \|Bp\|^2 - \|B(p + \onebf_S - \onebf_T)\|^2 = \Phi(S, p) + \Phi(\bar{T},p) + 2\sum_{i\in S}\sum_{j\in T} q_{ij} }$.  \label{eq:lem:decSellingsincdec}
 \end{enumerate}
 \end{lemma}
 \begin{proof}
 Part~\ref{eq:lem:decSellingsincdec} follows immediately from parts~\ref{eq:lem:decSellingsinc} and~\ref{eq:lem:decSellingsdec} because
 \begin{align*}
 \|Bp\|^2 - &\|B(p + \onebf_S - \onebf_T)\|^2 \\
-&= \|Bp\|^2-\|B(p + \onebf_S)\|^2 +  \|Bp\|^2-\|B(p - \onebf_T)\|^2 + \sum_{i\in S}\sum_{j\in T} q_{ij}.
+&= \|Bp\|^2-\|B(p + \onebf_S)\|^2 +  \|Bp\|^2-\|B(p - \onebf_T)\|^2 + 2\sum_{i\in S}\sum_{j\in T} q_{ij}.
 \end{align*}
 We give a proof for part~\ref{eq:lem:decSellingsinc}.  The proof for part~\ref{eq:lem:decSellingsdec} is similar.  
 Put $Q = B^\prime B$ where superscript $^\prime$ indicates the vector or matrix transpose.  The $n+1$ by $n+1$ matrix $Q$ has elements given by the Selling parameters, that is, $Q_{ij} = q_{ij}=\dotprod{b_i}{b_j}$.  Denote by $\onebf$ the column vector of length $n+1$ containing all ones.  Now $B\onebf = \sum_{i=1}^{n+1}b_i = \zerobf$ as a result of the superbasis condition~\eqref{eq:superbasecond} and so $Q\onebf = \zerobf$.  Since $\onebf_S = \onebf - \onebf_{\bar{S}}$ it follows that $Q\onebf_S = -Q\onebf_{\bar{S}}$.  With $\circ$ the elementwise vector product, i.e., the Schur or Hadamard product, we have
@@ -482,7 +482,7 @@ as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x +
 Before giving the proof of Lemma~\ref{lem:rngdecreases} we require the following simple result.
 
 \begin{lemma}\label{eq:integergreaterless}
-Let $h \in \{0,1\}^{n+1}$ and $v \in \ints^{n+1}$.  Suppose that
+Let $h \in \{0,1\}^{n+1}$ and $v \in \ints^{n+1}$ with $\rng(v) \geq 1$.  Suppose that
 $h_i = 0$ whenever $v_i = \min(v)$ and that $h_i = 1$ whenever $v_i = \max(v)$.  Then
 \[
 h_i - h_j \leq v_i - v_j
@@ -521,7 +521,7 @@ Putting $p = z-u-v$ we have
 \]
 By part~\ref{eq:lem:decSellingsincdec} of Lemma~\ref{lem:decSellings} we obtain
 \begin{equation}\label{eq:BpBpdecincineq}
-\|Bp\|^2 - \|B(p+\onebf_S-\onebf_T)\|^2 = \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0.
+\|Bp\|^2 - \|B(p+\onebf_S-\onebf_T)\|^2 = \Phi(S,p) + \Phi(\bar{T}, p) + 2\sum_{i\in S}\sum_{j \in T} q_{ij} < 0.
 \end{equation}
 
 As stated already $h_i = 0$ whenever $v_i = \min(v)$ and $h_i = 1$ whenever $v_i = \max(v)$.  It follows from Lemma~\ref{eq:integergreaterless} that
@@ -541,8 +541,8 @@ and
 Using part~\ref{eq:lem:decSellingsincdec} of Lemma~\ref{lem:decSellings} again,
 \begin{align*}
 \|B(z-u-h)\|^2 - \|B(z-u-g)\|^2 &= \|Br\|^2 - \|B(r+\onebf_S - \onebf_T)\|^2 \\
-&= \Phi(S,r) + \Phi(\bar{T},r) + \sum_{i\in S}\sum_{j \in S} q_{ij} \\
-&\leq \Phi(S,p) + \Phi(\bar{T}, p) + \sum_{i\in S}\sum_{j \in S} q_{ij} < 0 
+&= \Phi(S,r) + \Phi(\bar{T},r) + 2\sum_{i\in S}\sum_{j \in T} q_{ij} \\
+&\leq \Phi(S,p) + \Phi(\bar{T}, p) + 2\sum_{i\in S}\sum_{j \in T} q_{ij} < 0 
 \end{align*}
 as a result of~\eqref{eq:BpBpdecincineq}.  However, $h \in \{0,1\}^{n+1}$ and so this implies
 \[
@@ -575,11 +575,11 @@ is minimised.  Expanding this quadratic form gives
 \[
 \| \sum_{i=1}^{n+1} b_i (p_i - t_i) \|^2 =  \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij}p_i p_j -  2\sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij}p_j t_i + \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} t_i t_j.
 \]
-The first sum above is independent of $t$ and can be ignored for the purpose of minimisation.  Letting $s_i = \sum_{j=1}^{n+1} q_{ij}p_j$, we can equivalently minimise the binary quadratic form
+The first sum above is independent of $t$ and can be ignored for the purpose of minimisation.  Letting $s_i = -2\sum_{j=1}^{n+1} q_{ij}p_j$, we can equivalently minimise the binary quadratic form
 \begin{equation}\label{eq:quadformnp}
 Q(t) = \sum_{i=1}^{n+1} s_i t_i + \sum_{i=1}^{n+1}\sum_{j=1}^{n+1} q_{ij} t_i t_j.
 \end{equation}
-We will show that a minimiser of $Q(t)$ can be found efficiently be computing a minimum cut in an undirected flow network.
+We will show that a minimiser of $Q(t)$ can be found efficiently by computing a minimum cut in an undirected flow network.
 %\section{Quadratic $\{0,1\}$ programs and minimium cuts in graphs}
 %This section describes how a binary quadratic program can be mapped into the problem of computing a minimum cut in a weighted graph.  
 This technique has appeared previously~\cite{Picard_min_cuts_1974,Sankaran_solving_CDMA_mincut_1998,Ulukus_cdma_mincut_1998,Cormen2001} but we include the derivation here so that this paper is self contained.
@@ -593,7 +593,7 @@ W(C,\bar{C}) = \sum_{i \in I} \sum_{j \in J} w_{ij},
 where $I = \{ i \mid v_i \in C\}$ and $J = \{j \mid v_j \in \bar{C}\}$.  That is, $W(C,\bar{C})$ is the sum of the weights on the edges crossing from the vertices in $C$ to the vertices in $\bar{C}$.  In what follows we will often drop the argument and write $W$ rather than $W(C,\bar{C})$.  A \emph{minimum cut} is a $C$ and $\bar{C}$ that minimise the weight $W$.  If all of the edge weights $w_{ij}$ for $i \neq j$ are nonnegative, a minimum cut can be computed in 
 order $O(n^3)$ arithmetic operations~\cite{Cormen2001,Even_graph_algorithms_1979}.
 
-We require some properties of the weights $w_{ij}$ in relation to $W$.  If the graph is allowed to contain loops, that is, edges from a vertex to itself, then the weight of these edges $w_{ii}$ have no effect on the weight of any cut.  We may choose any values for the $w_{ii}$ without affecting $W$.  We will find it convenient to set $w_{0,0} = w_{n+2,n+2} = 0$.  The remaining $w_{ii}$ we shall specify shortly.  The edge $e_{0,n+2}$ is in every cut.  If a constant is added to the weight of this edge, that is, $w_{0,n+2}$ is replaced by $w_{0,n+2} + c$ then $W$ is replaced by $W + c$ for every $C$ and $\bar{C}$.  In particular, the subsets $C$ and $\bar{C}$ corresponding to a minimum cut are not changed.  We will find it convenient to choose $w_{0,n+2} = w_{n+2,0} = 0$.  
+We require some properties of the weights $w_{ij}$ in relation to $W$.  If the graph is allowed to contain loops, that is, edges from a vertex to itself, then the weight of these edges $w_{ii}$ has no effect on the weight of any cut.  We may choose any values for the $w_{ii}$ without affecting $W$.  We will find it convenient to set $w_{0,0} = w_{n+2,n+2} = 0$.  The remaining $w_{ii}$ we shall specify shortly.  The edge $e_{0,n+2}$ is in every cut.  If a constant is added to the weight of this edge, that is, $w_{0,n+2}$ is replaced by $w_{0,n+2} + c$ then $W$ is replaced by $W + c$ for every $C$ and $\bar{C}$.  In particular, the subsets $C$ and $\bar{C}$ corresponding to a minimum cut are not changed.  We will find it convenient to choose $w_{0,n+2} = w_{n+2,0} = 0$.  
 
 If vertex $v_i$ is in $C$ then edge $e_{i,n+2}$ contributes to the weight of the cut.  If $v_i \notin C$, i.e., $v_i \in \bar{C}$, then edge $e_{0,i}$ contributes to the weight of the cut.  So, either $e_{0,i}$ or $e_{i,n+2}$ \emph{but not both} contribute to every cut.  If a constant, say $c$, is added to the weights of these edges, that is, $w_{0,i}$ and $w_{i,n+2}$ are replaced by $w_{0,i} + c$ and $w_{i,n+2} + c$, then $W$ is replaced by $W + c$ for every $C$ and $\bar{C}$.  The $C$ and $\bar{C}$ corresponding to a minimum cut are unchanged.  In this way, the minimum cut is only affected by the differences 
 \[
@@ -659,12 +659,14 @@ The closest lattice point problem has a number of applications, for example, cha
 
 A question of immediate interest to communications engineers is: do there exist lattices of Voronoi's first kind that produce good codes or good quantisers?  Since lattices that produce good codes and quantisers often also describe dense~\emph{sphere packings}~\cite{SPLAG}, a related question is: do there exist lattices of Voronoi's first kind that produce dense sphere packings?  These questions do not appear to have trivial answers.  The questions have heightened importance due to the algorithm described in this paper.
 
-It is straightforward to construct an `arbitrary' lattice of Voronoi's first kind.  One approach is to construct the $n+1$ by $n+1$ symmetric matrix $Q = B^\prime B$ with elements $Q_{ij} = q_{ij} = \dotprod{b_{i}}{b_j}$ given by the Selling parameters.  Choose the off diagonal entries of $Q$ to be nonpositive with $q_{ij}=q_{ji}$ and set the diagonal elements $q_{ii} = -\sum_{j=1}^{n+1} q_{ij}$.  %We then have $Q\onebf = \zerobf$ and so $\onebf$ is in the null space of $Q$.  
-The matrix $Q$ is diagonally dominant, that is, $\abs{q_{ii}} \geq \sum_{j=1}^{n+1} \abs{q_{ij}}$, and so $Q$ is positive semidefinite.  A rank deficient Cholesky decomposition~\cite{Higham90analysisof} can now be used to recover a matrix $B$ such that $B^\prime B  = Q$. The columns of $B$ are vectors of the obtuse superbasis.
+It is straightforward to construct an `arbitrary' lattice of Voronoi's first kind.  One approach is to construct the $n+1$ by $n+1$ symmetric matrix $Q = B^\prime B$ with elements $Q_{ij} = q_{ij} = \dotprod{b_{i}}{b_j}$ given by the Selling parameters.  Choose the off diagonal entries of $Q$ to be nonpositive with $q_{ij}=q_{ji}$ and set the diagonal elements $q_{ii} = -\sum_{j \neq i} q_{ij}$.  %We then have $Q\onebf = \zerobf$ and so $\onebf$ is in the null space of $Q$.  
+The matrix $Q$ is diagonally dominant, that is, $\abs{q_{ii}} \geq \sum_{j \neq i} \abs{q_{ij}}$, and so $Q$ is positive semidefinite.  A rank deficient Cholesky decomposition~\cite{Higham90analysisof} can now be used to recover a matrix $B$ such that $B^\prime B  = Q$. The columns of $B$ are vectors of the obtuse superbasis.
 
-A number applications such as phase unwrapping~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012} also require computing a closest lattice point.  In these applications the particular lattice arises from the signal processing problem under consideration.  If that lattice happens to be of Voronoi's first kind then our algorithm can be used.  An example where this occurs is the problem of computing the \emph{sample intrinsic mean} in circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}.  In this particular problem the lattice $A_n^*$ is involved.  A fast closest point algorithm requiring only $O(n)$ operations exists for $A_n^*$~\cite{McKilliam2009CoxeterLattices,McKilliam2008b} and so the algorithm described in this paper is not needed in this particular case.  However, there many exist other signal processing problems where lattices of Voronoi's first kind arise.
+A number applications such as phase unwrapping~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012} also require computing a closest lattice point.  In these applications the particular lattice arises from the signal processing problem under consideration.  If that lattice happens to be of Voronoi's first kind then our algorithm can be used.  An example where this occurs is the problem of computing the \emph{sample intrinsic mean} in circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}.  In this particular problem the lattice $A_n^*$ is involved.  A fast closest point algorithm requiring only $O(n)$ operations exists for $A_n^*$~\cite{McKilliam2009CoxeterLattices,McKilliam2008b} and so the algorithm described in this paper is not needed in this particular case.  However, there may exist other signal processing problems where lattices of Voronoi's first kind arise.
 
-A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find an obtuse superbasis if it exists?
+Another interesting question is: are there subfamilies of Voronoi's first kind that admit even faster algorithms?  Both $A_n$ and $A_n^*$ are examples of this, but there might exist other subfamilies with algorithms faster than $O(n^4)$.  A related question is: can the techniques developed in this paper be applied to other families of lattices, i.e., beyond just those of Voronoi's first kind?  %More generally, do there exist large and useful familes of lattices where computing a closest point has polynomial complexity?   
+
+A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find a obtuse superbasis if it exists?  It is suspected that the answer to both of these questions is no.  An efficient solution to either question would immediately yield a solution to a known problem, that of determining whether a lattice is rectangular (has a basis consisting of pairwise orthogonal vectors) given an arbitrary basis~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}. 
 
 %In some applications, for example, the detection of communications signals involving multiple anntanea~\cite{Ryan2008,Wubben_2011} the lattice basis is not known in advance.  It is then of interest whether the 
 
