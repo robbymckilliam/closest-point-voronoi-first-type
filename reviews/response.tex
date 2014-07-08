@@ -124,7 +124,8 @@ i.e. $\xbf$ can be made ``shorter'' by squeezing its components closer together.
 
 Furthermore, one can use this to give a two line proof of Theorem 4.1.  This theorem I actually do think make sense to reprove here, because modifications of this proof are what drives the convergence bound. 
 \\\textbf{Response:}
-BLERG.  I think there's an error in the inquality above.
+BLERG. This is indeed the property used to prove Theorem 4.1, but not what's needed for the convergence
+
 
 \item\textbf{Comment:} 
 Lemma 5.1: there is a typo here.  The last identity should read
@@ -155,6 +156,9 @@ page 1, last line "The closest lattice point problem is known to be NP-hard unde
 \item\textbf{Comment:}  
 Additional comments about the above paragraph: one author is missing in the reference for 12. Of [1,23,40] only 23 achieves $n^{O(n)}$ running time. (I think the algorithms in 40 take $2^{O(n^2)}$.) There is a journal version of 37 in SIAM J. Computing, and the paper is by two authors (not just Micciancio). 
 \\\textbf{Response:}
+We have fixed these errors.  This paragraph now reads:
+
+``The closest lattice point problem is known to be NP-hard in general~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard,Regev_2004_inappox_lattice_with_preprocessing,feige_inapproximability_2004,Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms require a number of operations that grows as $O(n^{O(n)})$ or $O(n^{O(n^2)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known.''
 
 \item\textbf{Comment:}  
 page 2, second paragraph: Aren't the results of 3,29 and 30 subsumed by 34? (The authors sure know better than me. A a short clarification may direct the interested reader to the best paper to read.) Also, CVP is always solvable in polynomial time when the dimension is fixed. So, it is unclear the significance of CVP algorithms for Leech lattice (in fixed dimension 24) in the context of this discussion. 
@@ -168,6 +172,7 @@ The interested reader could read these references in the order given. %, i.e., f
 \item\textbf{Comment:}  
 When saying ``if the obtuse superbasis is known'', you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
 \\\textbf{Response:}
+
 
 \item\textbf{Comment:}  
 page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean strict inequality.
@@ -204,18 +209,18 @@ We have included the following text in the first paragraph of Section~\zref{sec:
 
 ``Motivated by Shalvi~et.~al.~\cite{Shalvi_iterativeslicer_2009} and  Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013}, we consider the following iteration,''
 
-Among the iterative proceedures in this paper, in~\cite{Shalvi_iterativeslicer_2009}, and in~\cite{MicciancioVoulgaris_deterministic_jv_2013}, ours is the simplest.  The choice of our iteration is not motivated by what might be fastest in general lattices.  It is motivated by what we can prove to be polynomial time for those lattices of Vornoi's first kind.
+Among the iterative proceedures in our paper, in~\cite{Shalvi_iterativeslicer_2009}, and in~\cite{MicciancioVoulgaris_deterministic_jv_2013}, ours is the simplest.  The choice of our iteration is not motivated by what might be fastest in general lattices.  It is motivated by what we can prove to be polynomial time for those lattices of Vornoi's first kind.
 
 The~\emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009} is similar but uses the (presumably accelerated?) iteration
-\begin{align}
-x_{k+1} &= x_k + \alpha_k v_k \nonumber \\
-(v_k, \alpha_k) &= \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\}, \alpha \in \ints } \|y - x_k - \alpha v \|.
-\end{align} 
+\begin{align*}
+x_{k+1} &= x_k + \alpha_k v_k  \\
+(v_k, \alpha_k) &= \arg\min_{ (v, \alpha) \in ( \relevant(\Lambda) \cup \{\zerobf\}, \ints) } \|y - x_k - \alpha v \|.
+\end{align*} 
 So it allows adding integer multiples of a relevant vector.  We do not believe using this will improve the complexity of our algorithm beyond $O(n^4)$.  It would greatly complicate our proofs.
 
-The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is quite different altogther.  As we understand it, is not to add relevant vectors, but to instead scale the lattice 
+The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is different again.  To our (admittedly rough) knowledge, the proceedure computes an $\alpha_k$ (different, but related to that above) and then proceeds by the same iteration as ours to compute a closest point in the scaled lattice $\alpha_k \Lambda$.  The next $\alpha_{k+1}$ is computed and the proceedure repeats.
 
-We have not included a description of the iterative approaches using in 
+We beleive that detailing the differences between these iterative proceedures would only detract from the core purpose of our paper to decscribe an $O(n^4)$ time algorithm to compute a closest point in lattice of Vornoi's first kind.
 
 \item\textbf{Comment:}  
 page 5, as before, you should probably mention also Voulgaris when citing 37. 
@@ -280,7 +285,7 @@ Fixed.
 \item\textbf{Comment:}  
 References: 
 - 12: missing author (R. Raz) 
-- 18: "A V" -> "A. V." etc, 
+- 18: "A V" $\to$ "A. V." etc, 
 - 37: journal version in SIAM J. computing, 42(3):1364-1391 (2013) 
 \\\textbf{Response:}
 Fixed.
@@ -306,6 +311,9 @@ See link
 http://cs.nyu.edu/~dadush/papers/cvpp.pdf 
 and read abstract for more information.
 \\\textbf{Response:}
+We thank the reviewer for these interesting references highlighting the difficultly of computing close approximations of a closest lattice point.  These have been referenced in Section~\zref{sec:iterative-slicer} with the following text:
+
+``Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004,Regev_2004_inappox_lattice_with_preprocessing,Aharonov_Regev_2005,Aleknovish_hardness_with_preprocessing_2011,Dadush_cvp_with_distance_guarantee_2014}.''
 
 \end{enumerate}
 
