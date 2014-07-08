@@ -139,6 +139,7 @@ This error has been fixed.
 \item\textbf{Comment:} 
 Lemma 5.7: $h$ is ill-defined if $\rng(\vbf) = 0$.  You should explicitly state that $\rng(\vbf) \geq 1$.
 \\\textbf{Response:}
+Fixed.
 
 
 \end{enumerate}
@@ -165,12 +166,15 @@ This sentence has been reworded and the reference list has been reduced.  It now
 The interested reader could read these references in the order given. %, i.e., first Chapter 4 of~\cite{SPLAG} and~\cite{Conway1982FastQuantDec} for $D_n$ and $D_n^*$ and older algorithms for $A_n$ and $A_n^*$.  Then~\cite{McKilliam2008} for a fast algorithm for $A_n^*$, then~\cite{McKilliam2009CoxeterLattices} for fast algorithms for all of the Coxeter lattices that includes $A_n$ and $A_n^*$, $E_8$, etc.  Technically, the algorithm from~\cite{McKilliam2009CoxeterLattices} does include that from~\cite{McKilliam2008}.  However~\cite{McKilliam2008} is simpler and shorter to read first.
 
 \item\textbf{Comment:}  
-When saying "if the obtuse superbasis is known", you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
+When saying ``if the obtuse superbasis is known'', you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
 \\\textbf{Response:}
 
 \item\textbf{Comment:}  
 page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean strict inequality.
 \\\textbf{Response:}
+Our definition includes what Conway and Sloane call the `lax' relevant vectors.  To make this clear the following sentences have been added below the definition of the relevant vectors in Section~\zref{sec:voron-cells-relev}:
+
+``This definition includes what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the definition above is replaced by one with strict inequality then only the `strict' relevant vectors would be considered. It will be of benefit to include all of the strict and lax relevant vectors here.''
 
 \item\textbf{Comment:}  
 page 3, and maybe elsewhere "short vector in a lattice" should probably be "shortest nonzero vector in a lattice". 
@@ -196,6 +200,22 @@ Done.
 page 3, section 3. 
 The process described in (3.1) is almost identical to those in [45,37], so those papers should probably be referenced at the very beginning, and a comparison provided. As far as I remember, the difference is that 37 picks the v that minimizes the voronoi norm (i.e., the norm defined by the voronoi cell of the origin) instead of the euclidean norm. On the other hand, 45 uses the euclidean norm, but selects an arbitrary relevant vector that reduces the euclidean norm, rather than the one that reduces it the most. In this respect, your process is a special case of the one described in 45, and termination (your propositions 3.1 and 3.2) is already proved in 45. 
 \\\textbf{Response:}
+We have included the following text in the first paragraph of Section~\zref{sec:iterative-slicer} when introducing the interative algorithm.
+
+``Motivated by Shalvi~et.~al.~\cite{Shalvi_iterativeslicer_2009} and  Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013}, we consider the following iteration,''
+
+Among the iterative proceedures in this paper, in~\cite{Shalvi_iterativeslicer_2009}, and in~\cite{MicciancioVoulgaris_deterministic_jv_2013}, ours is the simplest.  The choice of our iteration is not motivated by what might be fastest in general lattices.  It is motivated by what we can prove to be polynomial time for those lattices of Vornoi's first kind.
+
+The~\emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009} is similar but uses the (presumably accelerated?) iteration
+\begin{align}
+x_{k+1} &= x_k + \alpha_k v_k \nonumber \\
+(v_k, \alpha_k) &= \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\}, \alpha \in \ints } \|y - x_k - \alpha v \|.
+\end{align} 
+So it allows adding integer multiples of a relevant vector.  We do not believe using this will improve the complexity of our algorithm beyond $O(n^4)$.  It would greatly complicate our proofs.
+
+The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is quite different altogther.  As we understand it, is not to add relevant vectors, but to instead scale the lattice 
+
+We have not included a description of the iterative approaches using in 
 
 \item\textbf{Comment:}  
 page 5, as before, you should probably mention also Voulgaris when citing 37. 
@@ -263,6 +283,7 @@ References:
 - 18: "A V" -> "A. V." etc, 
 - 37: journal version in SIAM J. computing, 42(3):1364-1391 (2013) 
 \\\textbf{Response:}
+Fixed.
 
 \item\textbf{Comment:}  
 Some additional references on CVPP you may find interesting 
