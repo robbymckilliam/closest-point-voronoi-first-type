@@ -34,8 +34,9 @@
 
 \maketitle
 
-We thank both reviwers for their thoughtful comments.  %The authors feel the paper has improved as a result.
+We thank both reviewers for their thoughtful comments.  Below, citations within the reviewer comments are left as given by the reviewer.  Citations in our responses refer to the references at the end of this document.
 
+%The authors feel the paper has improved as a result.
 
 \section*{Reviewer 1}\label{sec:reviewer-1}
 
@@ -43,14 +44,18 @@ We thank both reviwers for their thoughtful comments.  %The authors feel the pap
 
 \item\textbf{Comment:} 
 From the perspective of quadratic forms, the quadratic forms induced by obtuse superbases are in one to one correspondance with graph Laplacians (this is not
-explicitly stated in the paper for some reason). Indeed, the quadratic form $\|B\xbf\|^2$ is exactly $\xbf^T L_G \xbf$, where $L_G$ is the Laplacian the weighted graph $G$ on vertices $\{ 1, . . . , n + 1 \}$ , with edges weights $w_{ij} = -\bbf_i \cdot \bbf_j \geq 0, i = j$ (which they call the Selling parameters). More precisely:
+explicitly stated in the paper for some reason). Indeed, the quadratic form $\|B\xbf\|^2$ is exactly $\xbf^T L_G \xbf$, where $L_G$ is the Laplacian of the weighted graph $G$ on vertices $\{ 1, . . . , n + 1 \}$ , with edges weights $w_{ij} = -\bbf_i \cdot \bbf_j \geq 0, i = j$ (which they call the Selling parameters). More precisely:
 \[
 \|B\xbf\|_2^2 = \xbf^T L_G \xbf = \sum_{ \{i,j\} \in E[G] } w_{ij} (\xbf_{i} - \xbf_{j} )^2.
 \]
-\\ \textbf{Response:}
+\\ \textbf{Response:} We thank the reviewer for pointing out the connection with the Laplacian matrix of a graph.  The following text has been included in Section~\zref{sec:comp-clos-relev} to highlight this link.
+
+``At the core of this technique is the fact that a one-to-one correspondence exists between the obtuse superbasis of a lattice of Voronoi's first kind and the~\emph{Laplacian matrix}~\cite{Chung_spectral_graph_theory_1997,Cvetković_spectra_graphs_1998} of a simple weighted graph with $n+1$ vertices and positive edge weights equal to the negated Selling parameters $-q_{ij}$.''
+
+The formula for $\|B\xbf\|_2^2$ stated by the reviewer is known as~\emph{Selling's formula} in literature on quadratic forms and the geometry of numbers~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  We do indirectly use this formula in the form of the function $\Phi(S,p)$ and our Lemma~\zref{lem:decSellings}.  A very early draft of our paper attempted to use Selling's formula more directly, but we ultimately found that it was $\Phi(S,p)$ that was used repeatedly and not Selling's formula.
 
 \item\textbf{Comment:} 
-BLERG: NEED TO CHECK REFS MATHS ETC To present the result from the perspective of Computational Complexity (also not given in the
+To present the result from the perspective of Computational Complexity (also not given in the
 paper), this paper can be viewed as giving a polynomial time algorithm for the Closest Vector
 Problem with Preprocessing (CVPP) over a special class of lattices. In the preprocessing model,
 we are allowed to compute any polynomial amount of advice about the lattice (i.e. a good basis, or many short vectors in the lattice, etc.) before answering any CVP queries, where the resources needed to compute this advice are not counted in the runtime of the algorithm. In its
@@ -59,14 +64,14 @@ gap decisional version, where we need only decide whether a target is at distanc
 \\\textbf{Response:}
 
 \item\textbf{Comment:} 
-BLERG CHECK REFS Hence, from the standpoint of CVPP, the algorithm in this paper gives essentially the first
+Hence, from the standpoint of CVPP, the algorithm in this paper gives essentially the first
 exact polynomial time algorithm over a reasonably large and natural class of lattices, i.e. those
 of Voronoi’s first kind. Lastly, removing the need for preprocessing for these lattices, at least for
 solving SVP without being given an obtuse superbasis, would require a substantial breakthrough
 in the theory of lattice problems (not stated in paper). Indeed, by a simple reduction this would
 allow us to decide whether a lattice (given any of its bases) is a rotation of $\ints^n$ (which is clearly
 of Voronoi’s first kind). This is a long standing open problem in the theory of lattices, which has
-only recently been solved in certain very special cases~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}.
+only recently been solved in certain very special cases~[6].
 \\\textbf{Response:}
 The final paragraph of Section~\zref{sec:discussion} has been modified to included that the correction with the existing problem of determining a rectangular basis should it exist.
 
@@ -99,7 +104,7 @@ We now respond to the reviewers numbered comments.
 \begin{enumerate}
 
 \item\textbf{Comment:} 
-BLERG REFS.  I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for Propositions
+I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for Propositions
 3.1 (which is essentially by definition) and 3.2, they appear in [9]. I don’t think it adds any
 readibility/anything of value to reprove them here.
 \\\textbf{Response:}
@@ -109,8 +114,7 @@ readibility/anything of value to reprove them here.
 \newcommand{\decrng}{\operatorname{decrng}}
 
 \item\textbf{Comment:} 
-Almost all the inequalities in the paper can be derived from the following simple obser-
-vation.  For and $n$ vertex weighted graph $G$ with non-negative edge weights, and vectors, $\xbf,\ybf \in \reals^n$, if there exists a permutation $\pi$ of $[n]$ such that $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \leq \dots \leq \ybf_{\pi[n]}$ then
+Almost all the inequalities in the paper can be derived from the following simple observation.  For and $n$ vertex weighted graph $G$ with non-negative edge weights, and vectors, $\xbf,\ybf \in \reals^n$, if there exists a permutation $\pi$ of $[n]$ such that $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \leq \dots \leq \ybf_{\pi[n]}$ then
 \[
 \xbf^T L_G \ybf = \sum_{ \{i,j\} \in E[G] } \wbf_{ij} (\xbf_{i} - \xbf_{j}) (\ybf_{i} - \ybf_{j}) \geq 0.
 \]
@@ -121,11 +125,29 @@ I believe using the above will make many of your proofs more transparent.  For e
 \xbf L_G \xbf = (\xbf - 1_S)^T L_G (\xbf - 1_S) + 2(\xbf - 1_S)^T L_G 1_S + 1_S^T L_G 1_S \geq (\xbf - 1_S)^T L_G (\xbf - 1_S),
 \]
 i.e. $\xbf$ can be made ``shorter'' by squeezing its components closer together.
+\\\textbf{Response:}
 
+The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1 (see our response to the next comment number~\ref{com:provethm4.1}).  However, this is not the property that is needed to prove that our algorithm converges in atmost $n$ steps.  Let $\subrng_k(p)$ denote the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq k$. Thus $\subrng_1$ is that suggested by the reviewer and $\subrng_2$ is that which is used in the paper.  Our proof works by considering a $v \in \ints^n$ that can be added to $\floor{z}$ so that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$.  Our Lemma~\zref{lem:roundzclose} shows that there exists such a $v$ with $\subrng_2(v) = \emptyset$ and so $\rng(v) \leq n$.  It is not true that there always exists such a $v$ with  $\subrng_1(v) = \emptyset$.
+
+To consider this in more detail it is worth looking at the proof of Lemma~\zref{lem:decrngpreservesclosestpoints}.  The lemma shows that $B(\floor{z} + v)$ is a closest point to $y = Bz$ only if $B\big(\floor{z} + \decrng(v)\big)$ is.  A key part of the proof is the line
+\[
+1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0 \qquad \text{for $i \in S$ and $j \notin S$}
+\]
+where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1)$ we require that the gap between $v_i - v_j$ to be greater than $\tfrac{3}{2}$.  Since $v \in \ints^{n+1}$ this means $v_i - v_j \geq 2$.  We cannot replace the current $\subrng_2$ with the suggested $\subrng_1$ and have this proof hold.
+
+Very early on (more than 2 years ago now!) when first looking at lattices of Voronoi's first kind, the first author believed that a single iteration of the proceedure would surfice.  That is, compute
+\[
+v = \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - \floor{z} - t) \|^2
+\]
+and then $B(\floor{z} + v)$ would be a closest lattice point.  Numerical counterexamples dispelled this possibility.
+
+\item\textbf{Comment:} \label{com:provethm4.1}
 Furthermore, one can use this to give a two line proof of Theorem 4.1.  This theorem I actually do think make sense to reprove here, because modifications of this proof are what drives the convergence bound. 
 \\\textbf{Response:}
-BLERG. This is indeed the property used to prove Theorem 4.1, but not what's needed for the convergence
 
+The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1.  To our knowledge, one also needs the property that the relevant vectors of a lattice are given by the shortest coset representatives of $\Lambda / 2\Lambda$.  This result is attributed to Voronoi (see for example \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} and \cite[Theorem~3.2]{MicciancioVoulgaris_deterministic_jv_2013}).  This is used by Conway and Sloane~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} to prove our Theorem~4.1.
+
+We believe that the proof, whilst not difficult, is ulitimately a distraction from our main results.  This would be different if properties needed for the proof, such as the function $\subrng_1$ and Selling's formula were also needed for the proofs for our algorithmm.  However, as we have stated, Selling's formula is not directly needed, and $\subrng_2$, not $\subrng_1$ is the function required. 
 
 \item\textbf{Comment:} 
 Lemma 5.1: there is a typo here.  The last identity should read
