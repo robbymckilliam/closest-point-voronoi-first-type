@@ -70,12 +70,12 @@ of Voronoi’s first kind. Lastly, removing the need for preprocessing for these
 solving SVP without being given an obtuse superbasis, would require a substantial breakthrough
 in the theory of lattice problems (not stated in paper). Indeed, by a simple reduction this would
 allow us to decide whether a lattice (given any of its bases) is a rotation of $\ints^n$ (which is clearly
-of Voronoi’s first kind). This is a long standing open problem in the theory of lattices, which has
+of Voronoi's first kind). This is a long standing open problem in the theory of lattices, which has
 only recently been solved in certain very special cases~[6].
 \\\textbf{Response:}
-The final paragraph of Section~\zref{sec:discussion} has been modified to included that the correction with the existing problem of determining a rectangular basis should it exist.
+The final paragraph of Section~\zref{sec:discussion} has been modified to make the connection with the existing problem of determining whether a rectangular basis exists.
 
-``A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find a obtuse superbasis if it exists?  It is suspected that the answer to both of these questions is no.  An efficient solution to either question would immediately yield a solution to a known problem, that of determining whether a lattice is rectangular (has a basis consisting of pairwise orthogonal vectors) given an arbitrary basis~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}.''
+``A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find a obtuse superbasis if it exists?  It is suspected that the answer to both of these questions is no.  An efficient solution to either question would immediately yield a solution to a known problem, that of determining whether a lattice is rectangular (has a basis consisting of pairwise orthogonal vectors) given an arbitrary basis~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}.  It is suspected that this simpler problem is difficult.''
 
 
 \item\textbf{Comment:} 
@@ -89,13 +89,14 @@ The following paragraph has been added to Section~\zref{sec:discussion} to sugge
 
 
 \item\textbf{Comment:} 
-On a technical level, I found the main convergence proof to be interesting, as I’ve rarely seen
+On a technical level, I found the main convergence proof to be interesting, as I've rarely seen
 combinatorial arguments successfully applied to lattice problems. On the other hand, while I’ve
 convinced myself the authors have the ``right'' convergence proof, I found its presentation to be
 rather awkward and unintuitive. I highly recommend that the authors rephrase the proof using
 the language of Laplacians, which would make things more clear (see the additional comments
 below for some technical suggestions).
 \\\textbf{Response:}
+We thank the reviewer for their comments.  We respond to the authors concerns below.
 
 \end{itemize}
 
@@ -108,6 +109,14 @@ I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for P
 3.1 (which is essentially by definition) and 3.2, they appear in [9]. I don’t think it adds any
 readibility/anything of value to reprove them here.
 \\\textbf{Response:}
+
+We agree that these propositions are well known/straightforward, but would prefer to keep them so that the paper is self contained. We do not know of references to specific proofs that we can give for these (unlike Theorem~4.1 for which a proof is directly given in \cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}).  Proposition 2.2 does appear informally in~\cite[Sec~5]{Shalvi_iterativeslicer_2009}.  As far as we are aware the remarkable algorithm in~\cite{MicciancioVoulgaris_deterministic_jv_2013} does not rely upon bounding the number of lattice points inside a sphere (or any other volume) as in Proposition~2.2.  Instead, the proceedure operates on scaled versions of the lattice.  The scaling is chosen to ensure that the target point always lies inside twice the Voronoi cell. 
+
+A motivation for Propositions 3.1 and 3.2 is as follows.  The stopping criterion in our proceedure is slightly different from those in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013}.  The stopping criterions in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013} essentially involve a direct check that a given point, say $x$, is contained inside the Voronoi cell.  That is, one directly asserts that $2 x \cdot v \leq \|v\|^2$ for all relevant vectors $v$.  We cannot use this approach since it would amount to checking this inequality over as many as $2^{n+1}-2$ relevant vectors.  Instead we simply check that $\|y - x_K\| \leq \|y - x_{K+1}\|$.  That is, we check that the proceedure converges in the sense that 
+\[
+\|y - x_K\| = \|y - x_{K+1}\| = \|y - x_{K+2}\| = \dots.
+\]
+This is a straightforward, but important, difference and it motivates Propostions 3.1 and 3.2.
 
 \newcommand{\rng}{\operatorname{rng}}
 \newcommand{\subrng}{\operatorname{subr}}
