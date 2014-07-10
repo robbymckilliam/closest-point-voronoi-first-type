@@ -34,7 +34,7 @@
 
 \maketitle
 
-We thank both reviewers for their thoughtful comments.  Below, citations within the reviewer comments are left as given by the reviewer.  Citations in our responses refer to the references at the end of this document.
+We thank both reviewers for their thoughtful comments.  Below, the citations within the reviewer comments are left as given by the reviewer.  Citations in our responses refer to the references at the end of this document.
 
 %The authors feel the paper has improved as a result.
 
@@ -52,7 +52,7 @@ explicitly stated in the paper for some reason). Indeed, the quadratic form $\|B
 
 ``At the core of this technique is the fact that a one-to-one correspondence exists between the obtuse superbasis of a lattice of Voronoi's first kind and the~\emph{Laplacian matrix}~\cite{Chung_spectral_graph_theory_1997,Cvetković_spectra_graphs_1998} of a simple weighted graph with $n+1$ vertices and positive edge weights equal to the negated Selling parameters $-q_{ij}$.''
 
-The formula for $\|B\xbf\|_2^2$ stated by the reviewer is known as~\emph{Selling's formula} in literature on quadratic forms and the geometry of numbers~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  We do indirectly use this formula in the form of the function $\Phi(S,p)$ and our Lemma~\zref{lem:decSellings}.  A very early draft of our paper attempted to use Selling's formula more directly, but we ultimately found that it was $\Phi(S,p)$ that was used repeatedly and not Selling's formula.
+The formula for $\|B\xbf\|_2^2$ stated by the reviewer is known as~\emph{Selling's formula} in the literature on quadratic forms and the geometry of numbers~\cite[Proposition 2.3.1]{Valentin2003_coverings_tilings_low_dimension}~\cite{Selling1874}.  We do indirectly use this formula in the form of the function $\Phi(S,p)$ and our Lemma~\zref{lem:decSellings}.  A very early draft of our paper attempted to use Selling's formula more directly, but we ultimately found that it was $\Phi(S,p)$ that was used repeatedly and not Selling's formula.
 
 \item\textbf{Comment:} 
 To present the result from the perspective of Computational Complexity (also not given in the
@@ -66,16 +66,16 @@ gap decisional version, where we need only decide whether a target is at distanc
 \item\textbf{Comment:} 
 Hence, from the standpoint of CVPP, the algorithm in this paper gives essentially the first
 exact polynomial time algorithm over a reasonably large and natural class of lattices, i.e. those
-of Voronoi’s first kind. Lastly, removing the need for preprocessing for these lattices, at least for
+of Voronoi's first kind. Lastly, removing the need for preprocessing for these lattices, at least for
 solving SVP without being given an obtuse superbasis, would require a substantial breakthrough
 in the theory of lattice problems (not stated in paper). Indeed, by a simple reduction this would
 allow us to decide whether a lattice (given any of its bases) is a rotation of $\ints^n$ (which is clearly
 of Voronoi's first kind). This is a long standing open problem in the theory of lattices, which has
 only recently been solved in certain very special cases~[6].
 \\\textbf{Response:}
-The final paragraph of Section~\zref{sec:discussion} has been modified to make the connection with the existing problem of determining whether a rectangular basis exists.
+The final paragraph of Section~\zref{sec:discussion} has been modified to make the connection with the existing problem of determining whether a rectangular basis exists in a given lattice.
 
-``A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find a obtuse superbasis if it exists?  It is suspected that the answer to both of these questions is no.  An efficient solution to either question would immediately yield a solution to a known problem, that of determining whether a lattice is rectangular (has a basis consisting of pairwise orthogonal vectors) given an arbitrary basis~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}.  It is suspected that this simpler problem is difficult.''
+``A final remark is that our algorithm assumes that the obtuse superbasis is known in advance.  It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.  An interesting question is: given a lattice, is it possible to efficiently decide whether it is of Voronoi's first kind?  A related question is: is it possible to efficiently find an obtuse superbasis if it exists?  It is suspected that the answer to this second question is no.  An efficient solution would yield a solution to a known problem, that of determining whether a lattice is rectangular (has a basis consisting of pairwise orthogonal vectors) given an arbitrary basis~\cite{Lenstra_Silverberg_revisting_gentra_szydlo_2014}.  It is suspected that this simpler problem is difficult.''
 
 
 \item\textbf{Comment:} 
@@ -90,7 +90,7 @@ The following paragraph has been added to Section~\zref{sec:discussion} to sugge
 
 \item\textbf{Comment:} 
 On a technical level, I found the main convergence proof to be interesting, as I've rarely seen
-combinatorial arguments successfully applied to lattice problems. On the other hand, while I’ve
+combinatorial arguments successfully applied to lattice problems. On the other hand, while I've
 convinced myself the authors have the ``right'' convergence proof, I found its presentation to be
 rather awkward and unintuitive. I highly recommend that the authors rephrase the proof using
 the language of Laplacians, which would make things more clear (see the additional comments
@@ -110,9 +110,9 @@ I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for P
 readibility/anything of value to reprove them here.
 \\\textbf{Response:}
 
-We agree that these propositions are well known/straightforward, but would prefer to keep them so that the paper is self contained. We do not know of references to specific proofs that we can give for these (unlike Theorem~4.1 for which a proof is directly given in \cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}).  Proposition 2.2 does appear informally in~\cite[Sec~5]{Shalvi_iterativeslicer_2009}.  As far as we are aware the remarkable algorithm in~\cite{MicciancioVoulgaris_deterministic_jv_2013} does not rely upon bounding the number of lattice points inside a sphere (or any other volume) as in Proposition~2.2.  Instead, the proceedure operates on scaled versions of the lattice.  The scaling is chosen to ensure that the target point always lies inside twice the Voronoi cell. 
+We agree that these propositions are well known/straightforward, but would prefer to keep them so that the paper is self contained. We do not know of references to specific proofs that we can give for these (unlike Theorem~4.1 for which a proof is directly given in \cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}).  The proof of Proposition 2.1 has been shortened in response to comment~\ref{com:rev2halfopen} of reviewer 2.  A result like Proposition 2.2 does appear informally in~\cite[Sec~5]{Shalvi_iterativeslicer_2009}.  As far as we are aware, the remarkable algorithm in~\cite{MicciancioVoulgaris_deterministic_jv_2013} does not rely upon bounding the number of lattice points inside a sphere (or any other volume).  Instead, the procedure operates recursively on scaled versions of the lattice.  The scaling is chosen to ensure that the target point always lies inside twice the Voronoi cell. 
 
-A motivation for Propositions 3.1 and 3.2 is as follows.  The stopping criterion in our proceedure is slightly different from those in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013}.  The stopping criterions in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013} essentially involve a direct check that a given point, say $x$, is contained inside the Voronoi cell.  That is, one directly asserts that $2 x \cdot v \leq \|v\|^2$ for all relevant vectors $v$.  We cannot use this approach since it would amount to checking this inequality over as many as $2^{n+1}-2$ relevant vectors.  Instead we simply check that $\|y - x_K\| \leq \|y - x_{K+1}\|$.  That is, we check that the proceedure converges in the sense that 
+Motivating Propositions 3.1 and 3.2 is that the stopping criterion in our proceedure is slightly different from those in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013}.  The stopping criterions in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013} essentially involve a direct check that a given point, say $x$, is contained inside the Voronoi cell.  That is, one directly asserts that $2 x \cdot v \leq \|v\|^2$ for all relevant vectors $v$.  We cannot use this approach since it would amount to checking this inequality over as many as $2^{n+1}-2$ relevant vectors.  Instead we simply check that $\|y - x_K\| \leq \|y - x_{K+1}\|$.  That is, we check that the proceedure converges in the sense that 
 \[
 \|y - x_K\| = \|y - x_{K+1}\| = \|y - x_{K+2}\| = \dots.
 \]
@@ -122,8 +122,8 @@ This is a straightforward, but important, difference and it motivates Propostion
 \newcommand{\subrng}{\operatorname{subr}}
 \newcommand{\decrng}{\operatorname{decrng}}
 
-\item\textbf{Comment:} 
-Almost all the inequalities in the paper can be derived from the following simple observation.  For and $n$ vertex weighted graph $G$ with non-negative edge weights, and vectors, $\xbf,\ybf \in \reals^n$, if there exists a permutation $\pi$ of $[n]$ such that $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \leq \dots \leq \ybf_{\pi[n]}$ then
+\item\textbf{Comment:} \label{com:uselaplaicesubr1}
+Almost all the inequalities in the paper can be derived from the following simple observation.  For an $n$ vertex weighted graph $G$ with non-negative edge weights, and vectors, $\xbf,\ybf \in \reals^n$, if there exists a permutation $\pi$ of $[n]$ such that $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \leq \dots \leq \ybf_{\pi[n]}$ then
 \[
 \xbf^T L_G \ybf = \sum_{ \{i,j\} \in E[G] } \wbf_{ij} (\xbf_{i} - \xbf_{j}) (\ybf_{i} - \ybf_{j}) \geq 0.
 \]
@@ -136,34 +136,34 @@ I believe using the above will make many of your proofs more transparent.  For e
 i.e. $\xbf$ can be made ``shorter'' by squeezing its components closer together.
 \\\textbf{Response:}
 
-The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1 (see our response to the next comment number~\ref{com:provethm4.1}).  However, this is not the property that is needed to prove that our algorithm converges in atmost $n$ steps.  Let $\subrng_k(p)$ denote the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq k$. Thus $\subrng_1$ is that suggested by the reviewer and $\subrng_2$ is that which is used in the paper.  Our proof works by considering a $v \in \ints^n$ that can be added to $\floor{z}$ so that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$.  Our Lemma~\zref{lem:roundzclose} shows that there exists such a $v$ with $\subrng_2(v) = \emptyset$ and so $\rng(v) \leq n$.  It is not true that there always exists such a $v$ with  $\subrng_1(v) = \emptyset$.
+The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1 (see our response to the next comment number~\ref{com:provethm4.1}).  However, this is not the property that is needed to prove that our algorithm converges in atmost $n$ steps.  To see this, let $\subrng_k(p)$ denote the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq k$. Thus $\subrng_1$ is that suggested by the reviewer and $\subrng_2$ is that which is used in the paper.  Our proof works by considering a $v \in \ints^n$ that can be added to $\floor{z}$ so that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$.  Our Lemma~\zref{lem:roundzclose} shows that there exists such a $v$ with $\subrng_2(v) = \emptyset$ and so $\rng(v) \leq n$.  It is not true that there always exists such a $v$ with  $\subrng_1(v) = \emptyset$.
 
 To consider this in more detail it is worth looking at the proof of Lemma~\zref{lem:decrngpreservesclosestpoints}.  The lemma shows that $B(\floor{z} + v)$ is a closest point to $y = Bz$ only if $B\big(\floor{z} + \decrng(v)\big)$ is.  A key part of the proof is the line
 \[
 1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0 \qquad \text{for $i \in S$ and $j \notin S$}
 \]
-where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1)$ we require that the gap between $v_i - v_j$ to be greater than $\tfrac{3}{2}$.  Since $v \in \ints^{n+1}$ this means $v_i - v_j \geq 2$.  We cannot replace the current $\subrng_2$ with the suggested $\subrng_1$ and have this proof hold.
+where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1)$ we require that the gap between $v_i - v_j$ to be greater than $\tfrac{3}{2}$.  Since $v \in \ints^{n+1}$ this means $v_i - v_j \geq 2$.  We cannot replace the current $\subrng_2$ with the suggested $\subrng_1$ and have this proof hold because then we would only have $v_i - v_j \geq 1$.
 
-Very early on (more than 2 years ago now!) when first looking at lattices of Voronoi's first kind, the first author believed that a single iteration of the proceedure would surfice.  That is, compute
-\[
-v = \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - \floor{z} - t) \|^2
-\]
-and then $B(\floor{z} + v)$ would be a closest lattice point.  Numerical counterexamples dispelled this possibility.
+% Very early on (more than 2 years ago now!) when first looking at lattices of Voronoi's first kind, the first author believed that a single iteration of the proceedure would surfice.  That is, compute
+% \[
+% v = \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - \floor{z} - t) \|^2
+% \]
+% and then $B(\floor{z} + v)$ would be a closest lattice point.  Numerical counterexamples dispelled this possibility.
 
 \item\textbf{Comment:} \label{com:provethm4.1}
 Furthermore, one can use this to give a two line proof of Theorem 4.1.  This theorem I actually do think make sense to reprove here, because modifications of this proof are what drives the convergence bound. 
 \\\textbf{Response:}
 
-The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1.  To our knowledge, one also needs the property that the relevant vectors of a lattice are given by the shortest coset representatives of $\Lambda / 2\Lambda$.  This result is attributed to Voronoi (see for example \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} and \cite[Theorem~3.2]{MicciancioVoulgaris_deterministic_jv_2013}).  This is used by Conway and Sloane~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} to prove our Theorem~4.1.
+The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1.  To our knowledge, one also needs the property that the relevant vectors of a lattice are given by the shortest coset representatives of $\Lambda / 2\Lambda$.  This result is attributed to Voronoi (see for example \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} and \cite[Theorem~3.2]{MicciancioVoulgaris_deterministic_jv_2013}).  This is used by Conway and Sloane in~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.
 
-We believe that the proof, whilst not difficult, is ulitimately a distraction from our main results.  This would be different if properties needed for the proof, such as the function $\subrng_1$ and Selling's formula were also needed for the proofs for our algorithmm.  However, as we have stated, Selling's formula is not directly needed, and $\subrng_2$, not $\subrng_1$ is the function required. 
+We believe that the proof, whilst not difficult, is ulitimately a distraction from our main results.  This would be different if properties needed for the proof, such as the function $\subrng_1$ and Selling's formula were also needed for proving the convergence of our algorithmm.  However, as we have stated in comments~\ref{com:uselaplaicesubr1}, Selling's formula is not directly needed, and $\subrng_2$, not $\subrng_1$ is the function required. 
 
 \item\textbf{Comment:} 
 Lemma 5.1: there is a typo here.  The last identity should read
 \[
 \|B\pbf\|^2 - \|B(\pbf + 1_S - 1_T)\|^2 = \Phi(S,\pbf) + \Phi(\bar{T}, \pbf) + 2\sum_{i \in S}\sum_{j\in S} q_{ij}.
 \]
-Notice that factor 2 in front of the last term.  There are also two related typos on the top of page 12 where $\sum_{i \in S}\sum_{j\in S} q_{ij}$ (this appears twice on difference lines) should be $2\sum_{i \in S}\sum_{j\in T} q_{ij}$.
+Notice that factor 2 in front of the last term.  There are also two related typos on the top of page 12 where $\sum_{i \in S}\sum_{j\in S} q_{ij}$ (this appears twice on different lines) should be $2\sum_{i \in S}\sum_{j\in T} q_{ij}$.
 \\\textbf{Response:}
 This error has been fixed.
 
@@ -181,7 +181,7 @@ Fixed.
 
 \begin{enumerate}
 \item\textbf{Comment:}  
-page 1, last line "The closest lattice point problem is known to be NP-hard under certain condition ...": I found this paragraph very confusing, and somehow inaccurate. What "certain conditions"? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
+page 1, last line ``The closest lattice point problem is known to be NP-hard under certain condition ...'': I found this paragraph very confusing, and somehow inaccurate. What ``certain conditions''? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
 \\\textbf{Response:}
 
 \item\textbf{Comment:}  
@@ -210,10 +210,10 @@ page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean s
 \\\textbf{Response:}
 Our definition includes what Conway and Sloane call the `lax' relevant vectors.  To make this clear the following sentences have been added below the definition of the relevant vectors in Section~\zref{sec:voron-cells-relev}:
 
-``This definition includes what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the definition above is replaced by one with strict inequality then only the `strict' relevant vectors would be considered. It will be of benefit to include all of the strict and lax relevant vectors here.''
+``This definition includes what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the definition above is replaced by one with strict inequality then only the `strict' relevant vectors would be considered.'' %It will be of benefit to include all of the strict and lax relevant vectors here.''
 
 \item\textbf{Comment:}  
-page 3, and maybe elsewhere "short vector in a lattice" should probably be "shortest nonzero vector in a lattice". 
+page 3, and maybe elsewhere ``short vector in a lattice'' should probably be ``shortest nonzero vector in a lattice''. 
 \\\textbf{Response:}
 We have instead introduced the term `short vector' in the introduction.  The following sentence is included in the first paragraph of the introduction: ``This is called the \emph{shortest vector problem} and a solution is called a~\emph{short vector}.''
 
@@ -222,7 +222,7 @@ page 3, definition of ceiling(r) as smallest integer strctly larger than 3 seems
 \\\textbf{Response:}
 Done.
 
-\item\textbf{Comment:}  
+\item\textbf{Comment:}  \label{com:rev2halfopen}
 page 3, proof of Prop. 2.1. Your definition of ``half-open voronoi cell'' is not a proper definition, and also seems incorrect. E.g., take the integer lattice $\ints^n$, then only one of the corners (rather than half) of the corners of the Voronoi cell should be included if you want a tiling. 
 \\\textbf{Response:}
 The reviewer is correct.  We only require that some modification of the boundary of the closed Voronoi cell results in a tiling.  The proof of Proposition~\zref{eq:latticepointsinvorcvell} has been modified accordingly.
