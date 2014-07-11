@@ -249,9 +249,9 @@ x_{k+1} &= x_k + \alpha_k v_k  \\
 \end{align*} 
 So it allows adding integer multiples of a relevant vector.  We do not believe using this will improve the complexity of our algorithm beyond $O(n^4)$.  It would greatly complicate our proofs.
 
-The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is different again.  To our (admittedly rough) knowledge, the proceedure computes an $\alpha_k$ (different, but related to that above) and then proceeds by the same iteration as ours to compute a closest point in the scaled lattice $\alpha_k \Lambda$.  The next $\alpha_{k+1}$ is computed and the proceedure repeats.
+The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is different again.  To our (admittedly rough) knowledge, the proceedure computes an $\alpha_k$ (different, but related to that above) and then proceeds to compute a closest point in the scaled lattice $\alpha_k \Lambda$.  The scaling $\alpha_k$ is chosen so that the target point lies withing $2\alpha_k \vor(\Lambda)$.  Once a closest lattice point in $\alpha_k\Lambda$ is found, the next $\alpha_{k+1}$ is computed and the proceedure repeats.
 
-We beleive that detailing the differences between these iterative proceedures would only detract from the core purpose of our paper to decscribe an $O(n^4)$ time algorithm to compute a closest point in lattice of Vornoi's first kind.
+We beleive that detailing the differences between these iterative proceedures would only detract from the core purpose of our paper to decscribe an $O(n^4)$ time algorithm to compute a closest point in lattice of Voronoi's first kind.
 
 \item\textbf{Comment:}  
 page 5, as before, you should probably mention also Voulgaris when citing 37. 
@@ -279,7 +279,7 @@ page 8, lemma 5.1. I think you forgot a factor 2 preceding the double summations
 This error has been fixed.
 
 \item\textbf{Comment:}  
-page 11, "with be" $\to$ "will be" Displayed equation before "Putting p=...", A | should be || (5.7) again, missing factor 2 before double summation, and second set should be T, not S. 
+page 11, ``with be'' $\to$ ``will be'' Displayed equation before ``Putting p=...'', A | should be || (5.7) again, missing factor 2 before double summation, and second set should be T, not S. 
 \\\textbf{Response:}
 These errors have been fixed.
 
@@ -294,12 +294,12 @@ page 12, last line, definition of $s_i$, missing (-2) factor.
 This error has been fixed.
 
 \item\textbf{Comment:}  
-page 13, after (6.1), "be computing" $\to$ "by computing" 
+page 13, after (6.1), ``be computing'' $\to$ ``by computing'' 
 \\\textbf{Response:}
 Fixed.
 
 \item\textbf{Comment:}  
-page 14, "have no effect" $\to$ "has no effect" 
+page 14, ``have no effect'' $\to$ ``has no effect'' 
 \\\textbf{Response:}
 Fixed.
 
@@ -309,14 +309,14 @@ page 15, definition of $Q$, should the summation defining $q_{ii}$ be restricted
 Yes. This has been fixed.
 
 \item\textbf{Comment:}  
-page 15, "there many" $\to$ "there may" 
+page 15, ``there many'' $\to$ ``there may'' 
 \\\textbf{Response:}
 Fixed.
 
 \item\textbf{Comment:}  
 References: 
 - 12: missing author (R. Raz) 
-- 18: "A V" $\to$ "A. V." etc, 
+- 18: ``A V'' $\to$ ``A. V.'' etc, 
 - 37: journal version in SIAM J. computing, 42(3):1364-1391 (2013) 
 \\\textbf{Response:}
 Fixed.
