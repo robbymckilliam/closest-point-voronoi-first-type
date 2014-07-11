@@ -311,7 +311,7 @@ Classical examples of lattices of Voronoi's first kind are the $n$ dimensional r
 % \end{cases}
 % \]
 For $A_n$ and $A_n^*$ there exist efficient algorithms that can compute a closest lattice point in $O(n)$ operations~\cite{McKilliam2009CoxeterLattices,Conway1982FastQuantDec}. For this reason we do not recommend using the algorithm described in this paper for $A_n$ and $A_n^*$.  
-The fast algorithms for $A_n$ and $A_n^*$ rely of the special structure of these lattices and are not applicable to other lattices.  In contrast, the algorithm we describe here works for all lattices of Voronoi's first kind.  Questions that arise are: how ``large'' (in some sense) is the set of lattices of Voronoi's first kind?  Are there lattices of Voronoi's first kind that are useful in applications such as coding, quantisation, or signal processing?  We discuss these questions in Section~\ref{sec:discussion}.  We now focus on the problem of computing a closest lattice point in a lattice of Voronoi's first kind. 
+The fast algorithms for $A_n$ and $A_n^*$ rely of the special structure of these lattices and are not applicable to other lattices.  In contrast, the algorithm we describe here works for all lattices of Voronoi's first kind.  Questions that arise are: how ``large'' (in some sense) is the set of lattices of Voronoi's first kind?  Are there lattices of Voronoi's first kind that are useful in applications such as coding, quantisation, or signal processing?  These questions are discussed in Section~\ref{sec:discussion}.  We now focus on the problem of computing a closest point in a lattice of Voronoi's first kind. 
 
 %However, there exist a large number of lattice of first
 %A lattice of Voronoi's first kind appears nontrivial.  One approach would be to construct the matrix $Q = B^\prime B$ containing the Selling parameters $q_{ij}$.  The matrix $Q$ requires to have nonpositive off diagonal entries and to be positive semidefinite with null space containing the vector $\onebf$ of all ones.  The explicit construction of such matrices is an interesting question for future research.  A related question is to determine, in some sense, how `large' the set of matrices satisfying these criteria is.  This would shed some light on how `large' the set of lattices of Voronoi's first kind is.  
@@ -319,7 +319,8 @@ The fast algorithms for $A_n$ and $A_n^*$ rely of the special structure of these
 
 \section{A series of relevant vectors from a lattice of Voronoi's first kind}\label{sec:seri-relev-vect}
 
-We are interested in solving the closest lattice point problem for lattices of Voronoi's first kind.  Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  We want to find $n$ integers $w_1,\dots,w_n$ that minimise
+%We are interested in solving the closest lattice point problem for lattices of Voronoi's first kind.  
+Let $\Lambda \subset \reals^m$ be an $n$ dimensional lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$ and let $y \in \reals^m$.  We want to find $n$ integers $w_1,\dots,w_n$ that minimise
 \[
 \| y - \sum_{i=1}^n b_i w_i \|^2.
 \]
@@ -327,7 +328,7 @@ We can equivalently find $n+1$ integers $w_1,\dots,w_{n+1}$ that minimise
 \[
 \| y - \sum_{i=1}^{n+1} b_i w_i \|^2.
 \]
-The iterative procedure described in~\eqref{eq:relvectsminimslicer} will be used to do this.  In what follows it is assumed that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is a closest lattice point to $y$ if and only if $x$ is a the closest lattice point to the orthogonal projection of $y$ into the space spanned by $b_1,\dots,b_{n}$.  Let
+The iterative procedure described in~\eqref{eq:relvectsminimslicer} will be used to do this.  In what follows it is assumed that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$.  This assumption is without loss of generality because $x$ is a closest lattice point to $y$ if and only if $x$ is a closest lattice point to the orthogonal projection of $y$ into the space spanned by $b_1,\dots,b_{n}$.  Let
 \[
 B = (b_1\,\,b_2\,\,\dots\,\,b_{n+1})
 \]
@@ -344,15 +345,32 @@ t_k &= \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - u_k - t) \|^2, \label{eq:pvecmin}
 where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  The procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  The minimiser may not be unique corresponding with the existence of multiple minimum cuts.  In this case any one of the minimisers may be chosen.  Our results do not depend on this choice.   In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 
 \newcommand{\rng}{\operatorname{rng}}
+
+We first provide an intuitive description of our proof technique.  Denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p \in \reals^{n+1}$ and define the function
+\[
+\rng(p) = \max(p) - \min(p).
+\] 
+%to return the difference between the maximum and minimum of $p$.  %For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also 
+%For example $\rng(2,-1,4)= 4 - (-1) = 5$.  
+Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  Let $\ell$ be a nonegative integer.  Say that a lattice point $x$ is $\ell$-\emph{close} to $y$ if there exists a $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $x + Bv$ is a closest point to $y$.  We will show (Lemma~\ref{lem:roundzclose}) that the lattice point $x_0 = B\floor{z}$ that initialises the iterative procedure~\eqref{eq:xseqfirsttype} is $K$-close to $y$ where $K \leq n$.  We then prove (Lemma~\ref{lem:rngdecreases}) that if the lattice point $x_k$ obtained on the $k$th iteration of the procedure is $\ell$-close, then the lattice point $x_{k+1}$ obtained on the next iteration is $(\ell-1)$-close.  Since $x_0$ is $K$-close it follows that after $K \leq n$ iterations the lattice point $x_K$ is $0$-close.  At this stage it is guaranteed that $x_{K}$ itself is a closest lattice point to $y$.  This is shown in the following lemma.
+
+\begin{lemma}\label{lem:rngzeroclosestpoint}
+If $x$ is a lattice point that is $0$-close to $y$ then $x$ is a closest lattice point to $y$.
+\end{lemma}
+\begin{proof}
+Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical, that is, $v_1=v_2=\dots=v_{n+1}$.  In this case $Bv = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
+as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
+\end{proof}
+
 \newcommand{\subrng}{\operatorname{subr}}
 \newcommand{\decrng}{\operatorname{decrng}}
 
-It is necessary to introduce some notation.  For $S$ a subset of indices $\{1,\dots,n+1\}$ let $\onebf_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and zero otherwise. %Thus, for example, if $p \in \reals^{n+1}$, then $p+\onebf_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.  
-For $S \subseteq \{1,\dots,n+1\}$ and $p \in \reals^{n+1}$ we define the function
+We now proceed with a formal proof culminating in Theorem~\ref{thm:mainitrconvthm} stated at the end of this section.  It is necessary to first introduce some notation.  For $S$ a subset of indices $\{1,\dots,n+1\}$ let $\onebf_S$ denote the column vector of length $n+1$ with $i$th element equal to one if $i \in S$ and zero otherwise. %Thus, for example, if $p \in \reals^{n+1}$, then $p+\onebf_S$ denotes the vector $p$ with those elements having index from $S$ incremented by one.  
+For $S \subseteq \{1,\dots,n+1\}$ and $p \in \reals^{n+1}$ define the function
 \[
 \Phi(S, p) = \sum_{i \in S}\sum_{j \notin S}q_{ij}(1 + 2p_i - 2p_j)
 \]
-where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters from~\eqref{eq:obtusecond}.  We denote by $\bar{S}$ the complement of the set of indices $S$, that is $\bar{S} = \{ i \in \{1,\dots,n+1\} \mid i \notin S\}$. 
+where $q_{ij} = \dotprod{b_i}{b_j}$ are the Selling parameters from~\eqref{eq:obtusecond}.  Denote by $\bar{S}$ the complement of the set of indices $S$, that is $\bar{S} = \{ i \in \{1,\dots,n+1\} \mid i \notin S\}$. 
 
 \begin{lemma}\label{lem:decSellings}
 Let $p \in \reals^{n+1}$ and let $S$ and $T$ be subsets of the indices of $p$.  The following equalities hold:
@@ -422,13 +440,7 @@ which is precisely $\Phi(S,p)$.
 % \]
 % \end{lemma}
 
-Denote by $\min(p)$ and $\max(p)$ the minimum and maximum values obtained by the elements of the vector $p$ and define the function
-\[
-\rng(p) = \max(p) - \min(p).
-\] 
-%to return the difference between the maximum and minimum of $p$.  %For example, if $p = (2,-1,4) \in \ints^3$ then $\rng(p) = 4 - (-1)=5$.  We might also 
-%For example $\rng(2,-1,4)= 4 - (-1) = 5$.  
-Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of the elements of $p$ are equal.  We define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
+Define the function $\subrng(p)$ to return the largest subset, say $S$, of the indices of $p$ such that $\min\{p_i, i \in S\} - \max\{p_i, i \notin S\} \geq 2.$  If no such subset exists then $\subrng(p)$ is the empty set $\emptyset$.  For example, 
 \[
 \subrng(2,-1,4) = \{1,3\}, \qquad \subrng(2,1,3) = \emptyset, \quad  \subrng(1,3,1) = \{2\}.
 \]  
@@ -448,12 +460,12 @@ Let $p \in \ints^{n+1}$.  If $\subrng(p) = \emptyset$ then $\rng(p) \leq n$.
 \begin{proof}
 Let $\sigma$ be the permutation of the indices $\{1,\dots,n+1\}$ that puts the elements of $p$ in ascending order.  Because $\subrng(p) = \emptyset$ and because the elements of $p$ are integers we have $p_{\sigma(i+1)} \leq p_{\sigma(i)} + 1$ for all $i=1,\dots,n$.  It follows that
 \[
-p_{\sigma(n+1)} \leq p_{\sigma(n)} + 1 \leq p_{\sigma(n-1)} + 2 \leq \dots \leq p_{\sigma(1)} + n.
+p_{\sigma(n+1)} \leq p_{\sigma(n)} + 1 \leq p_{\sigma(n-1)} + 2 \leq \dots \leq p_{\sigma(1)} + n
 \]
 and so $\rng(p) = p_{\sigma(n+1)} - p_{\sigma(1)} \leq n$.
 \end{proof}
 
-Finally we define the function
+Finally, define the function
 \[
 \decrng(p) = p -  \onebf_{\subrng(p)}
 \]
@@ -473,14 +485,14 @@ This will be a useful property so we state it formally in the following proposit
 \begin{proposition} \label{lem:repeatappdecrange} Let $p \in \reals^{n+1}$ and define the infinite sequence $d_0,d_1,d_2,\dots$ of vectors according to $d_0=p$ and $d_{k+1} = \decrng(d_k)$.  There is a finite integer $T$ such that $d_T=d_{T+1}=d_{T+2}=\dots$.
 \end{proposition}
 \begin{proof}
-Assume that no such $T$ exists.  Then $\decrng(d_k) \neq d_k$ for all positive integers $k$ and so 
+Assume that no such $T$ exists.  In this case $\decrng(d_k) \neq d_k$ for all positive integers $k$ and so 
 \[
 \rng(d_{k}) = \rng(d_{k-1}) - 1 = \rng(d_{k-2}) - 2 = \dots = \rng(p) - k.
 \]  
 Choosing $k > \rng(p)$ we have $\rng(d_{k}) < 0$ contradicting that $\rng(d_k)$ is nonegative.
 \end{proof}
 
-We are now ready to study properties of a closest lattice point in a lattice of Voronoi's first kind.
+We are now ready to study properties of the lattice point $x_0 = B\floor{z}$ that initialises the iterative procedure~\eqref{eq:xseqfirsttype}.
 
 \begin{lemma}\label{lem:decrngpreservesclosestpoints}
 If $v \in \ints^{n+1}$ is such that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$, then $B\big(\floor{z} + \decrng(v)\big)$ is also a closest lattice point to $y$.
@@ -521,17 +533,9 @@ d_{T+1}=d_T=\decrng(d_T).
 Thus $\subrng(d_T) = \emptyset$ and $\rng(d_T) \leq n$ by Proposition~\ref{prop:subrrngsmall}.  The proof follows with $v = d_T$.   
 \end{proof}
 
-Let $\ell$ be a nonegative integer.  We say that a lattice point $x$ is $\ell$-\emph{close} to $y$ if there exists a $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $x + Bv$ is a closest lattice point to $y$.  Lemma~\ref{lem:roundzclose} asserts that the lattice point $x_0 = B\floor{z}$ that initialises the iterative procedure~\eqref{eq:xseqfirsttype} is $K$-close to $y$ where $K \leq n$.  From Lemma~\ref{lem:rngdecreases} stated below it will follow that if the lattice point $x_k$ obtained on the $k$th iteration of the procedure is $\ell$-close, then the lattice point $x_{k+1}$ obtained on the next iteration is $(\ell-1)$-close.  Since $x_0$ is $K$-close it will then follow that after $K \leq n$ iterations the lattice point $x_K$ is $0$-close.  At this stage it is guaranteed that $x_{K}$ itself is a closest lattice point to $y$.  This is shown in the following lemma.  
+%BLERG: will want a connecting sentence here.
 
-\begin{lemma}\label{lem:rngzeroclosestpoint}
-If $x$ is a lattice point that is $0$-close to $y$, then $x$ is a closest lattice point to $y$.
-\end{lemma}
-\begin{proof}
-Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest lattice point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical, that is, $v_1=v_2=\dots=v_{n+1}$.  In this case $Bv = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
-as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
-\end{proof}
-
-Before giving the proof of Lemma~\ref{lem:rngdecreases} we require the following simple result.
+Recall that a lattice point $x$ is said to by $\ell$-close to $y$ if there exists a $v \in \ints^{n+1}$ with $\rng(v) = \ell$ such that $x + Bv$ is a closest point to $y$.  Lemma~\ref{lem:roundzclose} above asserts that the lattice point $x_0 = B\floor{z}$ that initialises the iterative procedure is $K$-close to $y$ where $K \leq n$.  We now prove Lemma~\ref{lem:rngdecreases} from which it will follow that if the lattice point $x_k$ obtained on the $k$th iteration of the procedure is $\ell$-close, then the lattice point $x_{k+1}$ obtained on the next iteration is $(\ell-1)$-close.  Before giving the proof of Lemma~\ref{lem:rngdecreases} we require the following simple result.
 
 \begin{lemma}\label{eq:integergreaterless}
 Let $h \in \{0,1\}^{n+1}$ and $v \in \ints^{n+1}$ with $\rng(v) \geq 1$.  Suppose that
@@ -603,13 +607,13 @@ as a result of~\eqref{eq:BpBpdecincineq}.  However, $h \in \{0,1\}^{n+1}$ and so
 contradicting~\eqref{eq:qismin}.  Thus, our original supposition is false and $B(u+g+w)$ is a closest lattice point to $y$. Because $\rng(w) = \ell-1$ the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
  \end{proof}
 
-The next theorem asserts that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
+We are now ready to prove our main theorem asserting that the iterative procedure~\eqref{eq:xseqfirsttype} converges to a closest lattice point in $K \leq n$ iterations.  This is the primary result of this section.
 
-\begin{theorem}
-Let $x_0,x_1,\dots$ be the sequence of lattice points given by the iterative procedure~\eqref{eq:xseqfirsttype}.  There exists $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
+\begin{theorem}\label{thm:mainitrconvthm}
+Let $\Lambda \subset \reals^m$ be a lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$.  Let $y \in \reals^m$ and let $x_0,x_1,\dots$ be a sequence of lattice points given by the iterative procedure~\eqref{eq:xseqfirsttype}.  There exists $K \leq n$ such that $x_K$ is a closest lattice point to $y$.
 \end{theorem}
 \begin{proof}
-Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y=Bz$ with $\ell > 0$.  The procedure computes $t_{k} \in \{0,1\}^{n+1}$ satisfying
+Recall that we, without loss of generality, suppose that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$ and so $y = Bz$ where $z \in \ints^{n+1}$.  Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y$ with $\ell > 0$.  The procedure computes $t_{k} \in \{0,1\}^{n+1}$ satisfying
 \[
 \|B(z - u_k - t_{k})\|^2 = \min_{t \in \{0,1\}^{n+1}}\|B(z - u_k - t)\|^2
 \]
@@ -636,7 +640,7 @@ We will show that a minimiser of $Q(t)$ can be found efficiently by computing a 
 %This section describes how a binary quadratic program can be mapped into the problem of computing a minimum cut in a weighted graph.  
 This technique has appeared previously~\cite{Picard_min_cuts_1974,Sankaran_solving_CDMA_mincut_1998,Ulukus_cdma_mincut_1998,Cormen2001} but we include the derivation here so that this paper is self contained.  At the core of this technique is the fact that a one-to-one correspondence exists between the obtuse superbasis of a lattice of Voronoi's first kind and the~\emph{Laplacian matrix}~\cite{Chung_spectral_graph_theory_1997,Cvetković_spectra_graphs_1998} of a simple weighted graph with $n+1$ vertices and positive edge weights equal to the negated Selling parameters $-q_{ij}$.  
 
-Let $G$ be an undirected graph with $n+3$ vertices $v_0, \dots, v_{n+2}$ contained in the set $V$ and edges $e_{ij}$ connecting $v_i$ to $v_j$.  To each edge we assign a \emph{weight} $w_{ij} \in \reals$.  The graph is undirected so the weights are symmetric, that is, $w_{ij} = w_{ji}$.  By calling the vertex $v_0$ the \emph{source} and the vertex $v_{n+2}$ the \emph{sink} the graph $G$ is what is called a \emph{flow network}.  The flow network is \emph{undirected} since the weights assigned to each edge are undirected.  A \emph{cut} in the flow network $G$ is a subset $C \subset V$ of vertices with its complement $\bar{C} \subset V$ such that the source vertex $v_0 \in C$ and the sink vertex $v_{n+2} \in \bar{C}$.  %The vertex $v_0$ is typically called the \emph{source} and the vertex $v_{n+1}$ is typically called the \emph{sink}.
+Let $G$ be an undirected graph with $n+3$ vertices $v_0, \dots, v_{n+2}$ contained in the set $V$ and edges $e_{ij}$ connecting $v_i$ to $v_j$.  To each edge we assign a \emph{weight} $w_{ij} \in \reals$.  The graph is undirected so the weights are symmetric, that is, $w_{ij} = w_{ji}$.  By calling the vertex $v_0$ the \emph{source} and the vertex $v_{n+2}$ the \emph{sink} the graph $G$ is what is called a \emph{flow network}.  The flow network is \emph{undirected} because the weights assigned to each edge are undirected.  A \emph{cut} in the flow network $G$ is a subset $C \subset V$ of vertices with its complement $\bar{C} \subset V$ such that the source vertex $v_0 \in C$ and the sink vertex $v_{n+2} \in \bar{C}$.  %The vertex $v_0$ is typically called the \emph{source} and the vertex $v_{n+1}$ is typically called the \emph{sink}.
 
 The weight of a cut is
 \[
