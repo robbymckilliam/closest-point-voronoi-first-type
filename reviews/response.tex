@@ -63,6 +63,12 @@ gap decisional version, where we need only decide whether a target is at distanc
 (for some approximation factor $\alpha \geq 1$), it is was shown [1, 4] to be NP-Hard for any constant $\alpha = 2^{\log^{1-\epsilon}n}$, and to not be polynomial time solvable for $\alpha = 2 \log n$ , for any fixed $\epsilon > 0$, under the assumption  that $NP \subsetneq \text{RTIME}(2^{\log^{O(1/\epsilon)}n})$ (quasi-polynomial time). For its approximate search version (i.e. find a lattice vector whose distance to the target is some bounded factor away from optimal), an $O(n^{1.5})$ approximation algorithm was (implicitly) given in [5], which was only recently improved to $O( \sqrt{ n / \log n} )$ in [3].
 \\\textbf{Response:}
 
+The following paragraph has been included in the introduction to put our results into context with the closest vector problem with preprocessing:
+
+``Our results can be placed in the context of a modification of the closest lattice point problem called the \emph{closest vector problem with preprocessing}~\cite{micciancio_hardness_2001,feige_inapproximability_2004,Regev_2004_inappox_lattice_with_preprocessing,Aleknovish_hardness_with_preprocessing_2011,knot_hardness_cvvp_2014,Dadush_cvp_with_distance_guarantee_2014}.  In this problem some ``advice'' of polynomial size about the lattice is assumed to be given.  The advice might come in the form of a particular basis for the lattice or might take other forms.  The advice may be used to compute a closest lattice point, hopefully with reduced complexity.  %Even this modification of the closest lattice point problem is known to be NP-hard~\cite{micciancio_hardness_2001,feige_inapproximability_2004}.  
+Our algorithm can be viewed as an efficient solution for the closest vector problem with preprocessing for the lattices of Voronoi's first kind.  The advice given is the obtuse superbasis.''
+
+
 \item\textbf{Comment:} 
 Hence, from the standpoint of CVPP, the algorithm in this paper gives essentially the first
 exact polynomial time algorithm over a reasonably large and natural class of lattices, i.e. those
@@ -184,12 +190,17 @@ Fixed.
 page 1, last line ``The closest lattice point problem is known to be NP-hard under certain condition ...'': I found this paragraph very confusing, and somehow inaccurate. What ``certain conditions''? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
 \\\textbf{Response:}
 
+The following paragraph has been included in the introduction to put our results into context with the closest vector problem with preprocessing:
+
+``Our results can be placed in the context of a modification of the closest lattice point problem called the \emph{closest vector problem with preprocessing}~\cite{micciancio_hardness_2001,feige_inapproximability_2004,Regev_2004_inappox_lattice_with_preprocessing,Aleknovish_hardness_with_preprocessing_2011,knot_hardness_cvvp_2014,Dadush_cvp_with_distance_guarantee_2014}.  In this problem some ``advice'' of polynomial size about the lattice is assumed to be given.  The advice might come in the form of a particular basis for the lattice or might take other forms.  The advice may be used to compute a closest lattice point, hopefully with reduced complexity.  %Even this modification of the closest lattice point problem is known to be NP-hard~\cite{micciancio_hardness_2001,feige_inapproximability_2004}.  
+Our algorithm can be viewed as an efficient solution for the closest vector problem with preprocessing for the lattices of Voronoi's first kind.  The advice given is the obtuse superbasis.''
+
 \item\textbf{Comment:}  
 Additional comments about the above paragraph: one author is missing in the reference for 12. Of [1,23,40] only 23 achieves $n^{O(n)}$ running time. (I think the algorithms in 40 take $2^{O(n^2)}$.) There is a journal version of 37 in SIAM J. Computing, and the paper is by two authors (not just Micciancio). 
 \\\textbf{Response:}
 We have fixed these errors.  This paragraph now reads:
 
-``The closest lattice point problem is known to be NP-hard in general~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard,Regev_2004_inappox_lattice_with_preprocessing,feige_inapproximability_2004,Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms require a number of operations that grows as $O(n^{O(n)})$ or $O(n^{O(n^2)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known.''
+``The closest lattice point problem is known to be NP-hard~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard,Regev_2004_inappox_lattice_with_preprocessing,feige_inapproximability_2004,Jalden2005_sphere_decoding_complexity}. Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms require a number of operations that grows as $O(n^{O(n)})$ or $O(n^{O(n^2)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known.''
 
 \item\textbf{Comment:}  
 page 2, second paragraph: Aren't the results of 3,29 and 30 subsumed by 34? (The authors sure know better than me. A a short clarification may direct the interested reader to the best paper to read.) Also, CVP is always solvable in polynomial time when the dimension is fixed. So, it is unclear the significance of CVP algorithms for Leech lattice (in fixed dimension 24) in the context of this discussion. 
@@ -208,9 +219,17 @@ When saying ``if the obtuse superbasis is known'', you may want to cast this req
 \item\textbf{Comment:}  
 page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean strict inequality.
 \\\textbf{Response:}
-Our definition includes what Conway and Sloane call the `lax' relevant vectors.  To make this clear the following sentences have been added below the definition of the relevant vectors in Section~\zref{sec:voron-cells-relev}:
+%In our original definition we intended to include what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  This we not necessary
+Yes, this has been fixed.  The text now reads reads:
 
-``This definition includes what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the definition above is replaced by one with strict inequality then only the `strict' relevant vectors would be considered.'' %It will be of benefit to include all of the strict and lax relevant vectors here.''
+The \emph{relevant vectors} are those lattice points $v \in \Lambda \backslash  \{\zerobf\}$ for which  
+\[
+\dotprod{v}{x} < \dotprod{x}{x} \qquad \text{for all $x \in \Lambda \backslash  \{\zerobf\}$}.
+\]
+
+% Our definition includes what Conway and Sloane call the `lax' relevant vectors.  To make this clear the following sentences have been added below the definition of the relevant vectors in Section~\zref{sec:voron-cells-relev}:
+
+% ``This definition includes what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  If the definition above is replaced by one with strict inequality then only the `strict' relevant vectors would be considered.'' %It will be of benefit to include all of the strict and lax relevant vectors here.''
 
 \item\textbf{Comment:}  
 page 3, and maybe elsewhere ``short vector in a lattice'' should probably be ``shortest nonzero vector in a lattice''. 
@@ -270,8 +289,17 @@ Done.
 
 \item\textbf{Comment:}  
 page 6, Theorem 4.1 (this follows from [ 9, Theorem 2+3], not just theorem 3. 
-Also, make the theorem statement self contained by adding "Let L be a lattice of voronoi first kind with obtuse superbasis b1..bn+1". 
+Also, make the theorem statement self contained by adding "Let $L$ be a lattice of voronoi first kind with obtuse superbasis $b_1,\dots,b_{n+1}$". 
 \\\textbf{Response:}
+We beleive that it is only Theorem 3 from~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} that needs to cited.  Theorem~2 in \cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} asserts that the relevant vectors in any lattice $\Lambda$ are the shortest coset representatives of the quotient $\Lambda/2\Lambda$.  Theorem~3 uses this, Selling's formula, and the fact that the Selling parameters are nonpositive to prove that the relevant vectors in a lattice of Voronoi's first kind take the form
+\[
+\sum_{i \in I} b_i
+\]
+where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty.
+
+We have included the text ``Let $\Lambda$ be a lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$.'' into the statement of Theorem 4.1.
+
+%BLERG: Check that Theorems 2 and 3 in the published version of\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} are what I think they are!
 
 \item\textbf{Comment:}  
 page 8, lemma 5.1. I think you forgot a factor 2 preceding the double summations over S and T (at end of lemma statement, and also in the proof.) 
