@@ -43,7 +43,7 @@ We thank both reviewers for their thoughtful comments.  Below, the citations wit
 \begin{itemize}
 
 \item\textbf{Comment:} 
-From the perspective of quadratic forms, the quadratic forms induced by obtuse superbases are in one to one correspondance with graph Laplacians (this is not
+From the perspective of quadratic forms, the quadratic forms induced by obtuse superbases are in one to one correspondence with graph Laplacians (this is not
 explicitly stated in the paper for some reason). Indeed, the quadratic form $\|B\xbf\|^2$ is exactly $\xbf^T L_G \xbf$, where $L_G$ is the Laplacian of the weighted graph $G$ on vertices $\{ 1, . . . , n + 1 \}$ , with edges weights $w_{ij} = -\bbf_i \cdot \bbf_j \geq 0, i = j$ (which they call the Selling parameters). More precisely:
 \[
 \|B\xbf\|_2^2 = \xbf^T L_G \xbf = \sum_{ \{i,j\} \in E[G] } w_{ij} (\xbf_{i} - \xbf_{j} )^2.
@@ -102,7 +102,7 @@ rather awkward and unintuitive. I highly recommend that the authors rephrase the
 the language of Laplacians, which would make things more clear (see the additional comments
 below for some technical suggestions).
 \\\textbf{Response:}
-We thank the reviewer for their comments.  The order of some paragraphs and lemmas has been changed in Section~\zref{sec:seri-relev-vect} with the intent of improving the readability of the proofs and presenting the intuition behind the proofs before formalities begin.  We response to the authors other concerns below.
+We thank the reviewer for their comments.  We response to the authors other concerns below.
 
 \end{itemize}
 
@@ -113,16 +113,16 @@ We now respond to the reviewers numbered comments.
 \item\textbf{Comment:} 
 I believe Proposition 2.1 and 2.2 appear essentially verbatim in [8]. Same for Propositions
 3.1 (which is essentially by definition) and 3.2, they appear in [9]. I don’t think it adds any
-readibility/anything of value to reprove them here.
+readability/anything of value to reprove them here.
 \\\textbf{Response:}
 
 We agree that these propositions are well known/straightforward, but would prefer to keep them so that the paper is self contained. We do not know of references to specific proofs that we can give for these (unlike Theorem~4.1 for which a proof is directly given in \cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}).  The proof of Proposition 2.1 has been shortened in response to comment~\ref{com:rev2halfopen} of reviewer 2.  A result like Proposition 2.2 does appear informally in~\cite[Sec~5]{Shalvi_iterativeslicer_2009}.  As far as we are aware, the remarkable algorithm in~\cite{MicciancioVoulgaris_deterministic_jv_2013} does not rely upon bounding the number of lattice points inside a sphere (or any other volume).  Instead, the procedure operates recursively on scaled versions of the lattice.  The scaling is chosen to ensure that the target point always lies inside twice the Voronoi cell. 
 
-Motivating Propositions 3.1 and 3.2 is that the stopping criterion in our proceedure is slightly different from those in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013}.  The stopping criterions in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013} essentially involve a direct check that a given point, say $x$, is contained inside the Voronoi cell.  That is, one directly asserts that $2 x \cdot v \leq \|v\|^2$ for all relevant vectors $v$.  We cannot use this approach since it would amount to checking this inequality over as many as $2^{n+1}-2$ relevant vectors.  Instead we simply check that $\|y - x_K\| \leq \|y - x_{K+1}\|$.  That is, we check that the proceedure converges in the sense that 
+Motivating Propositions 3.1 and 3.2 is that the stopping criterion in our procedure is slightly different from those in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013}.  The stopping criteria in~\cite{Shalvi_iterativeslicer_2009} and~\cite{MicciancioVoulgaris_deterministic_jv_2013} essentially involve a direct check that a given point, say $x$, is contained inside the Voronoi cell.  That is, one directly asserts that $2 x \cdot v \leq \|v\|^2$ for all relevant vectors $v$.  We cannot use this approach since it would amount to checking this inequality over as many as $2^{n+1}-2$ relevant vectors.  Instead we simply check that $\|y - x_K\| \leq \|y - x_{K+1}\|$.  That is, we check that the procedure converges in the sense that 
 \[
 \|y - x_K\| = \|y - x_{K+1}\| = \|y - x_{K+2}\| = \dots.
 \]
-This is a straightforward, but important, difference and it motivates Propostions 3.1 and 3.2.
+This is a straightforward, but important, difference and it motivates Propositions 3.1 and 3.2.
 
 \newcommand{\rng}{\operatorname{rng}}
 \newcommand{\subrng}{\operatorname{subr}}
@@ -135,20 +135,20 @@ Almost all the inequalities in the paper can be derived from the following simpl
 \]
 Furthermore, if $\xbf_{\pi[1]} \leq \dots \leq \xbf_{\pi[n]}$ and $\ybf_{\pi[1]} \geq \dots \geq \ybf_{\pi[n]}$ then the above inequality if reversed, i.e $\xbf^T L_G \ybf \leq 0$. 
 
-I believe using the above will make many of your proofs more transparent.  For example, if you redefine $\subrng(\xbf)$ to return the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq 1$, then noice that if $S \neq \emptyset$ then there is a permutation that puts both $\xbf - 1_S$ and $1_S$ in non-decreasing order. In particular this implies that
+I believe using the above will make many of your proofs more transparent.  For example, if you redefine $\subrng(\xbf)$ to return the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq 1$, then notice that if $S \neq \emptyset$ then there is a permutation that puts both $\xbf - 1_S$ and $1_S$ in non-decreasing order. In particular this implies that
 \[
 \xbf L_G \xbf = (\xbf - 1_S)^T L_G (\xbf - 1_S) + 2(\xbf - 1_S)^T L_G 1_S + 1_S^T L_G 1_S \geq (\xbf - 1_S)^T L_G (\xbf - 1_S),
 \]
 i.e. $\xbf$ can be made ``shorter'' by squeezing its components closer together.
 \\\textbf{Response:}
 
-The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1 (see our response to the next comment number~\ref{com:provethm4.1}).  However, this is not the property that is needed to prove that our algorithm converges in atmost $n$ steps.  To see this, let $\subrng_k(p)$ denote the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq k$. Thus $\subrng_1$ is that suggested by the reviewer and $\subrng_2$ is that which is used in the paper.  Our proof works by considering a $v \in \ints^n$ that can be added to $\floor{z}$ so that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$.  Our Lemma~\zref{lem:roundzclose} shows that there exists such a $v$ with $\subrng_2(v) = \emptyset$ and so $\rng(v) \leq n$.  It is not true that there always exists such a $v$ with  $\subrng_1(v) = \emptyset$.
+The property described by the reviewer is indeed needed to give a proof of Theorem 4.1 (see our response to the next comment number~\ref{com:provethm4.1}).  However, this is not the property that is needed to prove that our algorithm converges in at most $n$ steps.  To see this, let $\subrng_k(p)$ denote the largest set $S$ such that $\min_{i\in S} \xbf_i - \max_{j \notin S} \xbf_j \geq k$. Thus $\subrng_1$ is that suggested by the reviewer and $\subrng_2$ is that which is used in the paper.  Our proof works by considering a $v \in \ints^n$ that can be added to $\floor{z}$ so that $B(\floor{z} + v)$ is a closest lattice point to $y = Bz$.  Our Lemma~\zref{lem:roundzclose} shows that there exists such a $v$ with $\subrng_2(v) = \emptyset$ and so $\rng(v) \leq n$.  It is not true that there always exists such a $v$ with  $\subrng_1(v) = \emptyset$.
 
 To consider this in more detail it is worth looking at the proof of Lemma~\zref{lem:decrngpreservesclosestpoints}.  The lemma shows that $B(\floor{z} + v)$ is a closest point to $y = Bz$ only if $B\big(\floor{z} + \decrng(v)\big)$ is.  A key part of the proof is the line
 \[
 1 + 2(\zeta_i-\zeta_j) - 2(v_i - v_j) < 1 + 2 - 4 = -1 < 0 \qquad \text{for $i \in S$ and $j \notin S$}
 \]
-where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1)$ we require that the gap between $v_i - v_j$ to be greater than $\tfrac{3}{2}$.  Since $v \in \ints^{n+1}$ this means $v_i - v_j \geq 2$.  We cannot replace the current $\subrng_2$ with the suggested $\subrng_1$ and have this proof hold because then we would only have $v_i - v_j \geq 1$.
+where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1)$ we require that the gap between $v_i - v_j$ to be greater than $\tfrac{3}{2}$ for this inequality to hold.  Because $v \in \ints^{n+1}$ this means $v_i - v_j \geq 2$.  We cannot replace the current $\subrng_2$ with the suggested $\subrng_1$ and have this proof hold because then we would only have $v_i - v_j \geq 1$.
 
 % Very early on (more than 2 years ago now!) when first looking at lattices of Voronoi's first kind, the first author believed that a single iteration of the proceedure would surfice.  That is, compute
 % \[
@@ -160,9 +160,11 @@ where $\zeta_i = z_i - \floor{z_i} \in [0,1)$.  Since $\zeta_i-\zeta_j \in (-1,1
 Furthermore, one can use this to give a two line proof of Theorem 4.1.  This theorem I actually do think make sense to reprove here, because modifications of this proof are what drives the convergence bound. 
 \\\textbf{Response:}
 
-The property decribed by the reviewer is indeed needed to give a proof of Theorem 4.1.  To our knowledge, one also needs the property that the relevant vectors of a lattice are given by the shortest coset representatives of $\Lambda / 2\Lambda$.  This result is attributed to Voronoi (see for example \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} and \cite[Theorem~3.2]{MicciancioVoulgaris_deterministic_jv_2013}).  This is used by Conway and Sloane in~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.
+The property described by the reviewer is indeed needed to give a proof of Theorem 4.1.  To our knowledge, one also needs the property that the relevant vectors of a lattice are given by the shortest coset representatives of $\Lambda / 2\Lambda$.  This result is attributed to Voronoi (see for example \cite[Theorem~2]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} and \cite[Theorem~3.2]{MicciancioVoulgaris_deterministic_jv_2013}).  This is used by Conway and Sloane in~\cite[Theorem~3]{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.
 
-We believe that the proof, whilst not difficult, is ulitimately a distraction from our main results.  This would be different if properties needed for the proof, such as the function $\subrng_1$ and Selling's formula were also needed for proving the convergence of our algorithmm.  However, as we have stated in comments~\ref{com:uselaplaicesubr1}, Selling's formula is not directly needed, and $\subrng_2$, not $\subrng_1$ is the function required. 
+We believe that the proof, whilst not difficult, is ultimately a distraction from our main results.  This would be different if properties needed for the proof, such as the function $\subrng_1$ and Selling's formula were also needed for proving the convergence of our algorithm.  However, as we have stated in comment~\ref{com:uselaplaicesubr1} above, Selling's formula is not directly needed, and $\subrng_2$, not $\subrng_1$ is the function required. 
+
+The order of some paragraphs and lemmas has been changed in Section~\zref{sec:seri-relev-vect} with the intent of improving the readability of the proofs and presenting the intuition behind the proofs before formalities begin.
 
 \item\textbf{Comment:} 
 Lemma 5.1: there is a typo here.  The last identity should read
@@ -186,8 +188,8 @@ Fixed.
 \section*{Reviewer 2}\label{sec:reviewer-2}
 
 \begin{enumerate}
-\item\textbf{Comment:}  
-page 1, last line ``The closest lattice point problem is known to be NP-hard under certain condition ...'': I found this paragraph very confusing, and somehow inaccurate. What ``certain conditions''? I think a better way to describe the sitation regaring the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
+\item\textbf{Comment:}  \label{com:cvvp}
+page 1, last line ``The closest lattice point problem is known to be NP-hard under certain condition ...'': I found this paragraph very confusing, and somehow inaccurate. What ``certain conditions''? I think a better way to describe the situation regarding the NP-hardness of CVP in relation to this paper is the following. CVP is known to be NP-hard even to approximate within almost polynomial factor (see 35) when the lattice is arbitrary and not known in advance. Interestingly (see 35 and 17) there are families of lattices when CVP remain NP-hard even when given the best possible basis (or any hard-to-compute side information about the lattice). This version of the problem is called CVP with preprocessing (CVPP), and it is particularly relevant to this work, where it is shown that CVPP can be solved exactly and in polynomial time for the class of lattices of Voronoi first kind, when given as auxiliary information a special basis (namely, an obtuse superbasis.) 
 \\\textbf{Response:}
 
 The following paragraph has been included in the introduction to put our results into context with the closest vector problem with preprocessing:
@@ -214,10 +216,10 @@ The interested reader could read these references in the order given. %, i.e., f
 \item\textbf{Comment:}  
 When saying ``if the obtuse superbasis is known'', you may want to cast this requirement in the context of CVPP. (The obtuse superbasis is the advice provided by the preprocessing.) 
 \\\textbf{Response:}
-
+Please see our response to comment~\ref{com:cvvp}.
 
 \item\textbf{Comment:}  
-page 2,bottom, displayed equation "$v \cdot x \leq x \cdot x$". Maybe you mean strict inequality.
+page 2,bottom, displayed equation ``$v \cdot x \leq x \cdot x$''. Maybe you mean strict inequality.
 \\\textbf{Response:}
 %In our original definition we intended to include what Conway and Sloane call the `lax' relevant vectors~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  This we not necessary
 Yes, this has been fixed.  The text now reads reads:
@@ -237,12 +239,12 @@ page 3, and maybe elsewhere ``short vector in a lattice'' should probably be ``s
 We have instead introduced the term `short vector' in the introduction.  The following sentence is included in the first paragraph of the introduction: ``This is called the \emph{shortest vector problem} and a solution is called a~\emph{short vector}.''
 
 \item\textbf{Comment:}  
-page 3, definition of ceiling(r) as smallest integer strctly larger than 3 seems unconventional. The standard definition is not strict. Write floor(r)+1 instead, which is consistent with the definition of floor(r) given later in the paper. 
+page 3, definition of ceiling(r) as smallest integer strictly larger than 3 seems unconventional. The standard definition is not strict. Write floor(r)+1 instead, which is consistent with the definition of floor(r) given later in the paper. 
 \\\textbf{Response:}
 Done.
 
 \item\textbf{Comment:}  \label{com:rev2halfopen}
-page 3, proof of Prop. 2.1. Your definition of ``half-open voronoi cell'' is not a proper definition, and also seems incorrect. E.g., take the integer lattice $\ints^n$, then only one of the corners (rather than half) of the corners of the Voronoi cell should be included if you want a tiling. 
+page 3, proof of Prop. 2.1. Your definition of ``half-open Voronoi cell'' is not a proper definition, and also seems incorrect. E.g., take the integer lattice $\ints^n$, then only one of the corners (rather than half) of the corners of the Voronoi cell should be included if you want a tiling. 
 \\\textbf{Response:}
 The reviewer is correct.  We only require that some modification of the boundary of the closed Voronoi cell results in a tiling.  The proof of Proposition~\zref{eq:latticepointsinvorcvell} has been modified accordingly.
 
@@ -253,13 +255,13 @@ Done.
 
 \item\textbf{Comment:}  
 page 3, section 3. 
-The process described in (3.1) is almost identical to those in [45,37], so those papers should probably be referenced at the very beginning, and a comparison provided. As far as I remember, the difference is that 37 picks the v that minimizes the voronoi norm (i.e., the norm defined by the voronoi cell of the origin) instead of the euclidean norm. On the other hand, 45 uses the euclidean norm, but selects an arbitrary relevant vector that reduces the euclidean norm, rather than the one that reduces it the most. In this respect, your process is a special case of the one described in 45, and termination (your propositions 3.1 and 3.2) is already proved in 45. 
+The process described in (3.1) is almost identical to those in [45,37], so those papers should probably be referenced at the very beginning, and a comparison provided. As far as I remember, the difference is that 37 picks the v that minimizes the Voronoi norm (i.e., the norm defined by the Voronoi cell of the origin) instead of the Euclidean norm. On the other hand, 45 uses the Euclidean norm, but selects an arbitrary relevant vector that reduces the Euclidean norm, rather than the one that reduces it the most. In this respect, your process is a special case of the one described in 45, and termination (your propositions 3.1 and 3.2) is already proved in 45. 
 \\\textbf{Response:}
-We have included the following text in the first paragraph of Section~\zref{sec:iterative-slicer} when introducing the interative algorithm.
+We have included the following text in the first paragraph of Section~\zref{sec:iterative-slicer} when introducing the iterative algorithm.
 
 ``Motivated by Shalvi~et.~al.~\cite{Shalvi_iterativeslicer_2009} and  Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013}, we consider the following iteration,''
 
-Among the iterative proceedures in our paper, in~\cite{Shalvi_iterativeslicer_2009}, and in~\cite{MicciancioVoulgaris_deterministic_jv_2013}, ours is the simplest.  The choice of our iteration is not motivated by what might be fastest in general lattices.  It is motivated by what we can prove to be polynomial time for those lattices of Vornoi's first kind.
+Among the iterative procedures in our paper, in~\cite{Shalvi_iterativeslicer_2009}, and in~\cite{MicciancioVoulgaris_deterministic_jv_2013}, ours is the simplest.  The choice of our iteration is not motivated by what might be fastest in general lattices.  It is motivated by what we can prove to be polynomial time for those lattices of Voronoi's first kind.
 
 The~\emph{iterative slicer}~\cite{Shalvi_iterativeslicer_2009} is similar but uses the (presumably accelerated?) iteration
 \begin{align*}
@@ -268,9 +270,9 @@ x_{k+1} &= x_k + \alpha_k v_k  \\
 \end{align*} 
 So it allows adding integer multiples of a relevant vector.  We do not believe using this will improve the complexity of our algorithm beyond $O(n^4)$.  It would greatly complicate our proofs.
 
-The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is different again.  To our (admittedly rough) knowledge, the proceedure computes an $\alpha_k$ (different, but related to that above) and then proceeds to compute a closest point in the scaled lattice $\alpha_k \Lambda$.  The scaling $\alpha_k$ is chosen so that the target point lies withing $2\alpha_k \vor(\Lambda)$.  Once a closest lattice point in $\alpha_k\Lambda$ is found, the next $\alpha_{k+1}$ is computed and the proceedure repeats.
+The iterative algorithm of Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} is different again.  To our (admittedly rough) knowledge, the procedure computes an $\alpha_k$ (different, but related to that above) and then proceeds to compute a closest point in the scaled lattice $\alpha_k \Lambda$.  The scaling $\alpha_k$ is chosen so that the target point lies within $2\alpha_k \vor(\Lambda)$.  Once a closest lattice point in $\alpha_k\Lambda$ is found, the next $\alpha_{k+1}$ is computed and the procedure repeats.
 
-We beleive that detailing the differences between these iterative proceedures would only detract from the core purpose of our paper to decscribe an $O(n^4)$ time algorithm to compute a closest point in lattice of Voronoi's first kind.
+We believe that detailing the differences between these iterative procedures would only detract from the core purpose of our paper to describe an $O(n^4)$ time algorithm to compute a closest point in lattice of Voronoi's first kind.
 
 \item\textbf{Comment:}  
 page 5, as before, you should probably mention also Voulgaris when citing 37. 
@@ -278,7 +280,7 @@ page 5, as before, you should probably mention also Voulgaris when citing 37.
 Done.
 
 \item\textbf{Comment:}  
-page 5, last line, "dimension less than 4", does it include 4 or not? 
+page 5, last line, ``dimension less than 4'', does it include 4 or not? 
 \\\textbf{Response:}
 It does not include 4.  We have modified the text here to read ``less than or equal to $3$''. We have also modified similar text in the last paragraph of Section~\zref{sec:discussion} to read ``It is known that all lattices of dimension less than or equal to 3 are of Voronoi's first kind and an algorithm exists to recover the obtuse superbasis in this case~\cite{SPLAG}.  Lattices of dimension larger than 3 need not be of Voronoi's first kind.''
 
@@ -289,15 +291,15 @@ Done.
 
 \item\textbf{Comment:}  
 page 6, Theorem 4.1 (this follows from [ 9, Theorem 2+3], not just theorem 3. 
-Also, make the theorem statement self contained by adding "Let $L$ be a lattice of voronoi first kind with obtuse superbasis $b_1,\dots,b_{n+1}$". 
+Also, make the theorem statement self contained by adding ``Let $L$ be a lattice of Voronoi first kind with obtuse superbasis $b_1,\dots,b_{n+1}$''. 
 \\\textbf{Response:}
-We beleive that it is only Theorem 3 from~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} that needs to cited.  Theorem~2 in \cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} asserts that the relevant vectors in any lattice $\Lambda$ are the shortest coset representatives of the quotient $\Lambda/2\Lambda$.  Theorem~3 uses this, Selling's formula, and the fact that the Selling parameters are nonpositive to prove that the relevant vectors in a lattice of Voronoi's first kind take the form
+We have included the text ``Let $\Lambda$ be a lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$.'' into the statement of Theorem 4.1.
+
+We believe that it is only Theorem 3 from~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} that needs to cited.  Theorem~2 in \cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} asserts that the relevant vectors in any lattice $\Lambda$ are the shortest coset representatives of the quotient $\Lambda/2\Lambda$.  Theorem~3 uses this, Selling's formula, and the fact that the Selling parameters are nonpositive to prove that the relevant vectors in a lattice of Voronoi's first kind take the form
 \[
 \sum_{i \in I} b_i
 \]
 where $I$ is a strict subset of $\{1, 2, \dots, n+1\}$ that is not empty.
-
-We have included the text ``Let $\Lambda$ be a lattice of Voronoi's first kind with obtuse superbasis $b_1,\dots,b_{n+1}$.'' into the statement of Theorem 4.1.
 
 %BLERG: Check that Theorems 2 and 3 in the published version of\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases} are what I think they are!
 
@@ -354,7 +356,7 @@ Some additional references on CVPP you may find interesting
 (cite at your own discretion): 
 
 - O. Regev (2004) Improved Inapproximability of Lattice and Coding Problems With Preprocessing. IEEE Transactions on Information Theory 50(9): 2031-2037 
-- ``Hardness of Approximating the Closest Vector PRoblem with Pre-Processing'', M. Alekhnovich, S. Khot, G. Kindler, N. Vishnoi, Computational Complexity 20(4):741-753, 2011. 
+- ``Hardness of Approximating the Closest Vector Problem with Pre-Processing'', M. Alekhnovich, S. Khot, G. Kindler, N. Vishnoi, Computational Complexity 20(4):741-753, 2011. 
 
 (Improve NP-hardness result of [35,17] to any constant approximation factor) 
 
@@ -370,7 +372,7 @@ See link
 http://cs.nyu.edu/~dadush/papers/cvpp.pdf 
 and read abstract for more information.
 \\\textbf{Response:}
-We thank the reviewer for these interesting references highlighting the difficultly of computing close approximations of a closest lattice point.  These have been referenced in Section~\zref{sec:iterative-slicer} with the following text:
+We thank the reviewer for these interesting references highlighting the difficulty of computing close approximations of a closest lattice point.  These have been referenced in Section~\zref{sec:iterative-slicer} with the following text:
 
 ``Unfortunately, computing close approximations of a closest lattice point is known to be computationally difficult~\cite{feige_inapproximability_2004,Regev_2004_inappox_lattice_with_preprocessing,Aharonov_Regev_2005,Aleknovish_hardness_with_preprocessing_2011,Dadush_cvp_with_distance_guarantee_2014}.''
 
