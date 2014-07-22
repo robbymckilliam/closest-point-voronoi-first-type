@@ -563,7 +563,7 @@ and put $h = g + \onebf_S - \onebf_T \in \{0,1\}^{n+1}$ and $w = v - h$.  Observ
 \[
 \rng(w) = \max(v) - 1 - \min(v) = \rng(v) - 1 = \ell - 1.
 \]
-The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ with be $(\ell-1)$-close to $y$.  The proof is by contradiction.  Suppose $B(u+g+w)$ is not a closest point to $y$, that is, suppose
+The lemma will follow if we show that $B(u+g+w)$ is a closest lattice point to $y$ since then the lattice point $B(u+g)$ will be $(\ell-1)$-close to $y$.  The proof is by contradiction.  Suppose $B(u+g+w)$ is not a closest point to $y$, that is, suppose
 \[
 \|B(z-u-g-w)\|^2 > \|B(z-u-v)\|^2.
 \]
@@ -699,7 +699,7 @@ where $g_i = k_i  - 2 w_{i0} = d_i + \sum_{j=1}^{n+1} w_{ij}$.  It only remains 
 &q_{ij} = - w_{ij} \qquad i,j = 1,\dots,n+1 \\
 &s_i = g_i = d_i + \sum_{j=1}^{n+1} w_{ij}.
 \end{align*}
-Because the $q_{ij}$ are nonpositive for $i \neq j$ the weights $w_{ij}$ are nonnegative for all $i \neq j$ with $i,j = 1,\dots,n+1$.  As discussed the value of the weights $w_{ii}$ have no effect on the weight of any cut $W$ so setting $q_{ii} = - w_{ii}$ for  $i = 1,\dots,n+1$ is of no consequence.  Finally the weights $w_{i,n+2}$ and $w_{0,i}$ can be chosen so that both are nonnegative and 
+Because the $q_{ij}$ are nonpositive for $i \neq j$ the weights $w_{ij}$ are nonnegative for all $i \neq j$ with $i,j = 1,\dots,n+1$.  As discussed the value of the weights $w_{ii}$ has no effect on the weight of any cut $W$ so setting $q_{ii} = - w_{ii}$ for  $i = 1,\dots,n+1$ is of no consequence.  Finally the weights $w_{i,n+2}$ and $w_{0,i}$ can be chosen so that both are nonnegative and 
 \[
 w_{i,n+2} - w_{0,i} = d_i = s_i + \sum_{j=1}^{n+1} q_{ij} = s_i
 \]  
