@@ -55,7 +55,7 @@ A related problem is to find a lattice point of minimum nonzero Euclidean length
 where $\Lambda \backslash  \{\zerobf\}$ denotes the set of lattice points not equal to the origin $\zerobf$.  This is called the \emph{shortest vector problem} and a solution is called a~\emph{short vector}.
 
 The closest lattice point problem and the shortest vector problem have interested mathematicians and computer scientists due to their relationship with integer programming~\cite{Lenstra_integerprogramming1983,Kannan1987_fast_general_np,Babai1986}, the factoring of polynomials~\cite{Lenstra1982}, and cryptanalysis~\cite{Joux_toolbox_cryptanal1998,NyguyenStern_two_faces_crypto,Micciancio_lattice_based_post_quantum_crypto}.  
-Solutions of the closest lattice point problem have engineering applications.  For example, if a lattice is used as a vector quantiser then the closest lattice point corresponds to the minimum distortion point~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec}.  If the lattice is used as a code, then the closest lattice point corresponds to what is called \emph{lattice decoding}\index{lattice decoding} and has been shown to yield arbitrarily good codes~\cite{Erex2004_lattice_decoding,Erez2005}.  The closest lattice point problem occurs in communications systems involving multiple antennas~\cite{Ryan2008,Wubben_2011}.  The unwrapping of phase data for location estimation can be posed as a closest lattice point problem and this has been applied to the global positioning system~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}.  The problem has also found applications to circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012}.
+Solutions of the closest lattice point problem have engineering applications.  For example, if a lattice is used as a vector quantiser then the closest lattice point corresponds to the minimum distortion point~\cite{Conway1983VoronoiCodes,Conway1982VoronoiRegions,Conway1982FastQuantDec}.  If the lattice is used as a code, then the closest lattice point corresponds to what is called \emph{lattice decoding}\index{lattice decoding} and has been shown to yield arbitrarily good codes~\cite{Erex2004_lattice_decoding,Erez2005}.  The closest lattice point problem occurs in communications systems involving multiple antennas~\cite{Ryan2008,Wubben_2011}.  The unwrapping of phase data for location estimation can be posed as a closest lattice point problem and this has been applied to the global positioning system~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}.  The problem has also found application to circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012,McKilliam_pps_unwrapping_tsp_2014}.
 
 The closest lattice point problem is known to be NP-hard~\cite{micciancio_hardness_2001, Dinur2003_approximating_CVP_NP_hard,Regev_2004_inappox_lattice_with_preprocessing,feige_inapproximability_2004,Jalden2005_sphere_decoding_complexity}.  Nevertheless, algorithms exist that can compute a closest lattice point in reasonable time if the dimension is small~\cite{Pohst_sphere_decoder_1981,Kannan1987_fast_general_np,Agrell2002}.  These algorithms require a number of operations that grows as $O(n^{O(n)})$ or $O(n^{O(n^2)})$ where $n$ is the dimension of the lattice.  Recently, Micciancio and Voulgaris~\cite{MicciancioVoulgaris_deterministic_jv_2013} described a solution for the closest lattice point problem that requires a number of operations that grows as $O(2^{2n})$.  This single exponential growth in complexity is the best known. 
 
@@ -67,7 +67,7 @@ Although the problem is NP-hard in general, fast algorithms are known for specif
 Our results can be placed in the context of a modification of the closest lattice point problem called the \emph{closest vector problem with preprocessing}~\cite{micciancio_hardness_2001,feige_inapproximability_2004,Regev_2004_inappox_lattice_with_preprocessing,Aleknovish_hardness_with_preprocessing_2011,knot_hardness_cvvp_2014,Dadush_cvp_with_distance_guarantee_2014}.  In this problem some ``advice'' of polynomial size about the lattice is assumed to be given.  The advice might come in the form of a particular basis for the lattice or might take other forms.  The advice may be used to compute a closest lattice point, hopefully with reduced complexity.  %Even this modification of the closest lattice point problem is known to be NP-hard~\cite{micciancio_hardness_2001,feige_inapproximability_2004}.  
 Our algorithm can be viewed as an efficient solution for the closest vector problem with preprocessing for the lattices of Voronoi's first kind.  The advice given is the obtuse superbasis. 
 
-The paper is structured as follows.  Section~\ref{sec:voron-cells-relev} describes the relevant vectors and the \emph{Voronoi cell} of a lattice. Section~\ref{sec:iterative-slicer} describes a procedure to find a closest lattice point by enumerating a series of relevant vectors.  The series is guaranteed to converge to a closest point after a finite number of terms.  In general the procedure might be computationally expensive because the number of terms required might be large and because computation of each relevant vector in the series might be expensive.  Section~\ref{sec:latt-voron-first} describes lattices of Voronoi's first kind and their obtuse superbasis.  In Section~\ref{sec:seri-relev-vect} it is shown that for these lattices, the series of relevant vectors results in a closest lattice point after at most $n$ terms.  Section~\ref{sec:comp-clos-relev} shows that each relevant vector in the series can be computed in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  Section~\ref{sec:discussion} discusses some potential applications of this algorithm and poses some interesting questions for future research.
+The paper is structured as follows.  Section~\ref{sec:voron-cells-relev} describes the relevant vectors and the \emph{Voronoi cell} of a lattice. Section~\ref{sec:iterative-slicer} describes a procedure to find a closest lattice point by enumerating a series of relevant vectors.  The series is guaranteed to converge to a closest point after a finite number of terms.  In general the procedure might be computationally expensive because the number of terms required might be large and because computation of each relevant vector in the series might be expensive.  Section~\ref{sec:latt-voron-first} describes lattices of Voronoi's first kind and their obtuse superbasis.  In Section~\ref{sec:seri-relev-vect} it is shown that for these lattices the series of relevant vectors results in a closest lattice point after at most $n$ terms.  Section~\ref{sec:comp-clos-relev} shows that each relevant vector in the series can be computed in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  Section~\ref{sec:discussion} discusses some potential applications of this algorithm and poses some interesting questions for future research.
 
 \section{Voronoi cells and relevant vectors}\label{sec:voron-cells-relev}
 \newcommand{\calR}{\mathcal{R}}
@@ -94,7 +94,8 @@ Denote by $\relevant(\Lambda)$ the set of relevant vectors of the lattice $\Lamb
 \]
 The closest lattice point problem and the Voronoi cell are related in that $x\in\Lambda$ is a closest lattice point to $y$ if and only $y - x \in \vor(\Lambda)$, that is, if and only if
 \begin{equation}\label{eq:relvectnearpointieq}
-\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v} \qquad \text{for all $v \in \relevant(\Lambda)$}.  
+%\dotprod{(y - x)}{v} \leq \tfrac{1}{2} \dotprod{v}{v} \qquad \text{for all $v \in \relevant(\Lambda)$}.  
+\|y - x\| \leq  \|y - x - v\|  \qquad \text{for all $v \in \relevant(\Lambda)$}.
 \end{equation} 
 
 % Every short vector in a lattice is also a relevant vector, because, if a lattice point $s$ is not relevant there exists a lattice point $x$ not equal to $s$ or $\zerobf$ such that $\dotprod{x}{s} \geq \dotprod{x}{x}$ or equivalently $\dotprod{\tfrac{x}{\|x\|}}{s} \geq \|x\|$ after dividing by $\|x\|$.  Since both $\tfrac{x}{\|x\|}$ and $\tfrac{s}{\|s\|}$ are unit vectors and $s \neq x$ then,
@@ -170,16 +171,11 @@ At the $k$th iteration either $x_k$ is a closest lattice point to $y$ or $\|y - 
 \end{proposition}
 \begin{proof}
 If $x_k$ is a closest lattice point to $y$ then $\|y - x_k\| \leq \| y - x_{k+1} \|$ by definition.  On the other hand if $x_k$ is not a closest lattice point to $y$ we have $y - x_k \notin \vor(\Lambda)$ and from~\eqref{eq:relvectnearpointieq} there exists a relevant vector $v$ such that
-\[
-0 > \dotprod{v}{v} - 2\dotprod{(y - x_k)}{v}.
-\]
-Adding $\|y - x_k\|^2$ to both sides of this inequality gives
 \begin{align*}
-\|y - x_k\|^2 &> \dotprod{v}{v} - 2\dotprod{(y - x_k)}{v} + \|y - x_k\|^2 \\
-&= \|y - x_k - v\|^2 \\
-&\geq \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\}}\|y - x_k - v \|^2 \\
-&= \|y - x_k - v_k \|^2 \\
-&= \|y - x_{k+1}\|^2. 
+\|y - x_k\| &>  \|y - x_k - v\| \\
+&\geq \arg\min_{ v \in \relevant(\Lambda) \cup \{\zerobf\}}\|y - x_k - v \| \\
+&= \|y - x_k - v_k \| \\
+&= \|y - x_{k+1}\|. 
 \end{align*}
 \end{proof} 
 
@@ -223,13 +219,13 @@ The other factor affecting the complexity is the number of iterations required b
 
 An $n$-dimensional lattice $\Lambda$ is said to be of \emph{Voronoi's first kind} if it has what is called an \emph{obtuse superbasis}~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  That is, there exists a set of $n+1$ vectors $b_1,\dots,b_{n+1}$ such that $b_1,\dots,b_n$ are a basis for $\Lambda$,
 \begin{equation}\label{eq:superbasecond}
-b_1 + b_2 \dots + b_{n+1} = 0
+b_1 + b_2 \dots + b_{n+1} = \zerobf
 \end{equation}
 (the \emph{superbasis} condition), and the inner products satisfy
 \begin{equation}\label{eq:obtusecond}
 q_{ij} = b_i \cdot b_j \leq 0, \qquad \text{for} \qquad i,j = 1,\dots,n+1, i \neq j
 \end{equation}
-(the \emph{obtuse} condition).  The $q_{ij}$ are called the \emph{Selling parameters}~\cite{Selling1874}.  It is known that all lattices in dimensions less than or equal to $3$ are of Voronoi's first kind~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  
+(the \emph{obtuse} condition).  The $q_{ij}$ are called the \emph{Selling parameters}~\cite{Selling1874}.  It is known that all lattices of dimension less than or equal to $3$ are of Voronoi's first kind~\cite{ConwaySloane1992_voronoi_lattice_3d_obtuse_superbases}.  
 %%%%%%%%%%%%%%%%%%%%
 % There is a one-to-one correspondence between the obtuse superbasis of a lattice of Vornoi's first kind and what is called the \emph{Laplacian} of a weighted graph.  To see this, let
 % \[
@@ -340,7 +336,7 @@ is minimised.  Define the column vector $u_0 = \floor{z}$ where $\floor{\cdot}$ 
 \begin{align}
 x_{k+1} &= B u_{k+1} \label{eq:xseqfirsttype}  \\
 u_{k+1} &= u_k + t_k \nonumber \\
-t_k &= \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - u_k - t) \|^2 \label{eq:pvecmin}
+t_k &= \arg\min_{t \in \{0,1\}^{n+1}}\| B(z - u_k - t) \| \label{eq:pvecmin}
 \end{align}
 where $\{0,1\}^{n+1}$ denotes the set of column vectors of length $n+1$ with elements equal to zero or one.  The procedure is initialised at the lattice point $x_0 = Bu_0 = B\floor{z}$.  This choice of initial lattice point is important.  In Section~\ref{sec:comp-clos-relev} we show how minimisation over $\{0,1\}^{n+1}$ in~\eqref{eq:pvecmin} can be computed efficiently in $O(n^3)$ operations by computing a minimum cut in an undirected flow network.  The minimiser may not be unique corresponding with the existence of multiple minimum cuts.  In this case any one of the minimisers may be chosen.  Our results do not depend on this choice.   In the remainder of this section we prove that this iterative procedure results in a closest lattice point after at most $n$ iterations.  That is, we show that there exists a positive integer $K \leq n$ such that $x_K$ is a closest lattice point to $y = Bz$.
 
@@ -358,7 +354,7 @@ Observe that $\rng(p)$ cannot be negative and that if $\rng(p) = 0$ then all of 
 If $x$ is a lattice point that is $0$-close to $y$ then $x$ is a closest lattice point to $y$.
 \end{lemma}
 \begin{proof}
-Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical, that is, $v_1=v_2=\dots=v_{n+1}$.  In this case $Bv = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = 0$
+Because $x$ is $0$-close there exists a $v \in \ints^{n+1}$ with $\rng(v) = 0$ such that $x + Bv$ is a closest point to $y$.  Because $\rng(v) = 0$ all elements from $v$ are identical, that is, $v_1=v_2=\dots=v_{n+1}$.  In this case $Bv = \sum_{i=1}^{n+1} v_n b_n = v_1\sum_{i=1}^{n+1}b_n = \zerobf$
 as a result of the superbasis condition~\eqref{eq:superbasecond}.  Thus $x = x + Bv$ is a closest point to $y$. 
 \end{proof}
 
@@ -546,7 +542,7 @@ h_i - h_j \leq v_i - v_j
 when either $v_i = \max(v)$ or $v_j = \min(v)$.
 \end{lemma}
 \begin{proof}
-If $v_i = \max(v)$ then $h_i = 1$ and we need only show that $1-h_j \leq \max(v) - v_j$ for all $j$.  If $v_j = \max(v)$ then $h_j = 1$ and the results holds since $1 - h_j = 0 = \min(v) - v_j$.  Otherwise if $v_j < \max(v)$ then $1-h_j \leq 1 \leq \max(v) - v_j$ because $\max(v)$ and $v_j$ are integers.
+If $v_i = \max(v)$ then $h_i = 1$ and we need only show that $1-h_j \leq \max(v) - v_j$ for all $j$.  If $v_j = \max(v)$ then $h_j = 1$ and the results holds since $1 - h_j = 0 = \max(v) - v_j$.  Otherwise if $v_j < \max(v)$ then $1-h_j \leq 1 \leq \max(v) - v_j$ because $\max(v)$ and $v_j$ are integers.
 
 Now, if $v_j = \min(v)$ then $h_j = 0$ and we need only show that $h_i \leq v_i - \min(v)$ for all $i$.  If $v_i = \min(v)$ then $h_i = 0 = v_i - \min(v)$ and the results holds.  Otherwise if $v_i > \min(v)$ then $h_i \leq 1 \leq v_i - \min(v)$ because $\min(v)$ and $v_i$ are integers.
 \end{proof}
@@ -602,7 +598,7 @@ Using part~\ref{eq:lem:decSellingsincdec} of Lemma~\ref{lem:decSellings} again,
 \end{align*}
 as a result of~\eqref{eq:BpBpdecincineq}.  However, $h \in \{0,1\}^{n+1}$ and so this implies
 \[
-\|B(z-u-g)\|^2 > \|B(z-u-h)\|^2 \geq \min_{t \in \{0,1\}^{n+1}}\|B(z - u - t)\|^2
+\|B(z-u-g)\| > \|B(z-u-h)\| \geq \min_{t \in \{0,1\}^{n+1}}\|B(z - u - t)\|
 \]
 contradicting~\eqref{eq:qismin}.  Thus, our original supposition is false and $B(u+g+w)$ is a closest lattice point to $y$. Because $\rng(w) = \ell-1$ the lattice point $B(u+g)$ is $(\ell-1)$-close to $y$.
  \end{proof}
@@ -616,7 +612,7 @@ Let $\Lambda \subset \reals^m$ be a lattice of Voronoi's first kind with obtuse 
 %Recall that we suppose, without loss of generality, that $y$ lies in the space spanned by the basis vectors $b_1,\dots,b_{n}$ and so $y = Bz$ where $z \in \ints^{n+1}$.  
 Let $x_k = B u_k$ be the lattice point obtained on the $k$th iteration of the procedure.  Suppose that $x_k$ is $\ell$-close to $y$ with $\ell > 0$.  The procedure computes $t_{k} \in \{0,1\}^{n+1}$ satisfying
 \[
-\|B(z - u_k - t_{k})\|^2 = \min_{t \in \{0,1\}^{n+1}}\|B(z - u_k - t)\|^2
+\|B(z - u_k - t_{k})\| = \min_{t \in \{0,1\}^{n+1}}\|B(z - u_k - t)\|
 \]
 and puts $x_{k+1} = B(u_k + t_k)$.  It follows from Lemma~\ref{lem:rngdecreases} that $x_{k+1}$ is $(\ell-1)$-close to $y$.  By Lemma~\ref{lem:roundzclose} the lattice point that initialises the procedure $x_0 = B \floor{z}$ is $K$-close to $y$ where $K \leq n$.  Thus, $x_1$ is $(K-1)$-close, $x_2$ is $(K-2)$-close, and so on until $x_K$ is $0$-close.  That $x_K$ is a closest lattice point to $y$ follows from Lemma~\ref{lem:rngzeroclosestpoint}.
 \end{proof}
@@ -719,7 +715,7 @@ A question of immediate interest to communications engineers is: do there exist 
 It is straightforward to construct an `arbitrary' lattice of Voronoi's first kind.  One approach is to construct the $n+1$ by $n+1$ symmetric matrix $Q = B^\prime B$ with elements $Q_{ij} = q_{ij} = \dotprod{b_{i}}{b_j}$ given by the Selling parameters.  Choose the off diagonal entries of $Q$ to be nonpositive with $q_{ij}=q_{ji}$ and set the diagonal elements $q_{ii} = -\sum_{j \neq i} q_{ij}$.  %We then have $Q\onebf = \zerobf$ and so $\onebf$ is in the null space of $Q$.  
 The matrix $Q$ is diagonally dominant, that is, $\abs{q_{ii}} \geq \sum_{j \neq i} \abs{q_{ij}}$, and so $Q$ is positive semidefinite.  A rank deficient Cholesky decomposition~\cite{Higham90analysisof} can now be used to recover a matrix $B$ such that $B^\prime B  = Q$. The columns of $B$ are vectors of the obtuse superbasis.
 
-A number applications such as phase unwrapping~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012} also require computing a closest lattice point.  In these applications the particular lattice arises from the signal processing problem under consideration.  If that lattice happens to be of Voronoi's first kind then our algorithm can be used.  An example where this occurs is the problem of computing the \emph{sample intrinsic mean} in circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}.  In this particular problem the lattice $A_n^*$ is involved.  A fast closest point algorithm requiring only $O(n)$ operations exists for $A_n^*$~\cite{McKilliam2009CoxeterLattices,McKilliam2008b} and so the algorithm described in this paper is not needed in this particular case.  However, there may exist other signal processing problems where lattices of Voronoi's first kind arise.
+A number applications such as phase unwrapping~\cite{Teunissen_GPS_1995,Hassibi_GPS_1998}, single frequency estimation~\cite{McKilliamFrequencyEstimationByPhaseUnwrapping2009}, and related signal processing problems~\cite{McKilliam2007,Clarkson2007,McKilliam2009IndentifiabliltyAliasingPolyphase,Quinn_sparse_noisy_SSP_2012} also require computing a closest lattice point.  In these applications the particular lattice arises from the signal processing problem under consideration.  If that lattice happens to be of Voronoi's first kind then our algorithm can be used.  An example where this occurs is the problem of computing the \emph{sample intrinsic mean} in circular statistics~\cite{McKilliam_mean_dir_est_sq_arc_length2010}.  In this particular problem the lattice $A_n^*$ is involved.  A fast closest point algorithm requiring only $O(n)$ operations exists for $A_n^*$~\cite{McKilliam2009CoxeterLattices,McKilliam2008} and so the algorithm described in this paper is not needed in this particular case.  However, there may exist other signal processing problems where lattices of Voronoi's first kind arise.
 
 Another interesting question is: are there subfamilies of Voronoi's first kind that admit even faster algorithms?  Both $A_n$ and $A_n^*$ are examples of this, but there might exist other subfamilies with algorithms faster than $O(n^4)$.  A related question is: can the techniques developed in this paper be applied to other families of lattices, i.e., beyond just those of Voronoi's first kind?  %More generally, do there exist large and useful familes of lattices where computing a closest point has polynomial complexity?   
 
