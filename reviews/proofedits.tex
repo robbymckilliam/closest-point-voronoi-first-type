@@ -1,0 +1,99 @@
+\documentclass[a4paper,10pt]{article}
+%\documentclass[draftcls, onecolumn, 11pt]{IEEEtran}
+%\documentclass[journal]{IEEEtran}
+ 
+\usepackage{../mathbf-abbrevs}
+\input{../defs}
+
+\usepackage{zref-xr,zref-user}
+\zexternaldocument*{../paper}
+
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+
+\usepackage{amsmath,amsfonts,amssymb, amsthm, bm}
+
+%\usepackage[square,comma,numbers,sort&compress]{natbib}
+
+\usepackage{color}
+\newcommand{\comment}[1]{\textcolor{red}{#1}}
+
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\rect}[1]{\operatorname{rect}\left(#1\right)}
+
+%opening
+\title{Finding a closest point in a lattice of Voronoi's first kind}
+\author{Robby~G.~McKilliam, Alex Grant and I. Vaughan L. Clarkson
+%\thanks{}
+}
+
+\renewcommand{\theenumii}{(\alph{enumii})}
+\renewcommand{\labelenumii}{\theenumii}
+
+\begin{document}
+
+\begin{enumerate}
+
+\item Page 1, AMS subject classifications: 11Y16
+
+\item Page 2, paragraph 4, ``In this problem some ``advice'' about the lattice polynomial size is assumed to be given.''  This should be modified to ``In this problem some ``advice'' about the lattice is assumed to be given.''  That is, remove ``polynomial size''.
+
+\item Page 3, the equation
+\[
+\rho = \frac{\|s\|}{2} = \frac{1}{2} \min_{x \in \Lambda / \{\zerobf\} } \|x\|
+\]
+The forward slash in $x \in \Lambda / \{\zerobf\}$ should be backslash like $x \in \Lambda \backslash \{\zerobf\}$.  The equation should appear as
+\[
+\rho = \frac{\|s\|}{2} = \frac{1}{2} \min_{x \in \Lambda \backslash \{\zerobf\} } \|x\|
+\]
+
+\item Page 14.  It is written:
+
+\vspace{0.5cm}
+\hspace{1cm}\parbox{10cm}{
+The weight can now be written as
+\begin{align*}
+W(C,\bar{C}) = \sum_{i \in C} \sum_{j \in \bar{C}} w_{ij} = \sum_{i =0}^{n+2} \sum_{j =0}^{n+2} w_{ij} t_i (1 - t_j) = F(t),
+\end{align*}
+for example. Finding a minimum \dots
+}
+\vspace{0.5cm}
+
+Please remove ``for example'' and end the equation with a full stop.  The text should appear as
+
+\vspace{0.5cm}
+\hspace{1cm}\parbox{10cm}{
+The weight can now be written as
+\begin{align*}
+W(C,\bar{C}) = \sum_{i \in C} \sum_{j \in \bar{C}} w_{ij} = \sum_{i =0}^{n+2} \sum_{j =0}^{n+2} w_{ij} t_i (1 - t_j) = F(t).
+\end{align*}
+Finding a minimum \dots
+}
+\vspace{0.5cm}
+
+
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
