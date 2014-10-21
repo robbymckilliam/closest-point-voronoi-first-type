@@ -92,13 +92,51 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \frametitle{The shortest vector problem}
 \begin{itemize}
 \item Computing a short vector is called the \term{shortest vector problem}.
-\item Applications in cryptography and number theory.
+\item NP-hard for arbitrary lattices.
+\end{itemize}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
+Longstanding applications in computer science:
+\begin{itemize}
+\item integer programming {\tiny (Lenstra~et.~al. 1983, Kannan 1987)}
+\item the factoring of polynomials over rationals {\tiny (Lenstra~et.~al. 1982)}
+\item check solvability by radicals {\tiny (Landau and Miller 1985)}
+\item solving low density subset sum problems {\tiny (Coster~et.~al. 1992)}
+\end{itemize}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
+Central problem in modern cryptography enabling:
+\begin{itemize}
+\item efficient public key encryption {\tiny (Gentry~et.~al. 2008, Micciancio 2012)}
+\item post quantum cryptography {\tiny (Perlner~et.~al. 2009, Guneysu 2014, Peikert 2014)}
+\item efficient hash functions {\tiny (Peikert and Rosen 2006, Micciancio 2007)}
+\item fully homomorphic encryption {\tiny (Gentry~et.~al. 2009, 2010)}
+\end{itemize}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
+Communications applications:
+\begin{itemize}
+\item minimum distance of lattice codes {\tiny (Conway and Sloane 1998, Erez~et.~al. 2004)}
+\item capacity analysis of network codes {\tiny (Nazer and Gastpar 2011)}
+\end{itemize}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
+\begin{itemize}
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
 \item Short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
 \item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
 \end{itemize}
 }
+
  
 \frame{ 
 \frametitle{The Voronoi cell}
