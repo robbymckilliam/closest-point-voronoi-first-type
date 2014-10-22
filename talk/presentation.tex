@@ -91,19 +91,30 @@ Those lattice points with smallest non-zero length are called \term{short vector
 \frame{
 \frametitle{The shortest vector problem}
 \begin{itemize}
-\item Computing a short vector is called the \term{shortest vector problem}.
+\item The computational task of finding a short vector is called the \term{shortest vector problem}.
 \item NP-hard for arbitrary lattices.
 \end{itemize}
 }
 
 \frame{
 \frametitle{The shortest vector problem}
-Longstanding applications in computer science:
+
+Longstanding problem in number theory and computer science:
 \begin{itemize}
 \item integer programming {\tiny (Lenstra~et.~al. 1983, Kannan 1987)}
 \item the factoring of polynomials over rationals {\tiny (Lenstra~et.~al. 1982)}
-\item check solvability by radicals {\tiny (Landau and Miller 1985)}
+\item checking solvability by radicals {\tiny (Landau and Miller 1985)}
 \item solving low density subset sum problems {\tiny (Coster~et.~al. 1992)}
+\end{itemize}
+}
+
+\frame{
+\frametitle{The shortest vector problem}
+
+Communications applications:
+\begin{itemize}
+\item minimum distance of lattice codes {\tiny (Conway and Sloane 1999, Erez~et.~al. 2004)}
+\item capacity analysis of network codes {\tiny (Nazer and Gastpar 2011)}
 \end{itemize}
 }
 
@@ -113,18 +124,11 @@ Central problem in modern cryptography enabling:
 \begin{itemize}
 \item efficient public key encryption {\tiny (Gentry~et.~al. 2008, Micciancio 2012)}
 \item post quantum cryptography {\tiny (Perlner~et.~al. 2009, Guneysu 2014, Peikert 2014)}
-\item efficient hash functions {\tiny (Peikert and Rosen 2006, Micciancio 2007)}
+%\item efficient hash functions {\tiny (Peikert and Rosen 2006, Micciancio 2007)}
 \item fully homomorphic encryption {\tiny (Gentry~et.~al. 2009, 2010)}
 \end{itemize}
-}
 
-\frame{
-\frametitle{The shortest vector problem}
-Communications applications:
-\begin{itemize}
-\item minimum distance of lattice codes {\tiny (Conway and Sloane 1998, Erez~et.~al. 2004)}
-\item capacity analysis of network codes {\tiny (Nazer and Gastpar 2011)}
-\end{itemize}
+Security depends upon the complexity of the shortest vector problem.
 }
 
 \frame{
@@ -240,20 +244,35 @@ y \in \vor(\Lambda) + x.
 
 \frame{
 \frametitle{The closest lattice point problem}
-Applications to:
+Communications applications:
 \begin{itemize}
-\item coding and quantisation,
-\item multi-antenna communication (MIMO),
-\item unwrapping of phase data for electronic distance measurement in GPS and surveying,
-\item single frequency estimation,
-\item polynomial phase estimation,
-\item circular statistics.
+\item spectrally efficient codes {\tiny (Conway and Sloane 1983, Erez~et.~al.~2004)},
+\item vector quantisation and compression {\tiny (Conway~and~Sloane~1982, Erez~et.~al.~2005)},
+\item multi-antenna communication (MIMO) {\tiny (El Gamal~et.~al.~2004, Wubben~et.~al.~2011)},
+\item equalisation of delay spread channels {\tiny (Zamir~et.~al.~2002, Damen~et.~al.~2003)},
+\item network coding {\tiny (Nazer and Gastpar 2011)},
+\item blind channel estimation {\tiny (Ryan~et.~al. 2007, McKilliam~2014)}.
 \end{itemize}
+
 }
+
+\frame{
+\frametitle{The closest lattice point problem}
+Signal processing applications:
+\begin{itemize}
+\item unwrapping of phase data for electronic distance measurement in GPS and surveying {\tiny (Tuenissen~1995, Hassibi~and~Boyd~1998)},
+\item single frequency estimation {\tiny (McKilliam~et.~al.~2010)},
+\item polynomial phase estimation {\tiny (McKilliam~et.~al.~2014)},
+\item circular statistics {\tiny (McKilliam~et.~al.~2014)}.
+\end{itemize}
+
+}
+ 
  
 \frame{
 \frametitle{The closest lattice point problem}
 \begin{itemize}
+\item Applications require fast solutions to the closest lattice point problem.
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
 \item Fast algorithms exist for the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
@@ -710,8 +729,10 @@ The iterative procedure, initialized at $x_0$, converges to a closest lattice po
 \frametitle{What now?}
 
 \begin{itemize}
+\item Are any existing cryptographic schemes weakened?
 \item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
-\item Do applications such as global positioning, phase unwrapping, etc., involve lattices of Voronoi's first kind?
+\item Can MIMO communications systems benefit?
+\item Do applications such as global positioning, frequency estimation, etc., involve lattices of Voronoi's first kind?
 \item Are there subfamilies of Voronoi's first kind that admit even faster algorithms?
 \item Are there other families of lattices for which similar techniques lead to polynomial time algorithms?
 \end{itemize}
