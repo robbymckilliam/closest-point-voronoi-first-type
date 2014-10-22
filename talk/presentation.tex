@@ -101,6 +101,7 @@ Those lattice points with smallest non-zero length are called \term{short vector
 
 Longstanding problem in number theory and computer science:
 \begin{itemize}
+\item sphere packing {\tiny (Voronoi 1908, Conway and Sloane 1999)}
 \item integer programming {\tiny (Lenstra~et.~al. 1983, Kannan 1987)}
 \item the factoring of polynomials over rationals {\tiny (Lenstra~et.~al. 1982)}
 \item checking solvability by radicals {\tiny (Landau and Miller 1985)}
@@ -113,7 +114,7 @@ Longstanding problem in number theory and computer science:
 
 Communications applications:
 \begin{itemize}
-\item minimum distance of lattice codes {\tiny (Conway and Sloane 1999, Erez~et.~al. 2004)}
+\item minimum distance of lattice codes {\tiny (Conway and Sloane 1982, Erez~et.~al. 2004)}
 \item capacity analysis of network codes {\tiny (Nazer and Gastpar 2011)}
 \end{itemize}
 }
@@ -137,7 +138,7 @@ Security depends upon the complexity of the shortest vector problem.
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
 \item Short vectors are easy to find in the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
-\item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind}.
+\item We will show that the problem is relatively easy to solve for lattices of \term{Voronoi's first kind} {\tiny (Voronoi~1908, Conway~and~Sloane~1992, McKilliam~and~Grant~2012)}.
 \end{itemize}
 }
 
@@ -247,7 +248,7 @@ y \in \vor(\Lambda) + x.
 Communications applications:
 \begin{itemize}
 \item spectrally efficient codes {\tiny (Conway and Sloane 1983, Erez~et.~al.~2004)},
-\item vector quantisation and compression {\tiny (Conway~and~Sloane~1982, Erez~et.~al.~2005)},
+\item quantisation and compression {\tiny (Conway~and~Sloane~1982, Erez~et.~al.~2005)},
 \item multi-antenna communication (MIMO) {\tiny (El Gamal~et.~al.~2004, Wubben~et.~al.~2011)},
 \item equalisation of delay spread channels {\tiny (Zamir~et.~al.~2002, Damen~et.~al.~2003)},
 \item network coding {\tiny (Nazer and Gastpar 2011)},
@@ -272,7 +273,7 @@ Signal processing applications:
 \frame{
 \frametitle{The closest lattice point problem}
 \begin{itemize}
-\item Applications require fast solutions to the closest lattice point problem.
+\item Require fast solutions to the closest lattice point problem.
 \item NP-hard for arbitrary lattices.
 \item Easier for specific lattices.
 \item Fast algorithms exist for the \term{root lattices} $\ints^n$, $A_n$, and $D_n$.
@@ -372,7 +373,7 @@ The off diagonal elements are not positive so the obtuse condition is satisfied.
 
 \frame{
 \frametitle{Lattices of Voronoi's first kind}
-\begin{theorem}[Conway and Sloane (1992)]
+\begin{theorem}[Conway and Sloane 1992]
 Let $\Lambda$ be a $n$-dimensional lattice of Voronoi's first kind with obtuse superbase $b_1, \dots, b_{n+1}$.  The relevant vectors in $\Lambda$ are of the form 
 \[
 \sum_{i \in I} b_i
@@ -731,7 +732,7 @@ The iterative procedure, initialized at $x_0$, converges to a closest lattice po
 \begin{itemize}
 \item Are any existing cryptographic schemes weakened?
 \item Can good codes or quantisers be constructed from lattices of Voronoi's first kind?
-\item Can MIMO communications systems benefit?
+\item Can MIMO communication systems benefit?
 \item Do applications such as global positioning, frequency estimation, etc., involve lattices of Voronoi's first kind?
 \item Are there subfamilies of Voronoi's first kind that admit even faster algorithms?
 \item Are there other families of lattices for which similar techniques lead to polynomial time algorithms?
